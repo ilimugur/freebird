@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4662400169239830264
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2398360943209083446}
+  - component: {fileID: 9074795521020721520}
+  m_Layer: 0
+  m_Name: HapticsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2398360943209083446
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4662400169239830264}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9074795521020721520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4662400169239830264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aab4b394677f19640b728854b09c5650, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShotStarted: {fileID: 11400000, guid: 51fa0f3230aae214ea2075ce357c7e0f, type: 2}
+  RegularScored: {fileID: 11400000, guid: c0f79d0f86285cf45be5cdf7c2bfc6d5, type: 2}
+  LuckyScored: {fileID: 11400000, guid: 095bf5231a183694ba59bde93f4ec47e, type: 2}
+  PerfectScored: {fileID: 11400000, guid: 42c1924eb8e300b4bacaf026f6392968, type: 2}
+  ShotMissed: {fileID: 11400000, guid: 5c447a11d4baa144a9a25aff45c84754, type: 2}
+  BallHitObstacle: {fileID: 11400000, guid: a5026b46cea2d404b9b9f57844425981, type: 2}
+  BallHitHoopPerimeter: {fileID: 11400000, guid: d4ce17203d41b4147907cbc7ab19f058,
+    type: 2}
+  BallHitGround: {fileID: 11400000, guid: 3482b981d42938d4d88f66472e594525, type: 2}
+  LevelCompleted: {fileID: 11400000, guid: 92b6a01bb99f71748b2b03898dcca029, type: 2}
+  GameStarted: {fileID: 11400000, guid: 0ba8d7912908a534886392f107163a0a, type: 2}
+  GameOver: {fileID: 11400000, guid: 27cb573ca0b98fc4d9342001d0cf35fe, type: 2}
