@@ -3,4 +3,5 @@ Logs/
 Temp/
 ProjectSettings/ProjectVersion.txt
 .vs/
+.idea/
 obj/
