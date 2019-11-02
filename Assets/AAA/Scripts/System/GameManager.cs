@@ -17,6 +17,24 @@ public class GameManager : Singleton<GameManager>
 
 	public Vector3 LandingStripPosition = new Vector3(0,4,0);
 
+	public float RoundStartTime { get; private set; }
+	public float RoundEndTime { get; private set; }
+	public float RoundPassedTime
+	{
+		get
+		{
+			if (RoundStartTime <= 0f)
+			{
+				return 0f;
+			}
+			if (RoundEndTime > 0f)
+			{
+				return RoundEndTime - RoundStartTime;
+			}
+			return Time.time - RoundStartTime;
+		}
+	}
+
 	void Awake()
 	{
 		QualitySettings.vSyncCount = 0;
@@ -63,13 +81,20 @@ public class GameManager : Singleton<GameManager>
 		Analytics.CustomEvent("StartGame");
 
 		DOTween.To(() => PlaneController.CurrentHorizontalSpeed, x => PlaneController.CurrentHorizontalSpeed = x, PlaneController.TargetHorizontalSpeed, 2f);
+	}
 
+	public void StartRound()
+	{
+		EventManager.Instance.TriggerEvent(Constants.EVENT_ENABLE_CONTROLS);
+		RoundStartTime = Time.time;
+		RoundEndTime = 0f;
 	}
 
 	private IEnumerator TriggerGameOver()
 	{
 		Debug.Log("Game Over");
 		Time.timeScale = 1;
+		RoundEndTime = Time.time;
 
 		yield return new WaitForSeconds(0.35f);
 		Save();

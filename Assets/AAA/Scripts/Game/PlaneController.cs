@@ -173,7 +173,7 @@ public class PlaneController : MonoBehaviour
 		}
 
 		// Apply wing force.
-		ApplyWingForce(config.WingForceY);
+		ApplyWingForce(config.WingForceY, config.WingForceDegradeOverTime);
 
 		// Leaning with vertical speed. Note that this forcefully overrides angular velocity.
 		OverrideAngularSpeedToLeanTheNose(config.VerticalSpeedToLeanConversionFactor,
@@ -181,10 +181,12 @@ public class PlaneController : MonoBehaviour
 		                                  config.PassedTimeAfterLastPush);
 	}
 
-	private void ApplyWingForce(float wingForceY)
+	private void ApplyWingForce(float wingForceY, AnimationCurve wingForceDegradeOverTime)
 	{
+		var passedTime = GameManager.Instance.RoundPassedTime;
+		var degrade = wingForceDegradeOverTime.Evaluate(passedTime);
 		var speedFactor = Mathf.Clamp01(CurrentHorizontalSpeed / TargetHorizontalSpeed);
-		Rigidbody.AddForce(new Vector2(0f, wingForceY * speedFactor), ForceMode2D.Force);
+		Rigidbody.AddForce(new Vector2(0f, wingForceY * speedFactor * degrade), ForceMode2D.Force);
 	}
 
 	private void CalculatePhysics_Carry()
