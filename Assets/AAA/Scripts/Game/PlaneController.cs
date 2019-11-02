@@ -315,32 +315,35 @@ public class PlaneController : MonoBehaviour
 			}
 			else
 			{
-				if (angleClipped > -30f || angleClipped > 120f)
+				if (angleClipped > -30f && angleClipped < 90f)
 				{
 					Rigidbody.AddTorque(config.HalfThrottleRotationTorque);
 				}
 			}
 		}
 
-		var rotationInput = 0f;
-		if (Input.GetKey(KeyCode.W))
+		// Debug
 		{
-			rotationInput += 1f;
-		}
-		if (Input.GetKey(KeyCode.S))
-		{
-			rotationInput -= 1f;
-		}
-		if (Input.GetKey(KeyCode.A))
-		{
-			Rigidbody.AddForce(new Vector2(-2000f, 0f));
-		}
-		if (Input.GetKey(KeyCode.D))
-		{
-			Rigidbody.AddForce(new Vector2(2000f, 0f));
-		}
+			var rotationInput = 0f;
+			if (Input.GetKey(KeyCode.W))
+			{
+				rotationInput += 1f;
+			}
+			if (Input.GetKey(KeyCode.S))
+			{
+				rotationInput -= 1f;
+			}
+			if (Input.GetKey(KeyCode.A))
+			{
+				Rigidbody.AddForce(new Vector2(-2000f, 0f));
+			}
+			if (Input.GetKey(KeyCode.D))
+			{
+				Rigidbody.AddForce(new Vector2(2000f, 0f));
+			}
 
-		Rigidbody.AddTorque(rotationInput * config.FullThrottleRotationTorque);
+			Rigidbody.AddTorque(rotationInput * config.FullThrottleRotationTorque);
+		}
 	}
 
 	private void CalculatePhysics_Cartoon()
