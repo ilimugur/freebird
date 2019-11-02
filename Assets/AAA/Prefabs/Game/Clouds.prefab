@@ -43,9 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 235b1cf549d3b664993c634348d6dd83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AvailableCloudCount: 72
-  MinDistanceBetweenClouds: 3
-  MaxDistanceBetweenClouds: 5
+  AvailableCloudCount: 60
+  MinDistanceBetweenClouds: 6
+  MaxDistanceBetweenClouds: 10
   Depth: 5
   MinCloudHeightFromGround: 1
   CloudSpeedCoefficient: 0
