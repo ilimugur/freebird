@@ -67,7 +67,6 @@ public class TerrainMeshGen : MonoBehaviour
             filter.gameObject.SetActive(false);
             _freeMeshFilters.Add(filter);
         }
-        this.transform.position = transform.position + new Vector3(0, -25, 0);
     }
 
     // Gets the height of terrain at current position.
@@ -100,7 +99,7 @@ public class TerrainMeshGen : MonoBehaviour
             _vertexArray[i * 2] = new Vector3(xPos, yPosTop, 0);
 
             // bottom vertex always at y=0
-            _vertexArray[i * 2 + 1] = new Vector3(xPos, -14, 0);
+            _vertexArray[i * 2 + 1] = new Vector3(xPos, -20, 0);
         }
 
         mesh.vertices = _vertexArray;

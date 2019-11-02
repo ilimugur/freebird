@@ -61,12 +61,6 @@ public class CloudGenerator : MonoBehaviour
 
     private void EnsureCloudVisible(float xCoord, float yCenter, float radius)
     {
-        if (float.IsNaN(xCoord))
-        {
-            float osman = 2 * 5f;
-            osman += 4f - osman;
-        }
-
         // get from the pool
         int rendererIndex = _freeSpriteRenderers.Count - 1;
         SpriteRenderer renderer = _freeSpriteRenderers[rendererIndex];
