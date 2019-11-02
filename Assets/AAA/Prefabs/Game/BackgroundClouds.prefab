@@ -49,17 +49,16 @@ MonoBehaviour:
   Depth: 15
   MinCloudHeightFromGround: 0.5
   CloudSpeedCoefficient: 0.6
+  CloudScaleCoefficient: 1
   CloudColor: {r: 0.6862745, g: 0.8666667, b: 0.8666667, a: 1}
   availableSprites:
-  - {fileID: 3349391187094723686, guid: 25785a8ec6b54d94396f7faade8ddeea, type: 3}
-  - {fileID: -1551757773269413495, guid: 25785a8ec6b54d94396f7faade8ddeea, type: 3}
-  - {fileID: 6357164628407952830, guid: 25785a8ec6b54d94396f7faade8ddeea, type: 3}
-  - {fileID: -5435620906133849245, guid: 25785a8ec6b54d94396f7faade8ddeea, type: 3}
-  - {fileID: -28517974525256933, guid: 25785a8ec6b54d94396f7faade8ddeea, type: 3}
-  - {fileID: -7890046464224265720, guid: 25785a8ec6b54d94396f7faade8ddeea, type: 3}
-  - {fileID: -3976537959905591395, guid: 25785a8ec6b54d94396f7faade8ddeea, type: 3}
-  - {fileID: -6949673631202450835, guid: 25785a8ec6b54d94396f7faade8ddeea, type: 3}
-  - {fileID: -1912190655761870020, guid: 25785a8ec6b54d94396f7faade8ddeea, type: 3}
-  - {fileID: -2072218771446267342, guid: 25785a8ec6b54d94396f7faade8ddeea, type: 3}
-  - {fileID: 2184318221912880041, guid: 25785a8ec6b54d94396f7faade8ddeea, type: 3}
-  - {fileID: -9155997877011420384, guid: 25785a8ec6b54d94396f7faade8ddeea, type: 3}
+  - {fileID: 21300000, guid: 2e7722ee86f636249a1e4502403633e7, type: 3}
+  - {fileID: 21300000, guid: de0e9f5d09c70034abf260641c863fe4, type: 3}
+  - {fileID: 21300000, guid: fdf079d24b8efca4db72934230abd970, type: 3}
+  - {fileID: 21300000, guid: 66e09ea3bf0b85949ab8596cbab43522, type: 3}
+  - {fileID: 21300000, guid: 580c205926c1d414e9497dcb823cb618, type: 3}
+  - {fileID: 21300000, guid: b8fd77154b8cfc945851c4e419dcc54a, type: 3}
+  - {fileID: 21300000, guid: 234a1d602e7d2664daabadeae350e820, type: 3}
+  - {fileID: 21300000, guid: c562214211751dd4cad39ce3f2b2ed40, type: 3}
+  - {fileID: 21300000, guid: fd965ad134cff6942a47bec502a3c7b7, type: 3}
+  - {fileID: 21300000, guid: 20de8547127d3d245b73f786432795c6, type: 3}
