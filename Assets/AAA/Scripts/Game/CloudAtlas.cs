@@ -38,6 +38,6 @@ public class CloudAtlas : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(Camera.main.transform);
+        // Debug.Log(Camera.main.transform);
     }
 }
