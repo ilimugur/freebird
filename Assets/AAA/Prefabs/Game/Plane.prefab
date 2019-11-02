@@ -80,6 +80,36 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2638959211803099883
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3403910188507945129}
+  m_Layer: 8
+  m_Name: PilotInsantiationLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3403910188507945129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2638959211803099883}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.66, y: 0.54, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8878388082826193515}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2711658633586046513
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,7 +170,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8878388082826193515}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &757353517109631486
 SpriteRenderer:
@@ -243,6 +273,7 @@ Transform:
   m_Children:
   - {fileID: 25693006}
   - {fileID: 7700202089201523178}
+  - {fileID: 3403910188507945129}
   - {fileID: 789836194861951986}
   - {fileID: 8861166439563792398}
   m_Father: {fileID: 0}
@@ -469,6 +500,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     WingForce: 4000
+  PilotPrefab: {fileID: 7290077129980667573, guid: e8760dd5ac9804744ac29fe71ae399f2,
+    type: 3}
+  PilotInstantiationLocation: {fileID: 3403910188507945129}
+  PilotAdditionalLaunchVelocity: {x: 0, y: 0}
+  PilotLaunchAngularSpeed: 0
   FullThrottlePropellerSpeed: 1
   NoThrottlePropellerSpeed: 0.2
   CratePrefab: {fileID: 7290077129980667573, guid: a56ec96a94f7a7d41ad2cd1d840ebc84,
@@ -561,7 +597,7 @@ PrefabInstance:
     - target: {fileID: 7200764719120326750, guid: 71f9861e8125c3545b9849e448a380da,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7200764719120326750, guid: 71f9861e8125c3545b9849e448a380da,
         type: 3}

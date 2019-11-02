@@ -262,7 +262,7 @@ public class PlaneController : MonoBehaviour
 			var currentPowerForce = currentPower * config.FullThrottleForwardForce;
 			var degrade = config.ForwardForceDegradationBySpeed.Evaluate(Mathf.Max(localVelocity.x, 0f));
 
-			if (angleClipped < -30f || angleClipped > 120f)
+			if (angleClipped < -120f || angleClipped > 120f)
 			{
 				degrade = 0f;
 			}
@@ -284,7 +284,14 @@ public class PlaneController : MonoBehaviour
 		{
 			if (IsPushing)
 			{
-				Rigidbody.AddTorque(config.FullThrottleRotationTorque);
+				if (angleClipped < -120f || angleClipped > 120f)
+				{
+					Rigidbody.AddTorque(config.FullThrottleRotationTorque * 2f);
+				}
+				else
+				{
+					Rigidbody.AddTorque(config.FullThrottleRotationTorque);
+				}
 			}
 			else
 			{
@@ -292,6 +299,14 @@ public class PlaneController : MonoBehaviour
 				{
 					Rigidbody.AddTorque(config.HalfThrottleRotationTorque);
 				}
+			}
+		}
+
+		// Release the pilot.
+		{
+			if (angleClipped > 90f)
+			{
+				ReleasePilot();
 			}
 		}
 
@@ -420,6 +435,31 @@ public class PlaneController : MonoBehaviour
 	private void EnableControls()
 	{
 		IsControlsEnabled = true;
+	}
+
+	#endregion
+
+	#region Pilot
+
+	[Header("Pilot")]
+	public GameObject PilotPrefab;
+	public Transform PilotInstantiationLocation;
+	public Vector2 PilotAdditionalLaunchVelocity;
+	public float PilotLaunchAngularSpeed;
+
+	private bool IsPilotReleased;
+
+	public void ReleasePilot()
+	{
+		if (!IsPilotReleased)
+		{
+			IsPilotReleased = true;
+
+			var go = Instantiate(PilotPrefab, PilotInstantiationLocation.position, Quaternion.identity);
+			var body = go.GetComponent<Rigidbody2D>();
+			body.velocity = Rigidbody.velocity + PilotAdditionalLaunchVelocity;
+			body.angularVelocity = PilotLaunchAngularSpeed;
+		}
 	}
 
 	#endregion
