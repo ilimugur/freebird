@@ -8,8 +8,9 @@ public class CloudGenerator : MonoBehaviour
     public float MinDistanceBetweenClouds = 2f;
     public float MaxDistanceBetweenClouds = 3f;
     public float Depth = -5f;
-    public float MinCloudHeightFromGround = 0.5f;
+    public float MinCloudHeightFromGround = 0.5f; // TODO: doesn't work as intended
     public float CloudSpeedCoefficient = 0f;
+    public float CloudScaleCoefficient = 1f;
     public Color CloudColor;
 
     public Sprite[] availableSprites;
@@ -17,6 +18,7 @@ public class CloudGenerator : MonoBehaviour
     private static System.Random _rand = new System.Random();
 
     private float _nextGenerationX;
+    private Vector2 _previousScreenCenter;
 
     private List<SpriteRenderer> _freeSpriteRenderers = new List<SpriteRenderer>();
 
@@ -33,6 +35,7 @@ public class CloudGenerator : MonoBehaviour
             spriteRenderer.color = CloudColor;
             int index = i % availableSprites.Length;
             spriteRenderer.sprite = availableSprites[index];
+            spriteRenderer.transform.localScale *= CloudScaleCoefficient;
 
             spriteRenderer.gameObject.SetActive(false);
             _freeSpriteRenderers.Add(spriteRenderer);
@@ -58,6 +61,12 @@ public class CloudGenerator : MonoBehaviour
 
     private void EnsureCloudVisible(float xCoord, float yCenter, float radius)
     {
+        if (float.IsNaN(xCoord))
+        {
+            float osman = 2 * 5f;
+            osman += 4f - osman;
+        }
+
         // get from the pool
         int rendererIndex = _freeSpriteRenderers.Count - 1;
         SpriteRenderer renderer = _freeSpriteRenderers[rendererIndex];
@@ -106,6 +115,7 @@ public class CloudGenerator : MonoBehaviour
     {
         // get the index of visible segment by finding the center point world position
         Vector3 worldCenter = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
+        Vector2 delta = new Vector2(worldCenter.x - _previousScreenCenter.x, worldCenter.y - _previousScreenCenter.y);
         int currentCoordinate = (int)worldCenter.x;
 
         // Test visible segments for visibility and hide those if not visible.
@@ -113,6 +123,9 @@ public class CloudGenerator : MonoBehaviour
         {
             float xCoord = _usedClouds[i].transform.position.x;
             float yCoord = _usedClouds[i].transform.position.y;
+            float zCoord = _usedClouds[i].transform.position.z;
+            xCoord += delta.x * CloudSpeedCoefficient;
+            _usedClouds[i].transform.position = new Vector3(xCoord, yCoord, zCoord);
             if (!ShouldCloudBeActive(xCoord, yCoord))
             {
                 EnsureCloudNotVisible(i);
@@ -124,6 +137,7 @@ public class CloudGenerator : MonoBehaviour
                 ++i;
             }
         }
+        _previousScreenCenter += delta;
 
         if(currentCoordinate >= _nextGenerationX && _freeSpriteRenderers.Count > 0)
         {
@@ -135,7 +149,7 @@ public class CloudGenerator : MonoBehaviour
 
             float yMidPoint = worldCenter.y;
             Vector3 cameraVelocity = Camera.main.velocity;
-            float xFactor = cameraVelocity.x / cameraVelocity.magnitude;
+            float xFactor = (cameraVelocity.magnitude > 0f ? cameraVelocity.x / cameraVelocity.magnitude : 1f);
             EnsureCloudVisible(_nextGenerationX + width * xFactor, yMidPoint, height / 2);
 
             // Generate a new coordinate upon reaching which a new cloud will be spawned

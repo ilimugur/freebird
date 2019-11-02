@@ -44,12 +44,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AvailableCloudCount: 72
-  MinDistanceBetweenClouds: 2
-  MaxDistanceBetweenClouds: 3
+  MinDistanceBetweenClouds: 3
+  MaxDistanceBetweenClouds: 4
   Depth: 15
   MinCloudHeightFromGround: 0.5
-  CloudSpeedCoefficient: 0.75
-  CloudColor: {r: 0.8666667, g: 0.8666667, b: 0.8666667, a: 1}
+  CloudSpeedCoefficient: 0.6
+  CloudColor: {r: 0.6862745, g: 0.8666667, b: 0.8666667, a: 1}
   availableSprites:
   - {fileID: 3349391187094723686, guid: 25785a8ec6b54d94396f7faade8ddeea, type: 3}
   - {fileID: -1551757773269413495, guid: 25785a8ec6b54d94396f7faade8ddeea, type: 3}

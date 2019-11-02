@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 7100175741962578065}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.00057709217, y: -1.7789066, z: -6.1778984}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -44,11 +44,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AvailableCloudCount: 72
-  MinDistanceBetweenClouds: 2
-  MaxDistanceBetweenClouds: 3
+  MinDistanceBetweenClouds: 3
+  MaxDistanceBetweenClouds: 5
   Depth: 5
   MinCloudHeightFromGround: 1
-  CloudSpeedCoefficient: 0.5
+  CloudSpeedCoefficient: 0
+  CloudScaleCoefficient: 1.5
   CloudColor: {r: 1, g: 1, b: 1, a: 1}
   availableSprites:
   - {fileID: 3349391187094723686, guid: 25785a8ec6b54d94396f7faade8ddeea, type: 3}
