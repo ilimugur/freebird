@@ -120,6 +120,53 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &236760832
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 236760834}
+  - component: {fileID: 236760833}
+  m_Layer: 0
+  m_Name: CloudAtlas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &236760833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236760832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65cad5cea81244d42a986dd32b7eb2ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CloudPrefab: {fileID: 3328511190210773124, guid: 54fd62906bacce84fbd03a27979700b5,
+    type: 3}
+  Clouds: []
+  CloudCount: 30
+--- !u!4 &236760834
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236760832}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &692998242
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -131,6 +178,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Clouds2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4720390793110983751, guid: dad7642f356609a438c85ae49779d120,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 280697532766088680, guid: dad7642f356609a438c85ae49779d120,
         type: 3}
@@ -187,6 +239,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4950451587562743369, guid: dad7642f356609a438c85ae49779d120,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5752866177350764042, guid: dad7642f356609a438c85ae49779d120,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5752866177350764042, guid: dad7642f356609a438c85ae49779d120,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 15.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7357504967550883114, guid: dad7642f356609a438c85ae49779d120,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -21
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dad7642f356609a438c85ae49779d120, type: 3}
 --- !u!1001 &1060708694
@@ -196,15 +268,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8878388082826193513, guid: 02eaa7fe431a19845a751b7113643836,
-        type: 3}
-      propertyPath: m_Name
-      value: PlaneAgent
-      objectReference: {fileID: 0}
     - target: {fileID: 7294209803571723933, guid: 02eaa7fe431a19845a751b7113643836,
         type: 3}
       propertyPath: DisableControlsAtStart
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8878388082826193513, guid: 02eaa7fe431a19845a751b7113643836,
+        type: 3}
+      propertyPath: m_Name
+      value: PlaneAgent
       objectReference: {fileID: 0}
     - target: {fileID: 8878388082826193515, guid: 02eaa7fe431a19845a751b7113643836,
         type: 3}
