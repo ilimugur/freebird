@@ -67,14 +67,19 @@ public class TerrainMeshGen : MonoBehaviour
             filter.gameObject.SetActive(false);
             _freeMeshFilters.Add(filter);
         }
-        this.transform.position = transform.position + new Vector3(0, -10, 0);
+        this.transform.position = transform.position + new Vector3(0, -25, 0);
     }
 
-    // Gets the heigh of terrain at current position.
+    // Gets the height of terrain at current position.
     // Modify this function to get different terrain configuration.
     private float GetHeight(float position)
     {
-        return (Mathf.Sin(position) + 1.5f + Mathf.Sin(position * 1.75f) + 10f) / 2f;
+        if(position < 5f)
+            return (Mathf.Sin(position * 0.1f) * 3f + Mathf.Sin(position * 0.2f) * 4f) / 2f;
+        else
+            return (Mathf.Sin(position * 0.1f) * 6f + Mathf.Sin(position * 0.2f) * 8f) / 2f;
+            //return (Mathf.Sin(position * 0.1f) * 6f + 3.5f + Mathf.Sin(position * 0.2f) * 4f + 8f) / 2f;
+            //return (Mathf.Sin(position * 0.1f) * 12f + 7f + Mathf.Sin(position * 0.2f) * 8f + 8f) / 2f;
     }
 
     // This function generates a mesh segment.
@@ -95,7 +100,7 @@ public class TerrainMeshGen : MonoBehaviour
             _vertexArray[i * 2] = new Vector3(xPos, yPosTop, 0);
 
             // bottom vertex always at y=0
-            _vertexArray[i * 2 + 1] = new Vector3(xPos, 0, 0);
+            _vertexArray[i * 2 + 1] = new Vector3(xPos, -14, 0);
         }
 
         mesh.vertices = _vertexArray;
