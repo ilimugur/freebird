@@ -23,8 +23,9 @@ public class CameraDirector : MonoBehaviour
         transform.position = newPos;
         */
 
-        Vector3 newPos = Vector3.MoveTowards(transform.position, Target.CameraTarget, FollowSpeed);
-        newPos = new Vector3(Target.CameraTarget.x, newPos.y, -10f);
+        var targetPosition = Target.Transform.position;
+        Vector3 newPos = Vector3.MoveTowards(transform.position, targetPosition, FollowSpeed);
+        newPos = new Vector3(targetPosition.x, newPos.y, -10f);
         transform.position = newPos;
     }
 }
