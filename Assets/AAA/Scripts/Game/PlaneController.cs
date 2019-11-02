@@ -6,7 +6,10 @@ public class PlaneController : MonoBehaviour
 
 	protected void Awake()
 	{
-		DisableControls();
+		if (DisableControlsAtStart)
+		{
+			DisableControls();
+		}
 		InitializeEvents();
 	}
 
@@ -93,7 +96,7 @@ public class PlaneController : MonoBehaviour
 
 	#region Controls
 
-	private bool IsControlsEnabled;
+	private bool IsControlsEnabled = true;
 
 	private void DisableControls()
 	{
@@ -134,6 +137,7 @@ public class PlaneController : MonoBehaviour
 
 	[Header("Spawning")]
 	public Vector3 SpawnLocation;
+	public bool DisableControlsAtStart = false;
 
 	private void PlaceToSpawnLocation()
 	{
