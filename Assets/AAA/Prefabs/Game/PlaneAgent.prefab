@@ -173,9 +173,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707f493a6578df948a605ce09af9a861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RB: {fileID: 9055477246974227694}
+  Transform: {fileID: 8878388082826193515}
+  Rigidbody: {fileID: 9055477246974227694}
   VerticalSpeed: 12
   MoveSpeed: 1
   CratePrefab: {fileID: 7290077129980667573, guid: a56ec96a94f7a7d41ad2cd1d840ebc84,
     type: 3}
-  CameraTarget: {x: 0, y: 0, z: 0}
+  CrateInstantiationOffset: {x: 0, y: -0.7, z: 0}

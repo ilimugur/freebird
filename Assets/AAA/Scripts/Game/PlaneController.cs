@@ -1,80 +1,84 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlaneController : MonoBehaviour
 {
-    public Rigidbody2D RB;
+	#region Initialization
 
-    public float VerticalSpeed;
-    public float MoveSpeed;
+	// protected void Awake()
+	// {
+	// }
 
-    public GameObject CratePrefab;
+	#endregion
 
-    public Vector3 CameraTarget;
+	#region Update
 
-    void FixedUpdate()
-    {
-        UpdateMethodSecond();
-    }
+	protected void FixedUpdate()
+	{
+		UpdateMethodSecond();
+	}
 
-    void UpdateMethodSecond()
-    {
-        RB.AddForce(Vector2.right * (MoveSpeed - transform.rotation.z), ForceMode2D.Force);
+	#endregion
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            RB.AddForce(Vector2.up * VerticalSpeed, ForceMode2D.Impulse);
+	#region Links
 
-            GameObject go = GameObject.Instantiate(CratePrefab, this.transform.position + new Vector3(0, -0.7f, 0), Quaternion.identity);
-        }
+	[Header("Links")]
+	public Transform Transform;
+	public Rigidbody2D Rigidbody;
 
-        if (RB.velocity.y > 10f)
-        {
-            RB.velocity = new Vector2(RB.velocity.x, 10f);
-        }
-        else if (RB.velocity.y < -10f)
-        {
-            RB.velocity = new Vector2(RB.velocity.x, -10f);
-        }
+	#endregion
 
-        if (RB.velocity.y > 0)
-        {
-            CameraTarget = transform.position + new Vector3(0f, 1 + transform.rotation.z);
-            transform.Rotate(Vector3.forward, 10f);
-            if (transform.rotation.z > 0.3f)
-                transform.rotation = new Quaternion(0, 0, 0.3f, 1f);
-        }
-        else if (RB.velocity.y < 0)
-        {
-            CameraTarget = transform.position + new Vector3(0f, -1 - transform.rotation.z);
-            transform.Rotate(Vector3.forward, -1f);
-            if (transform.rotation.z < -0.3f)
-                transform.rotation = new Quaternion(0, 0, -0.3f, 1f);
-        }
-    }
+	#region Physics
 
-    void UpdateMethodFirst()
-    {
-        if (Input.GetMouseButton(0))
-        {
-            RB.AddForce(Vector2.up * VerticalSpeed, ForceMode2D.Force);
-        }
+	[Header("Configuration")]
+	public float VerticalSpeed;
+	public float MoveSpeed;
 
-        if (RB.velocity.y > 0)
-        {
-            Quaternion rot = transform.rotation;
-            transform.Rotate(Vector3.forward, 1f);
-            if (transform.rotation.z > 0.3f)
-                transform.rotation = rot;
-        }
-        else if (RB.velocity.y < 0)
-        {
-            Quaternion rot = transform.rotation;
-            transform.Rotate(Vector3.forward, -1f);
+	void UpdateMethodSecond()
+	{
+		Rigidbody.AddForce(Vector2.right * (MoveSpeed - Transform.rotation.z), ForceMode2D.Force);
 
-            if (transform.rotation.z < -0.3f)
-                transform.rotation = rot;
-        }
-    }
+		if (Input.GetMouseButtonDown(0))
+		{
+			Rigidbody.AddForce(Vector2.up * VerticalSpeed, ForceMode2D.Impulse);
+
+			InstantiateCrate();
+		}
+
+		if (Rigidbody.velocity.y > 10f)
+		{
+			Rigidbody.velocity = new Vector2(Rigidbody.velocity.x, 10f);
+		}
+		else if (Rigidbody.velocity.y < -10f)
+		{
+			Rigidbody.velocity = new Vector2(Rigidbody.velocity.x, -10f);
+		}
+
+		if (Rigidbody.velocity.y > 0)
+		{
+			Transform.Rotate(Vector3.forward, 10f);
+			if (Transform.rotation.z > 0.3f)
+				Transform.rotation = new Quaternion(0, 0, 0.3f, 1f);
+		}
+		else if (Rigidbody.velocity.y < 0)
+		{
+			Transform.Rotate(Vector3.forward, -1f);
+			if (Transform.rotation.z < -0.3f)
+				Transform.rotation = new Quaternion(0, 0, -0.3f, 1f);
+		}
+	}
+
+	#endregion
+
+	#region Crate
+
+	[Header("Crate")]
+	public GameObject CratePrefab;
+	public Vector3 CrateInstantiationOffset = new Vector3(0, -0.7f, 0);
+
+	public void InstantiateCrate()
+	{
+		Instantiate(CratePrefab, Transform.position + CrateInstantiationOffset, Quaternion.identity);
+	}
+
+	#endregion
 }
