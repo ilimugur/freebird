@@ -149,7 +149,7 @@ public class CloudGenerator : MonoBehaviour
 
             float yMidPoint = worldCenter.y;
             Vector3 cameraVelocity = Camera.main.velocity;
-            float xFactor = (cameraVelocity.magnitude > 0f ? cameraVelocity.x / cameraVelocity.magnitude : 1f);
+            float xFactor = (cameraVelocity.magnitude > 0f ? Mathf.Abs(cameraVelocity.x / cameraVelocity.magnitude) : 1f);
             EnsureCloudVisible(_nextGenerationX + width * xFactor, yMidPoint, height / 2);
 
             // Generate a new coordinate upon reaching which a new cloud will be spawned
