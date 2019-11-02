@@ -397,7 +397,7 @@ public class PlaneController : MonoBehaviour
 			//	degrade = 0f;
 			//}
 
-			Rigidbody.AddRelativeForce(new Vector2(currentPowerForce * degrade *((angle>93 && angle < 270)?0.5f:1f), 0f), ForceMode2D.Force);
+			Rigidbody.AddRelativeForce(new Vector2(currentPowerForce * degrade * ((angle > 93 && angle < 270) ? 0.5f : 1f), 0f), ForceMode2D.Force);
 		}
 
 		// Wing force
@@ -408,20 +408,17 @@ public class PlaneController : MonoBehaviour
 			var force = config.WingForce * forceFactor;
 
 			Rigidbody.AddRelativeForce(new Vector2(0f, force), ForceMode2D.Force);
-			
 		}
-
-		
 
 		// Nose up with touch input.
 		{
 			if (IsPushing)
 			{
-				Rigidbody.AddTorque(config.FullThrottleRotationTorque);// * ((angle > 93 && angle < 270) ? 0.5f : 1f));
+				Rigidbody.AddTorque(config.FullThrottleRotationTorque); // * ((angle > 93 && angle < 270) ? 0.5f : 1f));
 			}
 			else
 			{
-				Rigidbody.AddTorque(config.HalfThrottleRotationTorque * ((angle>90 && angle<330)?-5f:1f));
+				Rigidbody.AddTorque(config.HalfThrottleRotationTorque * ((angle > 90 && angle < 330) ? -5f : 1f));
 				//if (angleClipped > -30f || angleClipped > 120f)
 				//{
 				//	Rigidbody.AddTorque(config.HalfThrottleRotationTorque);
@@ -429,25 +426,36 @@ public class PlaneController : MonoBehaviour
 			}
 		}
 
-		var rotationInput = 0f;
-		if (Input.GetKey(KeyCode.W))
+		// Release the pilot.
 		{
-			rotationInput += 1f;
-		}
-		if (Input.GetKey(KeyCode.S))
-		{
-			rotationInput -= 1f;
-		}
-		if (Input.GetKey(KeyCode.A))
-		{
-			Rigidbody.AddForce(new Vector2(-2000f, 0f));
-		}
-		if (Input.GetKey(KeyCode.D))
-		{
-			Rigidbody.AddForce(new Vector2(2000f, 0f));
+			if (angleClipped > 90f)
+			{
+				ReleasePilot();
+			}
 		}
 
-		Rigidbody.AddTorque(rotationInput * config.FullThrottleRotationTorque);
+		// Debug
+		{
+			var rotationInput = 0f;
+			if (Input.GetKey(KeyCode.W))
+			{
+				rotationInput += 1f;
+			}
+			if (Input.GetKey(KeyCode.S))
+			{
+				rotationInput -= 1f;
+			}
+			if (Input.GetKey(KeyCode.A))
+			{
+				Rigidbody.AddForce(new Vector2(-2000f, 0f));
+			}
+			if (Input.GetKey(KeyCode.D))
+			{
+				Rigidbody.AddForce(new Vector2(2000f, 0f));
+			}
+
+			Rigidbody.AddTorque(rotationInput * config.FullThrottleRotationTorque);
+		}
 	}
 
 	private void ApplyWingForce(AnimationCurve baseTargetHeightOverTime, ref Vector2 velocity)
