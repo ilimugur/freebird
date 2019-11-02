@@ -10,6 +10,10 @@ public class PlaneController : MonoBehaviour
 		{
 			DisableControls();
 		}
+		else
+		{
+			EnableControls();
+		}
 		InitializeEvents();
 	}
 
@@ -57,39 +61,20 @@ public class PlaneController : MonoBehaviour
 
 	[Header("Configuration")]
 	public float VerticalSpeed;
-	public float MoveSpeed;
+	public float HorizontalSpeed;
+	public float PushForce;
+
+	internal float CurrentVerticalSpeed;
+	internal float CurrentHorizontalSpeed;
 
 	private void CalculatePhysics()
 	{
-		Rigidbody.AddForce(Vector2.right * (MoveSpeed - Transform.rotation.z), ForceMode2D.Force);
+		// Adjust horizontal speed.
+		Rigidbody.velocity = new Vector2(CurrentHorizontalSpeed, Rigidbody.velocity.y);
 
-		if (IsPushingDown)
+		if (IsPushing)
 		{
-			Rigidbody.AddForce(Vector2.up * VerticalSpeed, ForceMode2D.Impulse);
-
-			InstantiateCrate();
-		}
-
-		if (Rigidbody.velocity.y > 10f)
-		{
-			Rigidbody.velocity = new Vector2(Rigidbody.velocity.x, 10f);
-		}
-		else if (Rigidbody.velocity.y < -10f)
-		{
-			Rigidbody.velocity = new Vector2(Rigidbody.velocity.x, -10f);
-		}
-
-		if (Rigidbody.velocity.y > 0)
-		{
-			Transform.Rotate(Vector3.forward, 10f);
-			if (Transform.rotation.z > 0.3f)
-				Transform.rotation = new Quaternion(0, 0, 0.3f, 1f);
-		}
-		else if (Rigidbody.velocity.y < 0)
-		{
-			Transform.Rotate(Vector3.forward, -1f);
-			if (Transform.rotation.z < -0.3f)
-				Transform.rotation = new Quaternion(0, 0, -0.3f, 1f);
+			Rigidbody.AddForce(new Vector2(0f, PushForce), ForceMode2D.Force);
 		}
 	}
 
@@ -130,6 +115,7 @@ public class PlaneController : MonoBehaviour
 	private void EnableControls()
 	{
 		IsControlsEnabled = true;
+		CurrentHorizontalSpeed = HorizontalSpeed;
 	}
 
 	#endregion
