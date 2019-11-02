@@ -181,7 +181,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Transform: {fileID: 8878388082826193515}
   Rigidbody: {fileID: 9055477246974227694}
-  Mode: 1
+  Mode: 0
+  PlaneMass: 50
   DropConfiguration:
     TargetHorizontalSpeed: 6
     VerticalSpeedToLeanConversionFactor: 5
@@ -220,6 +221,31 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     PushImpulse: 15
+    WingForceY: 1000
+    WingForceDegradeOverTime:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   CarryConfiguration:
     TargetHorizontalSpeed: 6
     VerticalSpeedToLeanConversionFactor: 5
@@ -263,6 +289,8 @@ MonoBehaviour:
   CrateInstantiationLocation: {fileID: 7700202089201523178}
   CrateInitialVelocity: {x: -1, y: 2}
   CrateInitialAngularSpeed: 120
+  CrateMass: 25
+  InitialCrateCount: 3
   SpawnLocation: {x: 0, y: 0, z: 0}
   DisableControlsAtStart: 1
 --- !u!58 &2777183897655900010
@@ -278,7 +306,7 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.33, y: 0}
+  m_Offset: {x: -0.93, y: 0}
   serializedVersion: 2
   m_Radius: 0.6
 --- !u!58 &442350357406668589
@@ -296,4 +324,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: -2.14, y: 0}
   serializedVersion: 2
-  m_Radius: 0.53
+  m_Radius: 0.35

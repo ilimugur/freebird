@@ -14,7 +14,10 @@ public class DropModeConfiguration
 	public float VerticalSpeedToLeanConversionFactor = 5f;
 	public float LeaningSpeedSmoothingFactor = 0.15f;
 	public AnimationCurve PassedTimeAfterLastPush;
-	public float PushImpulse = 150f;
+
+	public float PushImpulse = 50f;
+	public float WingForceY = 2f;
+	public AnimationCurve WingForceDegradeOverTime = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 }
 
 [Serializable]
@@ -75,6 +78,8 @@ public class PlaneController : MonoBehaviour
 	private void OnLevelStart()
 	{
 		PlaceToSpawnLocation();
+		InitializeCrates();
+		InitializePhysics();
 	}
 
 	private void OnEnableControls()
@@ -89,6 +94,7 @@ public class PlaneController : MonoBehaviour
 
 	[Header("Configuration")]
 	public PlanePhysicsMode Mode = PlanePhysicsMode.Drop;
+	public float PlaneMass = 50f;
 	public DropModeConfiguration DropConfiguration;
 	public CarryModeConfiguration CarryConfiguration;
 
@@ -109,6 +115,27 @@ public class PlaneController : MonoBehaviour
 
 	// internal float CurrentVerticalSpeed;
 	internal float CurrentHorizontalSpeed;
+
+	private void InitializePhysics()
+	{
+		switch (Mode)
+		{
+			case PlanePhysicsMode.Drop:
+			{
+				Rigidbody.mass = PlaneMass + InitialCrateCount * CrateMass;
+				break;
+			}
+
+			case PlanePhysicsMode.Carry:
+			{
+				Rigidbody.mass = PlaneMass;
+				break;
+			}
+
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
+	}
 
 	private void CalculatePhysics()
 	{
@@ -136,14 +163,28 @@ public class PlaneController : MonoBehaviour
 
 		if (IsPushingDown)
 		{
-			Rigidbody.AddForce(new Vector2(0f, config.PushImpulse), ForceMode2D.Impulse);
-			InstantiateCrate();
+			if (CurrentCrateCount > 0)
+			{
+				CurrentCrateCount--;
+				Rigidbody.mass -= CrateMass;
+				Rigidbody.AddForce(new Vector2(0f, config.PushImpulse), ForceMode2D.Impulse);
+				InstantiateCrate();
+			}
 		}
+
+		// Apply wing force.
+		ApplyWingForce(config.WingForceY);
 
 		// Leaning with vertical speed. Note that this forcefully overrides angular velocity.
 		OverrideAngularSpeedToLeanTheNose(config.VerticalSpeedToLeanConversionFactor,
 		                                  config.LeaningSpeedSmoothingFactor,
 		                                  config.PassedTimeAfterLastPush);
+	}
+
+	private void ApplyWingForce(float wingForceY)
+	{
+		var speedFactor = Mathf.Clamp01(CurrentHorizontalSpeed / TargetHorizontalSpeed);
+		Rigidbody.AddForce(new Vector2(0f, wingForceY * speedFactor), ForceMode2D.Force);
 	}
 
 	private void CalculatePhysics_Carry()
@@ -216,7 +257,10 @@ public class PlaneController : MonoBehaviour
 
 	private void CalculateInput()
 	{
-		var currentlyDown = IsControlsEnabled && Input.GetMouseButton(0);
+		var currentlyDown =
+			IsControlsEnabled &&
+			Input.GetMouseButton(0) &&
+			(Mode == PlanePhysicsMode.Drop && CurrentCrateCount > 0);
 
 		if (IsPushing != currentlyDown)
 		{
@@ -253,12 +297,22 @@ public class PlaneController : MonoBehaviour
 	public Transform CrateInstantiationLocation;
 	public Vector2 CrateInitialVelocity = new Vector3(0f, 1f);
 	public float CrateInitialAngularSpeed = 3f;
+	public float CrateMass = 25f;
+	public int InitialCrateCount = 3;
+
+	internal int CurrentCrateCount;
+
+	private void InitializeCrates()
+	{
+		CurrentCrateCount = InitialCrateCount;
+	}
 
 	public void InstantiateCrate()
 	{
 		var currentVelocity = Rigidbody.velocity;
 		var go = Instantiate(CratePrefab, CrateInstantiationLocation.position, Quaternion.identity);
 		var body = go.GetComponent<Rigidbody2D>();
+		body.mass = CrateMass;
 		body.velocity = currentVelocity + CrateInitialVelocity;
 		body.angularVelocity = CrateInitialAngularSpeed;
 	}
