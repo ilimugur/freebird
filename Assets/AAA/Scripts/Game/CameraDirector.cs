@@ -5,7 +5,18 @@ using UnityEngine;
 public class CameraDirector : MonoBehaviour
 {
 
-    public PlaneController Target;
+    private PlaneController _Target;
+    public PlaneController Target
+    {
+        get
+        {
+            if (!_Target)
+            {
+                _Target = FindObjectOfType<PlaneController>();
+            }
+            return _Target;
+        }
+    }
     public float FollowSpeed;
 
     // Start is called before the first frame update
