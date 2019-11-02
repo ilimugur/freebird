@@ -500,6 +500,70 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     WingForce: 4000
+  CartoonConfiguration:
+    ForwardForceDegradationBySpeed:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 12
+        value: 1
+        inSlope: -0
+        outSlope: -0.25
+        tangentMode: 69
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 16
+        value: 0
+        inSlope: -0.25
+        outSlope: -0.25
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    FullThrottleForwardForce: 800
+    FullThrottlePower: 1
+    HalfThrottlePower: 0.35
+    FullThrottleRotationTorque: 50
+    HalfThrottleRotationTorque: -30
+    LongitudinalSpeedToWingForceFactor:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0.005
+        tangentMode: 69
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 200
+        value: 1
+        inSlope: 0.005
+        outSlope: 0
+        tangentMode: 69
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    WingForce: 4000
   PilotPrefab: {fileID: 7290077129980667573, guid: e8760dd5ac9804744ac29fe71ae399f2,
     type: 3}
   PilotInstantiationLocation: {fileID: 3403910188507945129}

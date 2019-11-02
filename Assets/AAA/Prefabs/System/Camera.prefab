@@ -96,5 +96,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa15be186c1efa418d73c4dfe95852f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SmoothingFactor: 0.03
+  SmoothingFactor: 0.05
   PositionX: 2.23
