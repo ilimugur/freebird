@@ -283,7 +283,7 @@ MonoBehaviour:
   Transform: {fileID: 8878388082826193515}
   Rigidbody: {fileID: 9055477246974227694}
   Mode: 0
-  PlaneMass: 50
+  PlaneMass: 25
   DropConfiguration:
     TargetHorizontalSpeed: 6
     VerticalSpeedToLeanConversionFactor: 5
@@ -322,27 +322,27 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     PushImpulse: 15
-    WingForceY: 1000
+    WingForceY: 3600
     WingForceDegradeOverTime:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
         value: 1
-        inSlope: 0
-        outSlope: 0
+        inSlope: -0.052206848
+        outSlope: -0.052206848
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0
+        outWeight: 0.053618133
       - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
+        time: 10
+        value: 0
+        inSlope: -0.03954063
+        outSlope: -0.03954063
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
+        inWeight: 0.061028767
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -390,7 +390,7 @@ MonoBehaviour:
   CrateInstantiationLocation: {fileID: 7700202089201523178}
   CrateInitialVelocity: {x: -1, y: 2}
   CrateInitialAngularSpeed: 120
-  CrateMass: 25
+  CrateMass: 100
   InitialCrateCount: 3
   SpawnLocation: {x: 0, y: 0, z: 0}
   DisableControlsAtStart: 1

@@ -16,7 +16,7 @@ public class ControlEnabler : MonoBehaviour
 	{
 		if (col.gameObject.layer == Constants.PlaneLayer)
 		{
-			EventManager.Instance.TriggerEvent(Constants.EVENT_ENABLE_CONTROLS);
+			GameManager.Instance.StartRound();
 		}
 	}
 }
