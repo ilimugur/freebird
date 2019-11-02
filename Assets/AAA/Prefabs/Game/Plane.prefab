@@ -260,8 +260,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_LinearDrag: 0.7
+  m_AngularDrag: 3
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 8f4b272a33e32c64293a159d8441fce9, type: 2}
   m_Interpolate: 0
@@ -438,10 +438,10 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    FullThrottleForwardForce: 1200
+    FullThrottleForwardForce: 800
     FullThrottlePower: 1
     HalfThrottlePower: 0.2
-    FullThrottleRotationTorque: 100
+    FullThrottleRotationTorque: 70
     LongitudinalSpeedToWingForceFactor:
       serializedVersion: 2
       m_Curve:
@@ -466,7 +466,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    WingForce: 130
+    WingForce: 300
   FullThrottlePropellerSpeed: 1
   NoThrottlePropellerSpeed: 0.2
   CratePrefab: {fileID: 7290077129980667573, guid: a56ec96a94f7a7d41ad2cd1d840ebc84,

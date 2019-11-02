@@ -41,7 +41,8 @@ public class CircusModeConfiguration
 	public float FullThrottlePower = 1f;
 	public float HalfThrottlePower = 0.5f;
 
-	public float FullThrottleRotationTorque = 1f;
+	public float FullThrottleRotationTorque = 70f;
+	public float HalfThrottleRotationTorque = -30f;
 
 	public AnimationCurve LongitudinalSpeedToWingForceFactor = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 	public float WingForce;
@@ -238,6 +239,12 @@ public class PlaneController : MonoBehaviour
 	{
 		var config = CircusConfiguration;
 		var velocity = Rigidbody.velocity;
+		var angle = Rigidbody.rotation;
+		var angleClipped = angle % 360f;
+		if (angleClipped > 180f)
+		{
+			angleClipped -= 360f;
+		}
 		var angularVelocity = Rigidbody.angularVelocity;
 		var localVelocity = Rigidbody.GetRelativeVector(velocity);
 		var speed = velocity.magnitude;
@@ -253,8 +260,12 @@ public class PlaneController : MonoBehaviour
 				? IsPushing ? config.FullThrottlePower : config.HalfThrottlePower
 				: 0f;
 			var currentPowerForce = currentPower * config.FullThrottleForwardForce;
-			var degrade = config.ForwardForceDegradationBySpeed.Evaluate(speed);
-			Debug.Log("Speed: " + speed.ToString("N1"));
+			var degrade = config.ForwardForceDegradationBySpeed.Evaluate(Mathf.Max(localVelocity.x, 0f));
+
+			if (angleClipped < -60f || angleClipped > 120f)
+			{
+				degrade = 0f;
+			}
 
 			Rigidbody.AddRelativeForce(new Vector2(currentPowerForce * degrade, 0f), ForceMode2D.Force);
 		}
@@ -267,6 +278,18 @@ public class PlaneController : MonoBehaviour
 			var force = config.WingForce * forceFactor;
 
 			Rigidbody.AddRelativeForce(new Vector2(0f, force), ForceMode2D.Force);
+		}
+
+		// Nose up with touch input.
+		{
+			if (IsPushing)
+			{
+				Rigidbody.AddTorque(config.FullThrottleRotationTorque);
+			}
+			else
+			{
+				Rigidbody.AddTorque(config.HalfThrottleRotationTorque);
+			}
 		}
 
 		var rotationInput = 0f;
