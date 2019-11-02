@@ -32,7 +32,7 @@ public class HapticsManager : Singleton<HapticsManager>
 		if (EventManager.Instance)
 		{
 			EventManager.Instance.StartListening(Constants.EVENT_LEVEL_COMPLETED, OnLevelCompleted);
-			EventManager.Instance.StartListening(Constants.EVENT_START_GAME, OnGameStarted);
+			EventManager.Instance.StartListening(Constants.EVENT_GAME_START, OnGameStarted);
 			EventManager.Instance.StartListening(Constants.EVENT_GAME_OVER, OnGameOver);
 		}
 		else
@@ -46,7 +46,7 @@ public class HapticsManager : Singleton<HapticsManager>
 		if (EventManager.Instance)
 		{
 			EventManager.Instance.StopListening(Constants.EVENT_LEVEL_COMPLETED, OnLevelCompleted);
-			EventManager.Instance.StopListening(Constants.EVENT_START_GAME, OnGameStarted);
+			EventManager.Instance.StopListening(Constants.EVENT_GAME_START, OnGameStarted);
 			EventManager.Instance.StopListening(Constants.EVENT_GAME_OVER, OnGameOver);
 		}
 	}

@@ -14,7 +14,7 @@ public class GameManager : Singleton<GameManager>
 		Application.targetFrameRate = 60;
 
 		UIManager.Instance.ShowStartScreen(0);
-		EventManager.Instance.StartListening(Constants.EVENT_START_GAME, StartGame);
+		EventManager.Instance.StartListening(Constants.EVENT_GAME_START, StartGame);
 
 		Load();
 
