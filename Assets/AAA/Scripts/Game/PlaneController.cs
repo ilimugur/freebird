@@ -13,14 +13,7 @@ public class PlaneController : MonoBehaviour
 
     public Vector3 CameraTarget;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        RB = GetComponent<Rigidbody2D>();
-    }
-
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         UpdateMethodSecond();
     }
