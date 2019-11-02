@@ -1,4 +1,27 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+
+public enum PlanePhysicsMode
+{
+	Drop,
+	Carry,
+}
+
+[Serializable]
+public class DropModeConfiguration
+{
+	public float VerticalSpeed = 12f;
+	public float HorizontalSpeed = 6f;
+	public float PushImpulse = 250f;
+}
+
+[Serializable]
+public class CarryModeConfiguration
+{
+	public float VerticalSpeed = 12f;
+	public float HorizontalSpeed = 6f;
+	public float PushForce = 50f;
+}
 
 public class PlaneController : MonoBehaviour
 {
@@ -60,21 +83,69 @@ public class PlaneController : MonoBehaviour
 	#region Physics
 
 	[Header("Configuration")]
-	public float VerticalSpeed;
-	public float HorizontalSpeed;
-	public float PushForce;
+	public PlanePhysicsMode Mode = PlanePhysicsMode.Drop;
+	public DropModeConfiguration DropConfiguration;
+	public CarryModeConfiguration CarryConfiguration;
+
+	public float TargetHorizontalSpeed
+	{
+		get
+		{
+			switch (Mode)
+			{
+				case PlanePhysicsMode.Drop: return DropConfiguration.HorizontalSpeed;
+				case PlanePhysicsMode.Carry: return CarryConfiguration.HorizontalSpeed;
+
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
+	}
 
 	internal float CurrentVerticalSpeed;
 	internal float CurrentHorizontalSpeed;
 
 	private void CalculatePhysics()
 	{
+		switch (Mode)
+		{
+			case PlanePhysicsMode.Drop:
+				CalculatePhysics_Drop();
+				break;
+
+			case PlanePhysicsMode.Carry:
+				CalculatePhysics_Carry();
+				break;
+
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
+	}
+
+	private void CalculatePhysics_Drop()
+	{
+		var config = DropConfiguration;
+
+		// Adjust horizontal speed.
+		Rigidbody.velocity = new Vector2(CurrentHorizontalSpeed, Rigidbody.velocity.y);
+
+		if (IsPushingDown)
+		{
+			Rigidbody.AddForce(new Vector2(0f, config.PushImpulse), ForceMode2D.Impulse);
+			InstantiateCrate();
+		}
+	}
+
+	private void CalculatePhysics_Carry()
+	{
+		var config = CarryConfiguration;
+
 		// Adjust horizontal speed.
 		Rigidbody.velocity = new Vector2(CurrentHorizontalSpeed, Rigidbody.velocity.y);
 
 		if (IsPushing)
 		{
-			Rigidbody.AddForce(new Vector2(0f, PushForce), ForceMode2D.Force);
+			Rigidbody.AddForce(new Vector2(0f, config.PushForce), ForceMode2D.Force);
 		}
 	}
 
@@ -115,7 +186,6 @@ public class PlaneController : MonoBehaviour
 	private void EnableControls()
 	{
 		IsControlsEnabled = true;
-		CurrentHorizontalSpeed = HorizontalSpeed;
 	}
 
 	#endregion
@@ -124,11 +194,17 @@ public class PlaneController : MonoBehaviour
 
 	[Header("Crate")]
 	public GameObject CratePrefab;
-	public Vector3 CrateInstantiationOffset = new Vector3(0, -0.7f, 0);
+	public Transform CrateInstantiationLocation;
+	public Vector2 CrateInitialVelocity = new Vector3(0f, 1f);
+	public float CrateInitialAngularSpeed = 3f;
 
 	public void InstantiateCrate()
 	{
-		Instantiate(CratePrefab, Transform.position + CrateInstantiationOffset, Quaternion.identity);
+		var currentVelocity = Rigidbody.velocity;
+		var go = Instantiate(CratePrefab, CrateInstantiationLocation.position, Quaternion.identity);
+		var body = go.GetComponent<Rigidbody2D>();
+		body.velocity = currentVelocity + CrateInitialVelocity;
+		body.angularVelocity = CrateInitialAngularSpeed;
 	}
 
 	#endregion

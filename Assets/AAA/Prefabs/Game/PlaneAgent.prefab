@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 25693006}
   - component: {fileID: 25693007}
   m_Layer: 8
-  m_Name: plane
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,6 +80,36 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2711658633586046513
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7700202089201523178}
+  m_Layer: 8
+  m_Name: CrateInsantiationLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7700202089201523178
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2711658633586046513}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.66, y: 0.54, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8878388082826193515}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8878388082826193513
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,6 +141,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 25693006}
+  - {fileID: 7700202089201523178}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -175,11 +206,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Transform: {fileID: 8878388082826193515}
   Rigidbody: {fileID: 9055477246974227694}
-  VerticalSpeed: 12
-  HorizontalSpeed: 6
-  PushForce: 50
+  Mode: 0
+  DropConfiguration:
+    VerticalSpeed: 12
+    HorizontalSpeed: 6
+    PushImpulse: 15
+  CarryConfiguration:
+    VerticalSpeed: 12
+    HorizontalSpeed: 6
+    PushForce: 50
   CratePrefab: {fileID: 7290077129980667573, guid: a56ec96a94f7a7d41ad2cd1d840ebc84,
     type: 3}
-  CrateInstantiationOffset: {x: 0, y: -0.7, z: 0}
+  CrateInstantiationLocation: {fileID: 7700202089201523178}
+  CrateInitialVelocity: {x: -1, y: 2}
+  CrateInitialAngularSpeed: 120
   SpawnLocation: {x: 0, y: 0, z: 0}
   DisableControlsAtStart: 1

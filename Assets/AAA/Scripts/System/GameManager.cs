@@ -62,7 +62,7 @@ public class GameManager : Singleton<GameManager>
 		Debug.Log("Starting Game");
 		Analytics.CustomEvent("StartGame");
 
-		DOTween.To(() => PlaneController.CurrentHorizontalSpeed, x => PlaneController.CurrentHorizontalSpeed = x, PlaneController.HorizontalSpeed, 2f);
+		DOTween.To(() => PlaneController.CurrentHorizontalSpeed, x => PlaneController.CurrentHorizontalSpeed = x, PlaneController.TargetHorizontalSpeed, 2f);
 
 	}
 
