@@ -22,8 +22,9 @@ public class CameraDirector : MonoBehaviour
 		var currentPosition = transform.position;
 		var targetPosition = Target.Transform.position;
 		targetPosition.z = -30f;
+		targetPosition.x += 3f;
 		var newPosition = currentPosition + (targetPosition - currentPosition) * SmoothingFactor;
-		newPosition.x = targetPosition.x + PositionX;
+		// newPosition.x = targetPosition.x + PositionX;
 		transform.position = newPosition;
 	}
 }
