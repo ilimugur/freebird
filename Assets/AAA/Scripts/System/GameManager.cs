@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 using MoreMountains.NiceVibrations;
 using UnityEngine;
 using UnityEngine.Analytics;
@@ -16,6 +15,27 @@ public class GameManager : Singleton<GameManager>
 	private PlaneController PlaneController;
 
 	public Vector3 LandingStripPosition = new Vector3(0,4,0);
+
+	public bool IsGameStarted => GameStartTime > 0f;
+	public bool IsRoundStarted => RoundStartTime > 0f;
+
+	public float GameStartTime { get; private set; }
+	public float GameEndTime { get; private set; }
+	public float GamePassedTime
+	{
+		get
+		{
+			if (GameStartTime <= 0f)
+			{
+				return 0f;
+			}
+			if (GameEndTime > 0f)
+			{
+				return GameEndTime - GameStartTime;
+			}
+			return Time.time - GameStartTime;
+		}
+	}
 
 	public float RoundStartTime { get; private set; }
 	public float RoundEndTime { get; private set; }
@@ -80,7 +100,8 @@ public class GameManager : Singleton<GameManager>
 		Debug.Log("Starting Game");
 		Analytics.CustomEvent("StartGame");
 
-		DOTween.To(() => PlaneController.CurrentHorizontalSpeed, x => PlaneController.CurrentHorizontalSpeed = x, PlaneController.TargetHorizontalSpeed, 2f);
+		GameStartTime = Time.time;
+		GameEndTime = 0f;
 	}
 
 	public void StartRound()
@@ -95,6 +116,7 @@ public class GameManager : Singleton<GameManager>
 		Debug.Log("Game Over");
 		Time.timeScale = 1;
 		RoundEndTime = Time.time;
+		GameEndTime = Time.time;
 
 		yield return new WaitForSeconds(0.35f);
 		Save();
