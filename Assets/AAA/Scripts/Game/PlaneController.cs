@@ -351,6 +351,10 @@ public class PlaneController : MonoBehaviour
 		var config = CartoonConfiguration;
 		var velocity = Rigidbody.velocity;
 		var angle = Rigidbody.rotation;
+
+		while (angle < 0) angle += 360;
+		while (angle > 360) angle -= 360;
+
 		var angleClipped = angle % 360f;
 		if (angleClipped > 180f)
 		{
@@ -373,12 +377,12 @@ public class PlaneController : MonoBehaviour
 			var currentPowerForce = currentPower * config.FullThrottleForwardForce;
 			var degrade = config.ForwardForceDegradationBySpeed.Evaluate(Mathf.Max(localVelocity.x, 0f));
 
-			if (angleClipped < -30f || angleClipped > 120f)
-			{
-				degrade = 0f;
-			}
+			//if (angleClipped < -30f || angleClipped > 120f)
+			//{
+			//	degrade = 0f;
+			//}
 
-			Rigidbody.AddRelativeForce(new Vector2(currentPowerForce * degrade, 0f), ForceMode2D.Force);
+			Rigidbody.AddRelativeForce(new Vector2(currentPowerForce * degrade *((angle>93 && angle < 270)?0.5f:1f), 0f), ForceMode2D.Force);
 		}
 
 		// Wing force
@@ -392,17 +396,17 @@ public class PlaneController : MonoBehaviour
 			
 		}
 
+		
+
 		// Nose up with touch input.
 		{
 			if (IsPushing)
 			{
-				Rigidbody.AddTorque(config.FullThrottleRotationTorque);
+				Rigidbody.AddTorque(config.FullThrottleRotationTorque);// * ((angle > 93 && angle < 270) ? 0.5f : 1f));
 			}
 			else
 			{
-				while (angle < 0) angle += 360;
-				while (angle > 360) angle -= 360;
-				Rigidbody.AddTorque(config.HalfThrottleRotationTorque * ((angle>90 && angle<270)?-1f:1f));
+				Rigidbody.AddTorque(config.HalfThrottleRotationTorque * ((angle>90 && angle<330)?-5f:1f));
 				//if (angleClipped > -30f || angleClipped > 120f)
 				//{
 				//	Rigidbody.AddTorque(config.HalfThrottleRotationTorque);
