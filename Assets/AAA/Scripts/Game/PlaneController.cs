@@ -10,17 +10,19 @@ public enum PlanePhysicsMode
 [Serializable]
 public class DropModeConfiguration
 {
-	public float VerticalSpeed = 12f;
-	public float HorizontalSpeed = 6f;
-	public float PushImpulse = 250f;
+	public float TargetHorizontalSpeed = 6f;
+	public float VerticalSpeedToLeanConversionFactor = 5f;
+	public float LeaningSpeedSmoothingFactor = 0.15f;
+	public float PushImpulse = 150f;
 }
 
 [Serializable]
 public class CarryModeConfiguration
 {
-	public float VerticalSpeed = 12f;
-	public float HorizontalSpeed = 6f;
-	public float PushForce = 50f;
+	public float TargetHorizontalSpeed = 6f;
+	public float VerticalSpeedToLeanConversionFactor = 5f;
+	public float LeaningSpeedSmoothingFactor = 0.15f;
+	public float PushForce = 30f;
 }
 
 public class PlaneController : MonoBehaviour
@@ -93,8 +95,8 @@ public class PlaneController : MonoBehaviour
 		{
 			switch (Mode)
 			{
-				case PlanePhysicsMode.Drop: return DropConfiguration.HorizontalSpeed;
-				case PlanePhysicsMode.Carry: return CarryConfiguration.HorizontalSpeed;
+				case PlanePhysicsMode.Drop: return DropConfiguration.TargetHorizontalSpeed;
+				case PlanePhysicsMode.Carry: return CarryConfiguration.TargetHorizontalSpeed;
 
 				default:
 					throw new ArgumentOutOfRangeException();
@@ -127,26 +129,52 @@ public class PlaneController : MonoBehaviour
 		var config = DropConfiguration;
 
 		// Adjust horizontal speed.
-		Rigidbody.velocity = new Vector2(CurrentHorizontalSpeed, Rigidbody.velocity.y);
+		OverrideHorizontalSpeedToMatchTargetHorizontalSpeed();
 
 		if (IsPushingDown)
 		{
 			Rigidbody.AddForce(new Vector2(0f, config.PushImpulse), ForceMode2D.Impulse);
 			InstantiateCrate();
 		}
+
+		// Leaning with vertical speed. Note that this forcefully overrides angular velocity.
+		OverrideAngularSpeedToLeanTheNose(config.VerticalSpeedToLeanConversionFactor, config.LeaningSpeedSmoothingFactor);
 	}
 
 	private void CalculatePhysics_Carry()
 	{
 		var config = CarryConfiguration;
 
-		// Adjust horizontal speed.
-		Rigidbody.velocity = new Vector2(CurrentHorizontalSpeed, Rigidbody.velocity.y);
+		// Adjust horizontal speed. Note that this forcefully overrides horizontal speed.
+		OverrideHorizontalSpeedToMatchTargetHorizontalSpeed();
 
 		if (IsPushing)
 		{
 			Rigidbody.AddForce(new Vector2(0f, config.PushForce), ForceMode2D.Force);
 		}
+
+		// Leaning with vertical speed. Note that this forcefully overrides angular velocity.
+		OverrideAngularSpeedToLeanTheNose(config.VerticalSpeedToLeanConversionFactor, config.LeaningSpeedSmoothingFactor);
+	}
+
+	private void OverrideHorizontalSpeedToMatchTargetHorizontalSpeed()
+	{
+		Rigidbody.velocity = new Vector2(CurrentHorizontalSpeed, Rigidbody.velocity.y);
+	}
+
+	private void OverrideAngularSpeedToLeanTheNose(float verticalSpeedToLeanConversionFactor, float leaningSpeedSmoothingFactor)
+	{
+		var verticalSpeed = Rigidbody.velocity.y;
+		var targetLeanAngle = verticalSpeed * verticalSpeedToLeanConversionFactor;
+		var currentLeanAngle = Rigidbody.rotation;
+
+		// Find the exact required angular speed that turns the nose to Target Lean Angle.
+		var targetAngularSpeed = (targetLeanAngle - currentLeanAngle) / Time.deltaTime;
+
+		// Then smooth out that speed.
+		var smoothAngularSpeed = targetAngularSpeed * leaningSpeedSmoothingFactor;
+
+		Rigidbody.angularVelocity = smoothAngularSpeed;
 	}
 
 	#endregion
