@@ -42,12 +42,12 @@ public class GameManager : Singleton<GameManager>
 		StartCoroutine(TriggerGameOver());
 	}
 
-	private void StartGame()
+	private void StartLevel()
 	{
 		StartCoroutine(StartGameCo());
 	}
 
-	private void RestartGame()
+	private void RestartLevel()
 	{
 
 		StartCoroutine(StartGameCo());
