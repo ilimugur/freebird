@@ -283,7 +283,7 @@ MonoBehaviour:
   Transform: {fileID: 8878388082826193515}
   Rigidbody: {fileID: 9055477246974227694}
   PropellerAnimator: {fileID: 7351120453273250707}
-  Mode: 1
+  Mode: 2
   PlaneMass: 25
   DropConfiguration:
     TargetHorizontalSpeed: 6
@@ -405,10 +405,7 @@ MonoBehaviour:
       m_RotationOrder: 4
     PushForce: 450
   CircusConfiguration:
-    FullThrottleForwardForce: 400
-    FullThrottlePower: 1
-    HalfThrottlePower: 0.2
-    LongitudinalSpeedToWingForceFactor:
+    ForwardForceDegradationBySpeed:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
@@ -416,12 +413,49 @@ MonoBehaviour:
         value: 1
         inSlope: 0
         outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 12
+        value: 1
+        inSlope: -0
+        outSlope: -0.25
+        tangentMode: 69
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 16
+        value: 0
+        inSlope: -0.25
+        outSlope: -0.25
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    FullThrottleForwardForce: 1200
+    FullThrottlePower: 1
+    HalfThrottlePower: 0.2
+    FullThrottleRotationTorque: 100
+    LongitudinalSpeedToWingForceFactor:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 1
+        time: 10
         value: 1
         inSlope: 0
         outSlope: 0
@@ -432,7 +466,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    WingForce: 0
+    WingForce: 130
   FullThrottlePropellerSpeed: 1
   NoThrottlePropellerSpeed: 0.2
   CratePrefab: {fileID: 7290077129980667573, guid: a56ec96a94f7a7d41ad2cd1d840ebc84,

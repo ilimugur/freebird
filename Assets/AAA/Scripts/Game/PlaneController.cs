@@ -36,9 +36,12 @@ public class CarryModeConfiguration
 [Serializable]
 public class CircusModeConfiguration
 {
+	public AnimationCurve ForwardForceDegradationBySpeed;
 	public float FullThrottleForwardForce = 1000f;
 	public float FullThrottlePower = 1f;
 	public float HalfThrottlePower = 0.5f;
+
+	public float FullThrottleRotationTorque = 1f;
 
 	public AnimationCurve LongitudinalSpeedToWingForceFactor = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 	public float WingForce;
@@ -236,18 +239,55 @@ public class PlaneController : MonoBehaviour
 		var config = CircusConfiguration;
 		var velocity = Rigidbody.velocity;
 		var angularVelocity = Rigidbody.angularVelocity;
+		var localVelocity = Rigidbody.GetRelativeVector(velocity);
+		var speed = velocity.magnitude;
 
 		if (IsPushing)
 		{
 			// Rigidbody.AddForce(new Vector2(0f, config.PushForce), ForceMode2D.Force);
 		}
 
-		var currentPower = GameManager.Instance.IsGameStarted
-			? IsPushing ? config.FullThrottlePower : config.HalfThrottlePower
-			: 0f;
-		var currentPowerForce = currentPower * config.FullThrottleForwardForce;
+		// Propeller force
+		{
+			var currentPower = GameManager.Instance.IsGameStarted
+				? IsPushing ? config.FullThrottlePower : config.HalfThrottlePower
+				: 0f;
+			var currentPowerForce = currentPower * config.FullThrottleForwardForce;
+			var degrade = config.ForwardForceDegradationBySpeed.Evaluate(speed);
+			Debug.Log("Speed: " + speed.ToString("N1"));
 
-		Rigidbody.AddRelativeForce(new Vector2(currentPowerForce, 0f), ForceMode2D.Force);
+			Rigidbody.AddRelativeForce(new Vector2(currentPowerForce * degrade, 0f), ForceMode2D.Force);
+		}
+
+		// Wing force
+		{
+			var longitudinalSpeed = localVelocity.x;
+
+			var forceFactor = config.LongitudinalSpeedToWingForceFactor.Evaluate(longitudinalSpeed);
+			var force = config.WingForce * forceFactor;
+
+			Rigidbody.AddRelativeForce(new Vector2(0f, force), ForceMode2D.Force);
+		}
+
+		var rotationInput = 0f;
+		if (Input.GetKey(KeyCode.W))
+		{
+			rotationInput += 1f;
+		}
+		if (Input.GetKey(KeyCode.S))
+		{
+			rotationInput -= 1f;
+		}
+		if (Input.GetKey(KeyCode.A))
+		{
+			Rigidbody.AddForce(new Vector2(-2000f, 0f));
+		}
+		if (Input.GetKey(KeyCode.D))
+		{
+			Rigidbody.AddForce(new Vector2(2000f, 0f));
+		}
+
+		Rigidbody.AddTorque(rotationInput * config.FullThrottleRotationTorque);
 	}
 
 	private void ApplyWingForce(AnimationCurve baseTargetHeightOverTime, ref Vector2 velocity)
