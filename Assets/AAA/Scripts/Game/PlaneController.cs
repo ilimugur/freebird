@@ -13,6 +13,7 @@ public class DropModeConfiguration
 	public float TargetHorizontalSpeed = 6f;
 	public float VerticalSpeedToLeanConversionFactor = 5f;
 	public float LeaningSpeedSmoothingFactor = 0.15f;
+	public AnimationCurve PassedTimeAfterLastPush;
 	public float PushImpulse = 150f;
 }
 
@@ -22,6 +23,7 @@ public class CarryModeConfiguration
 	public float TargetHorizontalSpeed = 6f;
 	public float VerticalSpeedToLeanConversionFactor = 5f;
 	public float LeaningSpeedSmoothingFactor = 0.15f;
+	public AnimationCurve PassedTimeAfterLastPush;
 	public float PushForce = 30f;
 }
 
@@ -105,7 +107,7 @@ public class PlaneController : MonoBehaviour
 		}
 	}
 
-	internal float CurrentVerticalSpeed;
+	// internal float CurrentVerticalSpeed;
 	internal float CurrentHorizontalSpeed;
 
 	private void CalculatePhysics()
@@ -139,7 +141,9 @@ public class PlaneController : MonoBehaviour
 		}
 
 		// Leaning with vertical speed. Note that this forcefully overrides angular velocity.
-		OverrideAngularSpeedToLeanTheNose(config.VerticalSpeedToLeanConversionFactor, config.LeaningSpeedSmoothingFactor);
+		OverrideAngularSpeedToLeanTheNose(config.VerticalSpeedToLeanConversionFactor,
+		                                  config.LeaningSpeedSmoothingFactor,
+		                                  config.PassedTimeAfterLastPush);
 	}
 
 	private void CalculatePhysics_Carry()
@@ -155,7 +159,9 @@ public class PlaneController : MonoBehaviour
 		}
 
 		// Leaning with vertical speed. Note that this forcefully overrides angular velocity.
-		OverrideAngularSpeedToLeanTheNose(config.VerticalSpeedToLeanConversionFactor, config.LeaningSpeedSmoothingFactor);
+		OverrideAngularSpeedToLeanTheNose(config.VerticalSpeedToLeanConversionFactor,
+		                                  config.LeaningSpeedSmoothingFactor,
+		                                  config.PassedTimeAfterLastPush);
 	}
 
 	private void OverrideHorizontalSpeedToMatchTargetHorizontalSpeed()
@@ -163,11 +169,14 @@ public class PlaneController : MonoBehaviour
 		Rigidbody.velocity = new Vector2(CurrentHorizontalSpeed, Rigidbody.velocity.y);
 	}
 
-	private void OverrideAngularSpeedToLeanTheNose(float verticalSpeedToLeanConversionFactor, float leaningSpeedSmoothingFactor)
+	private void OverrideAngularSpeedToLeanTheNose(float verticalSpeedToLeanConversionFactor, float leaningSpeedSmoothingFactor, AnimationCurve curve)
 	{
 		var verticalSpeed = Rigidbody.velocity.y;
 		var targetLeanAngle = verticalSpeed * verticalSpeedToLeanConversionFactor;
 		var currentLeanAngle = Rigidbody.rotation;
+
+		// Apply additional nose angle for a little while after starting to push.
+		targetLeanAngle += curve.Evaluate(PassedTimeAfterLastPush);
 
 		// Find the exact required angular speed that turns the nose to Target Lean Angle.
 		var targetAngularSpeed = (targetLeanAngle - currentLeanAngle) / Time.deltaTime;
@@ -193,6 +202,17 @@ public class PlaneController : MonoBehaviour
 		}
 	}
 	private int PushingStartFrame;
+	private float PushingStartTime;
+
+	private float PassedTimeAfterLastPush
+	{
+		get
+		{
+			if (!IsPushing)
+				return float.MaxValue;
+			return Time.time - PushingStartTime;
+		}
+	}
 
 	private void CalculateInput()
 	{
@@ -200,9 +220,16 @@ public class PlaneController : MonoBehaviour
 
 		if (IsPushing != currentlyDown)
 		{
-			PushingStartFrame = currentlyDown
-				? Time.frameCount
-				: -1;
+			if (currentlyDown)
+			{
+				PushingStartFrame = Time.frameCount;
+				PushingStartTime = Time.time;
+			}
+			else
+			{
+				PushingStartFrame = -1;
+				PushingStartTime = 0f;
+			}
 		}
 		IsPushing = currentlyDown;
 	}
