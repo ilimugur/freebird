@@ -15,6 +15,8 @@ public class GameManager : Singleton<GameManager>
 	public PlaneController PlaneControllerPrefab;
 	private PlaneController PlaneController;
 
+	public Vector3 LandingStripPosition = new Vector3(0,4,0);
+
 	void Awake()
 	{
 		Application.targetFrameRate = 60;
@@ -25,7 +27,7 @@ public class GameManager : Singleton<GameManager>
 
 		Load();
 
-		LandingStrip = Instantiate(LandingStripPrefab, this.transform);
+		LandingStrip = Instantiate(LandingStripPrefab, LandingStripPosition,Quaternion.identity,this.transform);
 		PlaneController = Instantiate(PlaneControllerPrefab, LandingStrip.PlaneSpawnPosition.position, 
 			Quaternion.identity, this.transform);
 
