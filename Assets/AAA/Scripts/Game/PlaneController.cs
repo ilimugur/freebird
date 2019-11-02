@@ -6,7 +6,10 @@ public class PlaneController : MonoBehaviour
 
 	protected void Awake()
 	{
-		DisableControls();
+		if (DisableControlsAtStart)
+		{
+			DisableControls();
+		}
 		InitializeEvents();
 	}
 
@@ -16,6 +19,7 @@ public class PlaneController : MonoBehaviour
 
 	protected void FixedUpdate()
 	{
+		CalculateInput();
 		CalculatePhysics();
 	}
 
@@ -59,7 +63,7 @@ public class PlaneController : MonoBehaviour
 	{
 		Rigidbody.AddForce(Vector2.right * (MoveSpeed - Transform.rotation.z), ForceMode2D.Force);
 
-		if (IsPushing)
+		if (IsPushingDown)
 		{
 			Rigidbody.AddForce(Vector2.up * VerticalSpeed, ForceMode2D.Impulse);
 
@@ -91,9 +95,32 @@ public class PlaneController : MonoBehaviour
 
 	#endregion
 
-	#region Controls
+	#region Input
 
-	private bool IsControlsEnabled;
+	private bool IsControlsEnabled = true;
+
+	private bool IsPushing;
+	private bool IsPushingDown
+	{
+		get
+		{
+			return IsPushing && PushingStartFrame == Time.frameCount;
+		}
+	}
+	private int PushingStartFrame;
+
+	private void CalculateInput()
+	{
+		var currentlyDown = IsControlsEnabled && Input.GetMouseButton(0);
+
+		if (IsPushing != currentlyDown)
+		{
+			PushingStartFrame = currentlyDown
+				? Time.frameCount
+				: -1;
+		}
+		IsPushing = currentlyDown;
+	}
 
 	private void DisableControls()
 	{
@@ -103,16 +130,6 @@ public class PlaneController : MonoBehaviour
 	private void EnableControls()
 	{
 		IsControlsEnabled = true;
-	}
-
-	private bool IsPushing
-	{
-		get
-		{
-			// TODO:
-			// return IsControlsEnabled && Input.GetMouseButton(0);
-			return IsControlsEnabled && Input.GetMouseButtonDown(0);
-		}
 	}
 
 	#endregion
@@ -134,6 +151,7 @@ public class PlaneController : MonoBehaviour
 
 	[Header("Spawning")]
 	public Vector3 SpawnLocation;
+	public bool DisableControlsAtStart = false;
 
 	private void PlaceToSpawnLocation()
 	{
