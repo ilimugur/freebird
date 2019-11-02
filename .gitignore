@@ -86,3 +86,5 @@ crashlytics-build.properties
 Assets/Plugins/Editor\.meta
 
 ProjectSettings/ProjectVersion.txt
+
+Assets/Plugins.meta
