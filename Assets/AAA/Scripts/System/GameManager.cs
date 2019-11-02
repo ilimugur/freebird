@@ -19,6 +19,7 @@ public class GameManager : Singleton<GameManager>
 
 	void Awake()
 	{
+		QualitySettings.vSyncCount = 0;
 		Application.targetFrameRate = 60;
 
 		UIManager.Instance.ShowStartScreen(0);
