@@ -14,11 +14,15 @@ public class SkyScript : MonoBehaviour
         GameObject gameObject = new GameObject();
         _skySpriteRenderer = gameObject.AddComponent<SpriteRenderer>() as SpriteRenderer;
         _skySpriteRenderer.sprite = SkySprite;
-        Vector3 worldBottom = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
-        Vector3 worldTop = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, 0));
-        float height = System.Math.Abs(worldTop.y - worldBottom.y);
-        _skySpriteRenderer.transform.localScale *= height/2;
-        _skySpriteRenderer.transform.position = new Vector3(0f, _skySpriteRenderer.bounds.size.y/2, _depth);
+        Vector3 worldBottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
+        Vector3 worldBottomRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0));
+        Vector3 worldTopLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, 0));
+        float width = System.Math.Abs(worldBottomRight.x - worldBottomLeft.x);
+        float height = System.Math.Abs(worldTopLeft.y - worldBottomLeft.y);
+        float xScale = width / _skySpriteRenderer.size.x;
+        float yScale = 5f * height / _skySpriteRenderer.size.y;
+        _skySpriteRenderer.transform.localScale = new Vector3(xScale, yScale, 1f);
+        _skySpriteRenderer.transform.position = new Vector3(0f, _skySpriteRenderer.bounds.size.y/2 - height, _depth);
 
         _skySpriteRenderer.gameObject.layer = Constants.NoCollisionLayer;
         SetSkyStripPosition(0f);
