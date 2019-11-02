@@ -17,8 +17,8 @@ public class CloudGenerator : MonoBehaviour
 
     private static System.Random _rand = new System.Random();
 
-    private float _lastGenerationX;
-    private float _distXToGenerate;
+    private Vector2 _lastGeneration;
+    private float _distToGenerate;
     private Vector2 _previousScreenCenter;
 
     private List<SpriteRenderer> _freeSpriteRenderers = new List<SpriteRenderer>();
@@ -27,7 +27,8 @@ public class CloudGenerator : MonoBehaviour
 
     void Awake()
     {
-        _lastGenerationX = -(MaxDistanceBetweenClouds + 1);
+        _lastGeneration = new Vector2(0, 0);
+        _distToGenerate = MinDistanceBetweenClouds;
 
        for (int i = 0; i < AvailableCloudCount; ++i)
         {
@@ -62,7 +63,7 @@ public class CloudGenerator : MonoBehaviour
         return result;
     }
 
-    private void EnsureCloudVisible(float xCoord, float yCenter, float radius)
+    private void EnsureCloudVisible(float xCoord, float yCoord, float yCenter, float radius)
     {
         // get from the pool
         int rendererIndex = _freeSpriteRenderers.Count - 1;
@@ -74,7 +75,8 @@ public class CloudGenerator : MonoBehaviour
         //            GenerateSegment(index, ref mesh);
 
         // position
-        RaycastHit2D hit = Physics2D.Raycast(new Vector2(xCoord, yCenter), new Vector2(0, -1));
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2(xCoord, yCoord), new Vector2(0, -1));
+    /*
         float minPossible;
         float maxPossible = yCenter + radius;
         if (hit.collider != null)
@@ -86,7 +88,8 @@ public class CloudGenerator : MonoBehaviour
         {
             minPossible = yCenter - radius;
         }
-        float yCoord = minPossible + (maxPossible + 1f - minPossible) * (float) _rand.NextDouble();
+    */
+        //float yCoord = minPossible + (maxPossible + 1f - minPossible) * (float) _rand.NextDouble();
         renderer.transform.position = new Vector3(xCoord, yCoord, Depth);
 
         // make visible
@@ -113,7 +116,9 @@ public class CloudGenerator : MonoBehaviour
         // get the index of visible segment by finding the center point world position
         Vector3 worldCenter = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
         Vector2 delta = new Vector2(worldCenter.x - _previousScreenCenter.x, worldCenter.y - _previousScreenCenter.y);
-        float currentCoordinate = worldCenter.x;
+        float currentXCoordinate = worldCenter.x;
+        float currentYCoordinate = worldCenter.y;
+        Vector2 currentCoordinate = new Vector2(currentXCoordinate, currentYCoordinate);
 
         // Test visible segments for visibility and hide those if not visible.
         for (int i = 0; i < _usedClouds.Count;)
@@ -140,19 +145,36 @@ public class CloudGenerator : MonoBehaviour
         Vector3 worldRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0));
         Vector3 worldTop = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, 0));
         float width = System.Math.Abs(worldRight.x - worldLeft.x);
+        float height = System.Math.Abs(worldTop.y - worldLeft.y);
 
-        Vector3 cameraVelocity = Camera.main.velocity;
-        float xFactor = 0.7f + 0.3f * (cameraVelocity.magnitude > 0f ? cameraVelocity.x / cameraVelocity.magnitude : 1f);
-        float xCoord = currentCoordinate + width * xFactor;
-        if(Mathf.Abs(xCoord - _lastGenerationX) >= _distXToGenerate && _freeSpriteRenderers.Count > 0)
+
+        if ((currentCoordinate - _lastGeneration).magnitude >= _distToGenerate)
         {
-            float height = System.Math.Abs(worldTop.y - worldLeft.y);
-            float yMidPoint = worldCenter.y;
-            EnsureCloudVisible(xCoord, yMidPoint, height / 2);
+            for (int i = 0; i < 5 && _freeSpriteRenderers.Count > 0; ++i)
+            {
+                Vector3 cameraVelocity = Camera.main.velocity;
+                float xFactor = 2f * (float)_rand.NextDouble() - 1f; // (cameraVelocity.magnitude > 0f ? cameraVelocity.x / cameraVelocity.magnitude : 1f);
+                float yFactor = 2f * (float)_rand.NextDouble() - 1f; // (cameraVelocity.magnitude > 0f ? cameraVelocity.y / cameraVelocity.magnitude : 1f);
+                if (Mathf.Abs(xFactor) < 0.5f && Mathf.Abs(yFactor) < 0.5f)
+                { 
+                    if(_rand.Next(0, 2) == 0)
+                    {
+                        xFactor += (xFactor >= 0f ? 0.5f : -0.5f);
+                    }
+                    else
+                    {
+                        yFactor += (yFactor >= 0f ? 0.5f : -0.5f);
+                    }
+                }
+                float xCoord = currentXCoordinate + width * xFactor;
+                float yCoord = currentYCoordinate + height * yFactor;
+                Vector2 candidate = new Vector2(xCoord, yCoord);
 
-            // Generate a new coordinate upon reaching which a new cloud will be spawned
-            _lastGenerationX = xCoord;
-            _distXToGenerate = MinDistanceBetweenClouds + (MaxDistanceBetweenClouds + 1f - MinDistanceBetweenClouds) * (float)_rand.NextDouble();
+                EnsureCloudVisible(xCoord, yCoord, currentYCoordinate, height / 2);
+            }
+
+            _lastGeneration = currentCoordinate;
+            _distToGenerate = MinDistanceBetweenClouds + (MaxDistanceBetweenClouds + 1f - MinDistanceBetweenClouds) * (float)_rand.NextDouble();
         }
     }
 }
