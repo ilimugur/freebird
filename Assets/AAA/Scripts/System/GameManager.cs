@@ -16,6 +16,9 @@ public class GameManager : Singleton<GameManager>
 
 	public Vector3 LandingStripPosition = new Vector3(0,4,0);
 
+	public bool IsGameStarted => GameStartTime > 0f;
+	public bool IsRoundStarted => RoundStartTime > 0f;
+
 	public float GameStartTime { get; private set; }
 	public float GameEndTime { get; private set; }
 	public float GamePassedTime

@@ -6,6 +6,7 @@ public enum PlanePhysicsMode
 {
 	Drop,
 	Carry,
+	Circus,
 }
 
 [Serializable]
@@ -18,6 +19,8 @@ public class DropModeConfiguration
 
 	public float PushImpulse = 50f;
 	public AnimationCurve TargetHeightOverTime;
+
+	public int InitialCrateCount = 3;
 }
 
 [Serializable]
@@ -28,6 +31,17 @@ public class CarryModeConfiguration
 	public float LeaningSpeedSmoothingFactor = 0.15f;
 	public AnimationCurve PassedTimeAfterLastPush;
 	public float PushForce = 30f;
+}
+
+[Serializable]
+public class CircusModeConfiguration
+{
+	public float FullThrottleForwardForce = 1000f;
+	public float FullThrottlePower = 1f;
+	public float HalfThrottlePower = 0.5f;
+
+	public AnimationCurve LongitudinalSpeedToWingForceFactor = AnimationCurve.Linear(0f, 1f, 1f, 1f);
+	public float WingForce;
 }
 
 public class PlaneController : MonoBehaviour
@@ -57,6 +71,11 @@ public class PlaneController : MonoBehaviour
 		CalculatePhysics();
 	}
 
+	protected void LateUpdate()
+	{
+		LateUpdatePropeller();
+	}
+
 	#endregion
 
 	#region Links
@@ -64,6 +83,7 @@ public class PlaneController : MonoBehaviour
 	[Header("Links")]
 	public Transform Transform;
 	public Rigidbody2D Rigidbody;
+	public Animator PropellerAnimator;
 
 	#endregion
 
@@ -80,14 +100,11 @@ public class PlaneController : MonoBehaviour
 		PlaceToSpawnLocation();
 		InitializeCrates();
 		InitializePhysics();
-
-		DOTween.To(() => CurrentHorizontalSpeed, x => CurrentHorizontalSpeed = x, TargetHorizontalSpeed, 2f);
 	}
 
 	private void OnEnableControls()
 	{
 		EnableControls();
-		CurrentHorizontalSpeed = TargetHorizontalSpeed;
 	}
 
 	#endregion
@@ -99,21 +116,7 @@ public class PlaneController : MonoBehaviour
 	public float PlaneMass = 50f;
 	public DropModeConfiguration DropConfiguration;
 	public CarryModeConfiguration CarryConfiguration;
-
-	public float TargetHorizontalSpeed
-	{
-		get
-		{
-			switch (Mode)
-			{
-				case PlanePhysicsMode.Drop: return DropConfiguration.TargetHorizontalSpeed;
-				case PlanePhysicsMode.Carry: return CarryConfiguration.TargetHorizontalSpeed;
-
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
-		}
-	}
+	public CircusModeConfiguration CircusConfiguration;
 
 	// internal float CurrentVerticalSpeed;
 	internal float CurrentHorizontalSpeed;
@@ -127,11 +130,19 @@ public class PlaneController : MonoBehaviour
 		{
 			case PlanePhysicsMode.Drop:
 			{
-				Rigidbody.mass = PlaneMass + InitialCrateCount * CrateMass;
+				Rigidbody.mass = PlaneMass + DropConfiguration.InitialCrateCount * CrateMass;
+				DOTween.To(() => CurrentHorizontalSpeed, x => CurrentHorizontalSpeed = x, DropConfiguration.TargetHorizontalSpeed, 2f);
 				break;
 			}
 
 			case PlanePhysicsMode.Carry:
+			{
+				Rigidbody.mass = PlaneMass;
+				DOTween.To(() => CurrentHorizontalSpeed, x => CurrentHorizontalSpeed = x, CarryConfiguration.TargetHorizontalSpeed, 2f);
+				break;
+			}
+
+			case PlanePhysicsMode.Circus:
 			{
 				Rigidbody.mass = PlaneMass;
 				break;
@@ -152,6 +163,10 @@ public class PlaneController : MonoBehaviour
 
 			case PlanePhysicsMode.Carry:
 				CalculatePhysics_Carry();
+				break;
+
+			case PlanePhysicsMode.Circus:
+				CalculatePhysics_Circus();
 				break;
 
 			default:
@@ -187,7 +202,7 @@ public class PlaneController : MonoBehaviour
 		                                  config.LeaningSpeedSmoothingFactor,
 		                                  config.PassedTimeAfterLastPush,
 		                                  velocity, ref angularVelocity);
-		
+
 		Rigidbody.velocity = velocity;
 		Rigidbody.angularVelocity = angularVelocity;
 	}
@@ -214,6 +229,25 @@ public class PlaneController : MonoBehaviour
 
 		Rigidbody.velocity = velocity;
 		Rigidbody.angularVelocity = angularVelocity;
+	}
+
+	private void CalculatePhysics_Circus()
+	{
+		var config = CircusConfiguration;
+		var velocity = Rigidbody.velocity;
+		var angularVelocity = Rigidbody.angularVelocity;
+
+		if (IsPushing)
+		{
+			// Rigidbody.AddForce(new Vector2(0f, config.PushForce), ForceMode2D.Force);
+		}
+
+		var currentPower = GameManager.Instance.IsGameStarted
+			? IsPushing ? config.FullThrottlePower : config.HalfThrottlePower
+			: 0f;
+		var currentPowerForce = currentPower * config.FullThrottleForwardForce;
+
+		Rigidbody.AddRelativeForce(new Vector2(currentPowerForce, 0f), ForceMode2D.Force);
 	}
 
 	private void ApplyWingForce(AnimationCurve baseTargetHeightOverTime, ref Vector2 velocity)
@@ -291,7 +325,7 @@ public class PlaneController : MonoBehaviour
 		var currentlyDown =
 			IsControlsEnabled &&
 			Input.GetMouseButton(0) &&
-			(Mode == PlanePhysicsMode.Drop && CurrentCrateCount > 0);
+			(Mode != PlanePhysicsMode.Drop || CurrentCrateCount > 0);
 
 		if (IsPushing != currentlyDown)
 		{
@@ -321,6 +355,21 @@ public class PlaneController : MonoBehaviour
 
 	#endregion
 
+	#region Propeller
+
+	[Header("Propeller")]
+	public float FullThrottlePropellerSpeed = 1f;
+	public float NoThrottlePropellerSpeed = 0.1f;
+
+	private void LateUpdatePropeller()
+	{
+		PropellerAnimator.speed = IsPushing
+			? FullThrottlePropellerSpeed
+			: NoThrottlePropellerSpeed;
+	}
+
+	#endregion
+
 	#region Crate
 
 	[Header("Crate")]
@@ -329,13 +378,28 @@ public class PlaneController : MonoBehaviour
 	public Vector2 CrateInitialVelocity = new Vector3(0f, 1f);
 	public float CrateInitialAngularSpeed = 3f;
 	public float CrateMass = 25f;
-	public int InitialCrateCount = 3;
 
 	internal int CurrentCrateCount;
 
 	private void InitializeCrates()
 	{
-		CurrentCrateCount = InitialCrateCount;
+		switch (Mode)
+		{
+			case PlanePhysicsMode.Drop:
+			{
+				CurrentCrateCount = DropConfiguration.InitialCrateCount;
+				break;
+			}
+
+			case PlanePhysicsMode.Carry:
+				break;
+
+			case PlanePhysicsMode.Circus:
+				break;
+
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
 	}
 
 	public void InstantiateCrate(Vector2 velocity)

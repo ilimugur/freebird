@@ -282,7 +282,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Transform: {fileID: 8878388082826193515}
   Rigidbody: {fileID: 9055477246974227694}
-  Mode: 0
+  PropellerAnimator: {fileID: 7351120453273250707}
+  Mode: 1
   PlaneMass: 25
   DropConfiguration:
     TargetHorizontalSpeed: 6
@@ -364,6 +365,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+    InitialCrateCount: 3
   CarryConfiguration:
     TargetHorizontalSpeed: 6
     VerticalSpeedToLeanConversionFactor: 5
@@ -374,15 +376,15 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 119.12351
-        outSlope: 119.12351
+        inSlope: 186.81155
+        outSlope: 186.81155
         tangentMode: 34
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.16789296
-        value: 20
+        time: 0.18556264
+        value: 34.665245
         inSlope: 0.22763543
         outSlope: 0.22763543
         tangentMode: 0
@@ -390,25 +392,55 @@ MonoBehaviour:
         inWeight: 0.33333334
         outWeight: 0.051346313
       - serializedVersion: 3
-        time: 0.75
-        value: 0
-        inSlope: 6.038959
-        outSlope: 6.038959
+        time: 1.1887968
+        value: 2.3438938
+        inSlope: 0.02943181
+        outSlope: 0.02943181
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.057753902
+        inWeight: 0.055787385
         outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    PushForce: 30
+    PushForce: 450
+  CircusConfiguration:
+    FullThrottleForwardForce: 400
+    FullThrottlePower: 1
+    HalfThrottlePower: 0.2
+    LongitudinalSpeedToWingForceFactor:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    WingForce: 0
+  FullThrottlePropellerSpeed: 1
+  NoThrottlePropellerSpeed: 0.2
   CratePrefab: {fileID: 7290077129980667573, guid: a56ec96a94f7a7d41ad2cd1d840ebc84,
     type: 3}
   CrateInstantiationLocation: {fileID: 7700202089201523178}
   CrateInitialVelocity: {x: -1, y: 2}
   CrateInitialAngularSpeed: 120
   CrateMass: 100
-  InitialCrateCount: 3
   SpawnLocation: {x: 0, y: 0, z: 0}
   DisableControlsAtStart: 1
 --- !u!58 &2777183897655900010
