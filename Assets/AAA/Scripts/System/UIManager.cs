@@ -115,7 +115,7 @@ public class UIManager : Singleton<UIManager>
 	{
 		HideGameOverScreen(0.1f);
 		ShowGameHud(0.1f);
-		EventManager.Instance.TriggerEvent(Constants.EVENT_RESTART_LEVEL);
+		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_RESTART);
 	}
 
 	public void StartNextLevel()
@@ -123,7 +123,7 @@ public class UIManager : Singleton<UIManager>
 		HideStartScreen(0.1f);
 		HideLevelCompleteScreen(0.1f);
 		ShowGameHud(0.1f);
-		EventManager.Instance.TriggerEvent(Constants.EVENT_START_NEXT_LEVEL);
+		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_START_NEXT);
 	}
 
 	public void StartGame()
