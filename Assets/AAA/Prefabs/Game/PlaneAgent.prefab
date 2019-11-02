@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 25693006}
   - component: {fileID: 25693007}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 9055477246974227694}
   - component: {fileID: 9055477246974227217}
   - component: {fileID: 7294209803571723933}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PlaneAgent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +176,10 @@ MonoBehaviour:
   Transform: {fileID: 8878388082826193515}
   Rigidbody: {fileID: 9055477246974227694}
   VerticalSpeed: 12
-  MoveSpeed: 1
+  HorizontalSpeed: 6
+  PushForce: 50
   CratePrefab: {fileID: 7290077129980667573, guid: a56ec96a94f7a7d41ad2cd1d840ebc84,
     type: 3}
   CrateInstantiationOffset: {x: 0, y: -0.7, z: 0}
+  SpawnLocation: {x: 0, y: 0, z: 0}
+  DisableControlsAtStart: 1
