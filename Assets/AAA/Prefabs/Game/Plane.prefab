@@ -282,22 +282,116 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Transform: {fileID: 8878388082826193515}
   Rigidbody: {fileID: 9055477246974227694}
-  Mode: 1
+  Mode: 0
+  PlaneMass: 50
   DropConfiguration:
     TargetHorizontalSpeed: 6
     VerticalSpeedToLeanConversionFactor: 5
     LeaningSpeedSmoothingFactor: 0.15
+    PassedTimeAfterLastPush:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 119.12351
+        outSlope: 119.12351
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.16789296
+        value: 20
+        inSlope: 0.22763543
+        outSlope: 0.22763543
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.051346313
+      - serializedVersion: 3
+        time: 0.75
+        value: 0
+        inSlope: 6.038959
+        outSlope: 6.038959
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.057753902
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     PushImpulse: 15
+    WingForceY: 1000
+    WingForceDegradeOverTime:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   CarryConfiguration:
     TargetHorizontalSpeed: 6
     VerticalSpeedToLeanConversionFactor: 5
     LeaningSpeedSmoothingFactor: 0.15
+    PassedTimeAfterLastPush:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 119.12351
+        outSlope: 119.12351
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.16789296
+        value: 20
+        inSlope: 0.22763543
+        outSlope: 0.22763543
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.051346313
+      - serializedVersion: 3
+        time: 0.75
+        value: 0
+        inSlope: 6.038959
+        outSlope: 6.038959
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.057753902
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     PushForce: 30
   CratePrefab: {fileID: 7290077129980667573, guid: a56ec96a94f7a7d41ad2cd1d840ebc84,
     type: 3}
   CrateInstantiationLocation: {fileID: 7700202089201523178}
   CrateInitialVelocity: {x: -1, y: 2}
   CrateInitialAngularSpeed: 120
+  CrateMass: 25
+  InitialCrateCount: 3
   SpawnLocation: {x: 0, y: 0, z: 0}
   DisableControlsAtStart: 1
 --- !u!58 &2777183897655900010
@@ -313,7 +407,7 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.33, y: 0}
+  m_Offset: {x: -0.93, y: 0}
   serializedVersion: 2
   m_Radius: 0.6
 --- !u!58 &442350357406668589
@@ -331,4 +425,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: -2.14, y: 0}
   serializedVersion: 2
-  m_Radius: 0.53
+  m_Radius: 0.35

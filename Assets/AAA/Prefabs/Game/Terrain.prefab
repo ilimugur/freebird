@@ -43,9 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb5fa4f46ac8b8d42a5da3b1963e6810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SegmentLength: 5
+  SegmentLength: 10
   SegmentResolution: 32
-  MeshCount: 6
+  MeshCount: 4
   VisibleMeshes: 4
   SegmentPrefab: {fileID: 819396470519318077, guid: 2f6e9fc0883f4674e9ec561ea70dc027,
     type: 3}
