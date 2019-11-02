@@ -23,6 +23,7 @@ public class Constants
 	public static readonly string EVENT_LEVEL_START_NEXT = "ev_stnxlv";
 	public static readonly string EVENT_LEVEL_RESTART = "ev_rstlv";
 	public static readonly string EVENT_LEVEL_COMPLETED = "ev_lcmp";
+	public static readonly string EVENT_ENABLE_CONTROLS = "ev_enct";
 
 
 	public static readonly string EVENT_COLLECT_OBJECT = "ev_collobj";

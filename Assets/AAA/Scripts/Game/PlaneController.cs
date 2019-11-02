@@ -4,9 +4,11 @@ public class PlaneController : MonoBehaviour
 {
 	#region Initialization
 
-	// protected void Awake()
-	// {
-	// }
+	protected void Awake()
+	{
+		DisableControls();
+		InitializeEvents();
+	}
 
 	#endregion
 
@@ -14,7 +16,7 @@ public class PlaneController : MonoBehaviour
 
 	protected void FixedUpdate()
 	{
-		UpdateMethodSecond();
+		CalculatePhysics();
 	}
 
 	#endregion
@@ -27,17 +29,37 @@ public class PlaneController : MonoBehaviour
 
 	#endregion
 
+	#region Events
+
+	private void InitializeEvents()
+	{
+		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_START, OnLevelStart);
+		EventManager.Instance.StartListening(Constants.EVENT_ENABLE_CONTROLS, OnEnableControls);
+	}
+
+	private void OnLevelStart()
+	{
+		PlaceToSpawnLocation();
+	}
+
+	private void OnEnableControls()
+	{
+		EnableControls();
+	}
+
+	#endregion
+
 	#region Physics
 
 	[Header("Configuration")]
 	public float VerticalSpeed;
 	public float MoveSpeed;
 
-	void UpdateMethodSecond()
+	private void CalculatePhysics()
 	{
 		Rigidbody.AddForce(Vector2.right * (MoveSpeed - Transform.rotation.z), ForceMode2D.Force);
 
-		if (Input.GetMouseButtonDown(0))
+		if (IsPushing)
 		{
 			Rigidbody.AddForce(Vector2.up * VerticalSpeed, ForceMode2D.Impulse);
 
@@ -69,6 +91,32 @@ public class PlaneController : MonoBehaviour
 
 	#endregion
 
+	#region Controls
+
+	private bool IsControlsEnabled;
+
+	private void DisableControls()
+	{
+		IsControlsEnabled = false;
+	}
+
+	private void EnableControls()
+	{
+		IsControlsEnabled = true;
+	}
+
+	private bool IsPushing
+	{
+		get
+		{
+			// TODO:
+			// return IsControlsEnabled && Input.GetMouseButton(0);
+			return IsControlsEnabled && Input.GetMouseButtonDown(0);
+		}
+	}
+
+	#endregion
+
 	#region Crate
 
 	[Header("Crate")]
@@ -78,6 +126,21 @@ public class PlaneController : MonoBehaviour
 	public void InstantiateCrate()
 	{
 		Instantiate(CratePrefab, Transform.position + CrateInstantiationOffset, Quaternion.identity);
+	}
+
+	#endregion
+
+	#region Spawn Location
+
+	[Header("Spawning")]
+	public Vector3 SpawnLocation;
+
+	private void PlaceToSpawnLocation()
+	{
+		Transform.position = SpawnLocation;
+		Transform.rotation = Quaternion.identity;
+		Rigidbody.velocity = Vector3.zero;
+		Rigidbody.angularVelocity = 0f;
 	}
 
 	#endregion
