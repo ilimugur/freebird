@@ -230,7 +230,7 @@ public class TerrainMeshGen : MonoBehaviour
 
     private void EnsureSegmentVisible(int index)
     {
-        if (!IsSegmentVisible(index))
+        if (!IsSegmentVisible(index) && _freeMeshFilters.Count > 0)
         {
             // get from the pool
             int meshIndex = _freeMeshFilters.Count - 1;
@@ -305,10 +305,6 @@ public class TerrainMeshGen : MonoBehaviour
         }
 
         // Test neighbor segment indexes for visibility and display those if should be visible.
-        //for (int i = currentSegment - VisibleMeshes / 2; i < currentSegment + VisibleMeshes / 2; ++i)
-        //for (int i = 0; i < MeshCount; ++i)
-//        for (int i = currentSegment - VisibleMeshes; i <= currentSegment + VisibleMeshes; ++i)
-//        for (int i = currentSegment - VisibleMeshes / 2; i < currentSegment + VisibleMeshes / 2; ++i)
         for (int i = currentSegment - VisibleMeshes; i <= currentSegment + VisibleMeshes; ++i)
         {
             if (IsSegmentInSight(i))
