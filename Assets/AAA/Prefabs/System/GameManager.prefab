@@ -45,8 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60f605cc689a58b4aad9dab7b55031f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LandingStrip: {fileID: 1826349887133957907, guid: 75c2bd29c6a11ff4abebf4248badd25c,
+  LandingStripPrefab: {fileID: 1826349887133957907, guid: 75c2bd29c6a11ff4abebf4248badd25c,
     type: 3}
+  LandingStrip: {fileID: 0}
+  PlaneControllerPrefab: {fileID: 7294209803571723933, guid: 02eaa7fe431a19845a751b7113643836,
+    type: 3}
+  PlaneController: {fileID: 0}
 --- !u!1 &7584946869771579602
 GameObject:
   m_ObjectHideFlags: 0
