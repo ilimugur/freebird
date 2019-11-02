@@ -9,6 +9,7 @@ using Random = UnityEngine.Random;
 
 public class GameManager : Singleton<GameManager>
 {
+	public LandingStrip LandingStrip;
 	void Awake()
 	{
 		Application.targetFrameRate = 60;

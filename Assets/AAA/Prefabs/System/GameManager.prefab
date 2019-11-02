@@ -45,9 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60f605cc689a58b4aad9dab7b55031f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerPrefabs:
-  - {fileID: 7515126515311966333, guid: 4818d9d96cbdacd40b9d9710de37304a, type: 3}
-  GameParameters: {fileID: 11400000, guid: a1c09d1a696606849b8706cb9d8ad0bb, type: 2}
+  LandingStrip: {fileID: 1826349887133957907, guid: 75c2bd29c6a11ff4abebf4248badd25c,
+    type: 3}
 --- !u!1 &7584946869771579602
 GameObject:
   m_ObjectHideFlags: 0
