@@ -10,11 +10,11 @@ public class TerrainMeshGen : MonoBehaviour
         public MeshFilter MeshFilter { get; set; }
     }
 
-    public float SegmentLength = 5;
+    public float SegmentLength = 10;
 
     public int SegmentResolution = 32;
 
-    public int MeshCount = 4;
+    public int MeshCount = 6; // ensure VisibleMeshes >= MeshCount + 2 to avoid latency in generating terrain
 
     public int VisibleMeshes = 4;
 
@@ -200,7 +200,8 @@ public class TerrainMeshGen : MonoBehaviour
         float x1 = index * SegmentLength;
         float x2 = x1 + SegmentLength;
 
-        return x1 <= worldRight.x && x2 >= worldLeft.x;
+        bool result = x1 - SegmentLength <= worldRight.x && x2 + SegmentLength >= worldLeft.x;
+        return result;
     }
 
 
@@ -299,7 +300,11 @@ public class TerrainMeshGen : MonoBehaviour
         }
 
         // Test neighbor segment indexes for visibility and display those if should be visible.
-        for (int i = currentSegment - VisibleMeshes / 2; i < currentSegment + VisibleMeshes / 2; ++i)
+        //for (int i = currentSegment - VisibleMeshes / 2; i < currentSegment + VisibleMeshes / 2; ++i)
+        //for (int i = 0; i < MeshCount; ++i)
+//        for (int i = currentSegment - VisibleMeshes; i <= currentSegment + VisibleMeshes; ++i)
+//        for (int i = currentSegment - VisibleMeshes / 2; i < currentSegment + VisibleMeshes / 2; ++i)
+        for (int i = currentSegment - VisibleMeshes; i <= currentSegment + VisibleMeshes; ++i)
         {
             if (IsSegmentInSight(i))
             {

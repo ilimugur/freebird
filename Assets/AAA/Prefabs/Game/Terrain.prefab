@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SegmentLength: 5
   SegmentResolution: 32
-  MeshCount: 4
+  MeshCount: 6
   VisibleMeshes: 4
   SegmentPrefab: {fileID: 819396470519318077, guid: 2f6e9fc0883f4674e9ec561ea70dc027,
     type: 3}
