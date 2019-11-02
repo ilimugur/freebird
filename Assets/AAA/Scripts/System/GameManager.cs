@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 using MoreMountains.NiceVibrations;
 using UnityEngine;
 using UnityEngine.Analytics;
@@ -100,8 +99,6 @@ public class GameManager : Singleton<GameManager>
 
 		GameStartTime = Time.time;
 		GameEndTime = 0f;
-
-		DOTween.To(() => PlaneController.CurrentHorizontalSpeed, x => PlaneController.CurrentHorizontalSpeed = x, PlaneController.TargetHorizontalSpeed, 2f);
 	}
 
 	public void StartRound()

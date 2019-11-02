@@ -1,4 +1,5 @@
 ﻿using System;
+using DG.Tweening;
 using UnityEngine;
 
 public enum PlanePhysicsMode
@@ -79,6 +80,8 @@ public class PlaneController : MonoBehaviour
 		PlaceToSpawnLocation();
 		InitializeCrates();
 		InitializePhysics();
+
+		DOTween.To(() => CurrentHorizontalSpeed, x => CurrentHorizontalSpeed = x, TargetHorizontalSpeed, 2f);
 	}
 
 	private void OnEnableControls()
