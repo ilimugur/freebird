@@ -128,7 +128,7 @@ public class UIManager : Singleton<UIManager>
 
 	public void StartGame()
 	{
-		EventManager.Instance.TriggerEvent(Constants.EVENT_GAME_START);
+		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_START);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_COMPLETED, OnLevelComplete);
 		EventManager.Instance.StartListening(Constants.EVENT_SET_PROGRESSBAR, (float value) => OnSetProgressBar(value));
 		EventManager.Instance.StartListening(Constants.EVENT_SET_PROGRESSBAR, (int value) => OnSetProgressBar(value));

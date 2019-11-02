@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1678131219257929041}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2723837203840613795}
@@ -47,10 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LandingStripPrefab: {fileID: 1826349887133957907, guid: 75c2bd29c6a11ff4abebf4248badd25c,
     type: 3}
-  LandingStrip: {fileID: 0}
   PlaneControllerPrefab: {fileID: 7294209803571723933, guid: 02eaa7fe431a19845a751b7113643836,
     type: 3}
-  PlaneController: {fileID: 0}
 --- !u!1 &7584946869771579602
 GameObject:
   m_ObjectHideFlags: 0

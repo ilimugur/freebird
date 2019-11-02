@@ -9,6 +9,7 @@ public class Constants
 	public static int ObstacleLayer = 10;
 	public static int CollectibleLayer = 11;
 	public static int NoCollisionLayer = 12;
+	public static int TriggersLayer = 13;
 
 	public static readonly string EVENT_UPDATE_SCORE = "ev_usc";
 	public static readonly string EVENT_UPDATE_HIGHSCORE = "ev_uhsc";

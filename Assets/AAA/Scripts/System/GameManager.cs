@@ -20,8 +20,8 @@ public class GameManager : Singleton<GameManager>
 		Application.targetFrameRate = 60;
 
 		UIManager.Instance.ShowStartScreen(0);
-		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_START, StartGame);
-		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_RESTART, RestartGame);
+		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_START, StartLevel);
+		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_RESTART, RestartLevel);
 
 		Load();
 
@@ -61,25 +61,15 @@ public class GameManager : Singleton<GameManager>
 
 		DOTween.To(() => PlaneController.MoveSpeed, x => PlaneController.MoveSpeed = x, 5f, 2f);
 
-		//Game.StartCurrentLevel();
-		//EventManager.Instance.StopListening(GameConstants.EVENT_START_GAME, StartGame);
-		//EventManager.Instance.StartListening("LEVEL_UP", Game.Instance.OnLevelUp);
-		//EventManager.Instance.StartListening("SCORE_INCREMENT", Game.Instance.OnScoreIncremented);
 	}
 
 	private IEnumerator TriggerGameOver()
 	{
 		Debug.Log("Game Over");
-		//EventManager.Instance.StopListening("LEVEL_UP", Game.Instance.OnLevelUp);
-		//EventManager.Instance.StopListening("SCORE_INCREMENT", Game.Instance.OnScoreIncremented);
-
-		//CamShaker.Shake(GameParameters.CameraShakeDuration, GameParameters.CameraShakeIntensity);
 		Time.timeScale = 1;
 
 		yield return new WaitForSeconds(0.35f);
 		Save();
-		//EventManager.Instance.TriggerEvent("GAME_OVER");
-		//EventManager.Instance.StartListening("START_GAME", StartGame);
 	}
 
 	void OnApplicationQuit()
