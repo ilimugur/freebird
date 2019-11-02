@@ -20,7 +20,7 @@ public class SkyScript : MonoBehaviour
         float width = System.Math.Abs(worldBottomRight.x - worldBottomLeft.x);
         float height = System.Math.Abs(worldTopLeft.y - worldBottomLeft.y);
         float xScale = width / _skySpriteRenderer.size.x;
-        float yScale = 5f * height / _skySpriteRenderer.size.y;
+        float yScale = 12f * height / _skySpriteRenderer.size.y;
         _skySpriteRenderer.transform.localScale = new Vector3(xScale, yScale, 1f);
         _skySpriteRenderer.transform.position = new Vector3(0f, _skySpriteRenderer.bounds.size.y/2 - height, _depth);
 
