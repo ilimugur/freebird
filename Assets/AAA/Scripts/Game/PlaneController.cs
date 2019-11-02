@@ -7,6 +7,7 @@ public enum PlanePhysicsMode
 	Drop,
 	Carry,
 	Circus,
+	Cartoon,
 }
 
 [Serializable]
@@ -35,6 +36,21 @@ public class CarryModeConfiguration
 
 [Serializable]
 public class CircusModeConfiguration
+{
+	public AnimationCurve ForwardForceDegradationBySpeed;
+	public float FullThrottleForwardForce = 1000f;
+	public float FullThrottlePower = 1f;
+	public float HalfThrottlePower = 0.5f;
+
+	public float FullThrottleRotationTorque = 70f;
+	public float HalfThrottleRotationTorque = -30f;
+
+	public AnimationCurve LongitudinalSpeedToWingForceFactor = AnimationCurve.Linear(0f, 1f, 1f, 1f);
+	public float WingForce;
+}
+
+[Serializable]
+public class CartoonModeConfiguration
 {
 	public AnimationCurve ForwardForceDegradationBySpeed;
 	public float FullThrottleForwardForce = 1000f;
@@ -121,6 +137,7 @@ public class PlaneController : MonoBehaviour
 	public DropModeConfiguration DropConfiguration;
 	public CarryModeConfiguration CarryConfiguration;
 	public CircusModeConfiguration CircusConfiguration;
+	public CartoonModeConfiguration CartoonConfiguration;
 
 	// internal float CurrentVerticalSpeed;
 	internal float CurrentHorizontalSpeed;
@@ -152,6 +169,12 @@ public class PlaneController : MonoBehaviour
 				break;
 			}
 
+			case PlanePhysicsMode.Cartoon:
+			{
+				Rigidbody.mass = PlaneMass;
+				break;
+			}
+
 			default:
 				throw new ArgumentOutOfRangeException();
 		}
@@ -171,6 +194,10 @@ public class PlaneController : MonoBehaviour
 
 			case PlanePhysicsMode.Circus:
 				CalculatePhysics_Circus();
+				break;
+
+			case PlanePhysicsMode.Cartoon:
+				CalculatePhysics_Cartoon();
 				break;
 
 			default:
@@ -292,6 +319,91 @@ public class PlaneController : MonoBehaviour
 				{
 					Rigidbody.AddTorque(config.HalfThrottleRotationTorque);
 				}
+			}
+		}
+
+		var rotationInput = 0f;
+		if (Input.GetKey(KeyCode.W))
+		{
+			rotationInput += 1f;
+		}
+		if (Input.GetKey(KeyCode.S))
+		{
+			rotationInput -= 1f;
+		}
+		if (Input.GetKey(KeyCode.A))
+		{
+			Rigidbody.AddForce(new Vector2(-2000f, 0f));
+		}
+		if (Input.GetKey(KeyCode.D))
+		{
+			Rigidbody.AddForce(new Vector2(2000f, 0f));
+		}
+
+		Rigidbody.AddTorque(rotationInput * config.FullThrottleRotationTorque);
+	}
+
+	private void CalculatePhysics_Cartoon()
+	{
+		var config = CartoonConfiguration;
+		var velocity = Rigidbody.velocity;
+		var angle = Rigidbody.rotation;
+		var angleClipped = angle % 360f;
+		if (angleClipped > 180f)
+		{
+			angleClipped -= 360f;
+		}
+		var angularVelocity = Rigidbody.angularVelocity;
+		var localVelocity = Rigidbody.GetRelativeVector(velocity);
+		var speed = velocity.magnitude;
+
+		if (IsPushing)
+		{
+			// Rigidbody.AddForce(new Vector2(0f, config.PushForce), ForceMode2D.Force);
+		}
+
+		// Propeller force
+		{
+			var currentPower = GameManager.Instance.IsGameStarted
+				? IsPushing ? config.FullThrottlePower : config.HalfThrottlePower
+				: 0f;
+			var currentPowerForce = currentPower * config.FullThrottleForwardForce;
+			var degrade = config.ForwardForceDegradationBySpeed.Evaluate(Mathf.Max(localVelocity.x, 0f));
+
+			if (angleClipped < -30f || angleClipped > 120f)
+			{
+				degrade = 0f;
+			}
+
+			Rigidbody.AddRelativeForce(new Vector2(currentPowerForce * degrade, 0f), ForceMode2D.Force);
+		}
+
+		// Wing force
+		{
+			var longitudinalSpeed = localVelocity.x;
+
+			var forceFactor = config.LongitudinalSpeedToWingForceFactor.Evaluate(longitudinalSpeed);
+			var force = config.WingForce * forceFactor;
+
+			Rigidbody.AddRelativeForce(new Vector2(0f, force), ForceMode2D.Force);
+			
+		}
+
+		// Nose up with touch input.
+		{
+			if (IsPushing)
+			{
+				Rigidbody.AddTorque(config.FullThrottleRotationTorque);
+			}
+			else
+			{
+				while (angle < 0) angle += 360;
+				while (angle > 360) angle -= 360;
+				Rigidbody.AddTorque(config.HalfThrottleRotationTorque * ((angle>90 && angle<270)?-1f:1f));
+				//if (angleClipped > -30f || angleClipped > 120f)
+				//{
+				//	Rigidbody.AddTorque(config.HalfThrottleRotationTorque);
+				//}
 			}
 		}
 
@@ -461,6 +573,9 @@ public class PlaneController : MonoBehaviour
 				break;
 
 			case PlanePhysicsMode.Circus:
+				break;
+
+			case PlanePhysicsMode.Cartoon:
 				break;
 
 			default:
