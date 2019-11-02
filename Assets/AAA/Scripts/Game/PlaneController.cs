@@ -78,6 +78,7 @@ public class PlaneController : MonoBehaviour
 	private void OnEnableControls()
 	{
 		EnableControls();
+		CurrentHorizontalSpeed = TargetHorizontalSpeed;
 	}
 
 	#endregion
