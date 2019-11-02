@@ -262,7 +262,7 @@ public class PlaneController : MonoBehaviour
 			var currentPowerForce = currentPower * config.FullThrottleForwardForce;
 			var degrade = config.ForwardForceDegradationBySpeed.Evaluate(Mathf.Max(localVelocity.x, 0f));
 
-			if (angleClipped < -60f || angleClipped > 120f)
+			if (angleClipped < -30f || angleClipped > 120f)
 			{
 				degrade = 0f;
 			}
@@ -288,7 +288,10 @@ public class PlaneController : MonoBehaviour
 			}
 			else
 			{
-				Rigidbody.AddTorque(config.HalfThrottleRotationTorque);
+				if (angleClipped > -30f || angleClipped > 120f)
+				{
+					Rigidbody.AddTorque(config.HalfThrottleRotationTorque);
+				}
 			}
 		}
 

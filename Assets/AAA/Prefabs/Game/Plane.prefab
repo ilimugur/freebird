@@ -442,6 +442,7 @@ MonoBehaviour:
     FullThrottlePower: 1
     HalfThrottlePower: 0.2
     FullThrottleRotationTorque: 70
+    HalfThrottleRotationTorque: -30
     LongitudinalSpeedToWingForceFactor:
       serializedVersion: 2
       m_Curve:
@@ -466,7 +467,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    WingForce: 300
+    WingForce: 250
   FullThrottlePropellerSpeed: 1
   NoThrottlePropellerSpeed: 0.2
   CratePrefab: {fileID: 7290077129980667573, guid: a56ec96a94f7a7d41ad2cd1d840ebc84,
