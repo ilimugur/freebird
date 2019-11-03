@@ -532,6 +532,7 @@ public class PlaneController : MonoBehaviour
 	private void CalculateInput()
 	{
 		var currentlyDown =
+			!IsTurnedOff &&
 			IsControlsEnabled &&
 			Input.GetMouseButton(0) &&
 			(Mode != PlanePhysicsMode.Drop || CurrentCrateCount > 0);
@@ -577,8 +578,23 @@ public class PlaneController : MonoBehaviour
 				IsCrashed = true;
 				EventManager.Instance.TriggerEvent(Constants.EVENT_PLANE_CRASHED);
 
+				TurnOff();
 				GameManager.Instance.InformGameEnd();
 			}
+		}
+	}
+
+	#endregion
+
+	#region Engine
+
+	private bool IsTurnedOff;
+
+	private void TurnOff()
+	{
+		if (!IsTurnedOff)
+		{
+			IsTurnedOff = true;
 		}
 	}
 
@@ -625,12 +641,20 @@ public class PlaneController : MonoBehaviour
 	[Header("Propeller")]
 	public float FullThrottlePropellerSpeed = 1f;
 	public float NoThrottlePropellerSpeed = 0.1f;
+	public float TurnOffStall = 0.02f;
 
 	private void LateUpdatePropeller()
 	{
-		PropellerAnimator.speed = IsPushing
-			? FullThrottlePropellerSpeed
-			: NoThrottlePropellerSpeed;
+		if (IsTurnedOff)
+		{
+			PropellerAnimator.speed = Mathf.Max(PropellerAnimator.speed - TurnOffStall, 0f);
+		}
+		else
+		{
+			PropellerAnimator.speed = IsPushing
+				? FullThrottlePropellerSpeed
+				: NoThrottlePropellerSpeed;
+		}
 	}
 
 	#endregion
