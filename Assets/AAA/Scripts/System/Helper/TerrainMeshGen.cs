@@ -20,6 +20,7 @@ public class TerrainMeshGen : MonoBehaviour
 
     // the prefab including MeshFilter and MeshRenderer
     public MeshFilter SegmentPrefab;
+    public Material TerrainMaterial;
 
     // helper array to generate new segment without further allocations
     private Vector3[] _vertexArray;
@@ -64,6 +65,8 @@ public class TerrainMeshGen : MonoBehaviour
             mesh.vertices = _vertexArray;
             mesh.triangles = triangles;
 
+            filter.GetComponent<Renderer>().material = TerrainMaterial;
+
             filter.gameObject.SetActive(false);
             _freeMeshFilters.Add(filter);
         }
@@ -77,8 +80,6 @@ public class TerrainMeshGen : MonoBehaviour
             return (Mathf.Sin(position * 0.1f) * 3f + Mathf.Sin(position * 0.2f) * 4f) / 2f;
         else
             return (Mathf.Sin(position * 0.1f) * 6f + Mathf.Sin(position * 0.2f) * 8f) / 2f;
-            //return (Mathf.Sin(position * 0.1f) * 6f + 3.5f + Mathf.Sin(position * 0.2f) * 4f + 8f) / 2f;
-            //return (Mathf.Sin(position * 0.1f) * 12f + 7f + Mathf.Sin(position * 0.2f) * 8f + 8f) / 2f;
     }
 
     // This function generates a mesh segment.

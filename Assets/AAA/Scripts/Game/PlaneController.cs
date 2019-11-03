@@ -564,6 +564,26 @@ public class PlaneController : MonoBehaviour
 
 	#endregion
 
+	#region Crash
+
+	private bool IsCrashed;
+
+	private void OnCollisionEnter2D(Collision2D other)
+	{
+		if (!IsCrashed)
+		{
+			if (other.gameObject.layer == 9) // Ground
+			{
+				IsCrashed = true;
+				EventManager.Instance.TriggerEvent(Constants.EVENT_PLANE_CRASHED);
+
+				GameManager.Instance.InformGameEnd();
+			}
+		}
+	}
+
+	#endregion
+
 	#region Pilot
 
 	[Header("Pilot")]
@@ -587,6 +607,14 @@ public class PlaneController : MonoBehaviour
 				body.velocity = Rigidbody.velocity + PilotAdditionalLaunchVelocity;
 				body.angularVelocity = PilotLaunchAngularSpeed;
 			}
+		}
+	}
+
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+		if (other.gameObject.layer == 14) // Player layer
+		{
+			Debug.Log("ONTRIG " + other.gameObject.name);
 		}
 	}
 
