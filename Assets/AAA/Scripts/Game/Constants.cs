@@ -31,8 +31,10 @@ public class Constants
 	public static readonly string EVENT_LEVEL_COMPLETED = "ev_lcmp";
 	public static readonly string EVENT_ENABLE_CONTROLS = "ev_enct";
 	public static readonly string EVENT_PLANE_CRASHED = "ev_plcr";
+	public static readonly string EVENT_OUT_OF_FUEL = "ev_oofuel";
 
 	public static readonly string EVENT_GAIN_FUEL = "ev_gainfuel";
+	public static readonly string EVENT_SET_FUEL = "ev_setfuel";
 	public static readonly string EVENT_COLLECT_OBJECT = "ev_collobj";
 	public static readonly string EVENT_JETTISON_OBJECT = "ev_jtsobj";
 

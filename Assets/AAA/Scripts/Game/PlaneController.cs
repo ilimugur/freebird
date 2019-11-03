@@ -66,6 +66,8 @@ public class CartoonModeConfiguration
 
 public class PlaneController : MonoBehaviour
 {
+	private float _fuel;
+
 	#region Initialization
 
 	protected void Awake()
@@ -114,6 +116,8 @@ public class PlaneController : MonoBehaviour
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_LOAD, OnLevelLoad);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_START, OnLevelStart);
 		EventManager.Instance.StartListening(Constants.EVENT_ENABLE_CONTROLS, OnEnableControls);
+		EventManager.Instance.StartListening(Constants.EVENT_GAIN_FUEL, (float value) => OnGainFuel(value));
+		EventManager.Instance.StartListening(Constants.EVENT_SET_FUEL, (float value) => OnSetFuel(value));
 	}
 
 	private void InitializeAcrobacyParameters()
@@ -846,7 +850,8 @@ public class PlaneController : MonoBehaviour
 
 	private void ExpendFuel()
 	{
-		EventManager.Instance.TriggerEvent(Constants.EVENT_GAIN_FUEL,Constants.FuelExpenditurePerSecond*Time.fixedDeltaTime);
+		float deltaFuel = Constants.FuelExpenditurePerSecond * Time.fixedDeltaTime;
+		OnGainFuel(deltaFuel);
 	}
 	#endregion
 
@@ -913,4 +918,24 @@ public class PlaneController : MonoBehaviour
 	}
 
 	#endregion
+
+
+	public void OnGainFuel(float value)
+	{
+		_fuel += value;
+		if (_fuel > Constants.FuelCapacity) _fuel = Constants.FuelCapacity;
+		if (_fuel < 0)
+		{
+			_fuel = 0;
+			EventManager.Instance.TriggerEvent(Constants.EVENT_OUT_OF_FUEL);
+			TurnOff();
+		}
+		EventManager.Instance.TriggerEvent(Constants.EVENT_SET_PROGRESSBAR, _fuel / Constants.FuelCapacity);
+	}
+
+	public void OnSetFuel(float value)
+	{
+		_fuel = value;
+		EventManager.Instance.TriggerEvent(Constants.EVENT_SET_PROGRESSBAR, _fuel / Constants.FuelCapacity);
+	}
 }
