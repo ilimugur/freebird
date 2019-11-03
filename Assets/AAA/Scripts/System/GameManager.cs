@@ -24,7 +24,7 @@ public class GameManager : Singleton<GameManager>
 		private set
 		{
 			_score = value;
-			EventManager.Instance.TriggerEvent(Constants.EVENT_UPDATE_SCORE, Score);
+			EventManager.Instance.TriggerEvent(Constants.EVENT_UPDATE_SCORE, _score);
 		}
 	}
 
