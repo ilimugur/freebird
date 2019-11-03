@@ -51,6 +51,7 @@ MonoBehaviour:
   CloudSpeedCoefficient: 0.6
   CloudScaleCoefficient: 1
   CloudColor: {r: 0.6862745, g: 0.8666667, b: 0.8666667, a: 1}
+  SkyBound: 250
   availableSprites:
   - {fileID: 21300000, guid: 2e7722ee86f636249a1e4502403633e7, type: 3}
   - {fileID: 21300000, guid: de0e9f5d09c70034abf260641c863fe4, type: 3}
@@ -62,3 +63,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c562214211751dd4cad39ce3f2b2ed40, type: 3}
   - {fileID: 21300000, guid: fd965ad134cff6942a47bec502a3c7b7, type: 3}
   - {fileID: 21300000, guid: 20de8547127d3d245b73f786432795c6, type: 3}
+  availableStarSprites:
+  - {fileID: 21300000, guid: ebf6fc84007b6e34cb28e40a79437459, type: 3}
+  - {fileID: 21300000, guid: 54484d53c2d230f4987bbe130a67d16d, type: 3}
