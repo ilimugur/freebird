@@ -49,7 +49,7 @@ MonoBehaviour:
     type: 3}
   PlaneControllerPrefab: {fileID: 7294209803571723933, guid: 02eaa7fe431a19845a751b7113643836,
     type: 3}
-  LandingStripPosition: {x: -2, y: 10, z: 0}
+  LandingStripPosition: {x: -2, y: 20.4, z: 0}
 --- !u!1 &7584946869771579602
 GameObject:
   m_ObjectHideFlags: 0
