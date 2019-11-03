@@ -80,11 +80,8 @@ public class PlaneController : MonoBehaviour
 			EnableControls();
 		}
 		InitializeEvents();
-<<<<<<< HEAD
 		InitializeAcrobacyParameters();
-=======
 		InitializeExhaust();
->>>>>>> 8dd943edb193b66015e2d92b5c801795e80d37c4
 	}
 
 	#endregion
@@ -95,13 +92,10 @@ public class PlaneController : MonoBehaviour
 	{
 		CalculateInput();
 		CalculatePhysics();
-<<<<<<< HEAD
 		CalculateAcrobacyEvents();
 		_previousLookAngle = Rigidbody.rotation;
 		_previousVelocity = Rigidbody.velocity;
-=======
 		FixedUpdateExhaust();
->>>>>>> 8dd943edb193b66015e2d92b5c801795e80d37c4
 	}
 
 	protected void LateUpdate()
@@ -179,37 +173,65 @@ public class PlaneController : MonoBehaviour
 		if ((_previousLookAngle < verticalStanceMinimumAngle && angleClipped >= verticalStanceMinimumAngle) ||
 		    _previousLookAngle > verticalStanceMaximumAngle && angleClipped <= verticalStanceMaximumAngle)
 		{
-			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_START_VERTICAL_STANCE);
+			var ev = new AcrobacyEvent()
+			{
+				Position = Rigidbody.position,
+				Time = Time.time,
+				Type = AcrobacyEvent.AcrobacyEventType.StartVerticalStance
+			};
+			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_START_VERTICAL_STANCE,ev);
 		}
+
 		//EndVerticalStance,//angle < 80 || angle <100
 		if ((_previousLookAngle >= verticalStanceMinimumAngle && angleClipped < verticalStanceMinimumAngle) ||
 		    _previousLookAngle <= verticalStanceMaximumAngle && angleClipped > verticalStanceMaximumAngle)
 		{
-			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_END_VERTICAL_STANCE);
+			var ev = new AcrobacyEvent()
+			{
+				Position = Rigidbody.position,
+				Time = Time.time,
+				Type = AcrobacyEvent.AcrobacyEventType.EndVerticalStance
+			};
+			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_END_VERTICAL_STANCE,ev);
 		}
 
 		//StartLevelFlight,//angle<10 && angle>=-10
 		if ((previousLookAngleClipped < levelFlightMinimumAngle && angleClipped >= levelFlightMinimumAngle) ||
 		    previousLookAngleClipped > levelFlightMaximumAngle && angleClipped <= levelFlightMaximumAngle)
 		{
-			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_START_LEVEL_FLIGHT);
+			var ev = new AcrobacyEvent()
+			{
+				Position = Rigidbody.position,
+				Time = Time.time,
+				Type = AcrobacyEvent.AcrobacyEventType.StartLevelFlight
+			};
+			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_START_LEVEL_FLIGHT,ev);
 		}
 
 		//EndLevelFlight,//angle>10 || angle <-10
 		if ((previousLookAngleClipped >= levelFlightMinimumAngle && angleClipped < levelFlightMinimumAngle) ||
 		    previousLookAngleClipped <= levelFlightMaximumAngle && angleClipped > levelFlightMaximumAngle)
 		{
-			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_END_LEVEL_FLIGHT);
+			var ev = new AcrobacyEvent()
+			{
+				Position = Rigidbody.position,
+				Time = Time.time,
+				Type = AcrobacyEvent.AcrobacyEventType.EndLevelFlight
+			};
+			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_END_LEVEL_FLIGHT,ev);
 		}
 
 		//Loop,
 		if (angle > _startingAngle + (_loopCount+1) * 360f)
 		{
 			_loopCount++;
-			Debug.Log("************** LOOOOOOPPP *****************");
-			EditorApplication.Beep();
-			
-			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_COMPLETE_LOOP);
+			var ev = new AcrobacyEvent()
+			{
+				Position = Rigidbody.position,
+				Time = Time.time,
+				Type = AcrobacyEvent.AcrobacyEventType.Loop
+			};
+			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_COMPLETE_LOOP,ev);
 		}
 		
 		//StartFreeDescent,//that 30° downward free flight

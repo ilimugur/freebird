@@ -629,6 +629,9 @@ MonoBehaviour:
   PilotLaunchAngularSpeed: 0
   FullThrottlePropellerSpeed: 1
   NoThrottlePropellerSpeed: 0.2
+  TurnOffStall: 0.02
+  ExhaustParticleSystem: {fileID: 8861166439563792396}
+  ExhaustRateFactorAtNoThrottle: 0.3
   CratePrefab: {fileID: 7290077129980667573, guid: a56ec96a94f7a7d41ad2cd1d840ebc84,
     type: 3}
   CrateInstantiationLocation: {fileID: 7700202089201523178}
@@ -741,6 +744,12 @@ PrefabInstance:
 --- !u!4 &8861166439563792398 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7200764719120326750, guid: 71f9861e8125c3545b9849e448a380da,
+    type: 3}
+  m_PrefabInstance: {fileID: 1808035486187728976}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8861166439563792396 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7200764719120326748, guid: 71f9861e8125c3545b9849e448a380da,
     type: 3}
   m_PrefabInstance: {fileID: 1808035486187728976}
   m_PrefabAsset: {fileID: 0}
