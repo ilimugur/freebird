@@ -233,6 +233,7 @@ public class PlaneController : MonoBehaviour
 				Type = AcrobacyEvent.AcrobacyEventType.Loop
 			};
 			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_COMPLETE_LOOP,ev);
+			//EditorApplication.isPaused = true;
 		}
 		
 		//StartFreeDescent,//that 30° downward free flight

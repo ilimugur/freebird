@@ -27,6 +27,7 @@ public class UIManager : Singleton<UIManager>
 
 	public Animator FingerTappingAnimator;
 	public Coroutine FingerTappingCoroutine;
+	public Coroutine UiMessageHidingCoroutine;
 
 	void Awake()
 	{
@@ -108,7 +109,7 @@ public class UIManager : Singleton<UIManager>
 	public void RestartGame()
 	{
 		HideGameOverScreen(0.1f);
-		StartGame();
+		StartLevel();
 	}
 
 	public void RestartLevel()
@@ -126,9 +127,11 @@ public class UIManager : Singleton<UIManager>
 		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_START_NEXT);
 	}
 
-	public void StartGame()
+	public void StartLevel()
 	{
 		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_START);
+		
+		EventManager.Instance.StartListening(Constants.EVENT_UI_MESSAGE, OnUiMessage);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_COMPLETED, OnLevelComplete);
 		EventManager.Instance.StartListening(Constants.EVENT_SET_PROGRESSBAR, (float value) => OnSetProgressBar(value));
 		EventManager.Instance.StartListening(Constants.EVENT_SET_PROGRESSBAR, (int value) => OnSetProgressBar(value));
@@ -137,6 +140,23 @@ public class UIManager : Singleton<UIManager>
 		
 		HideStartScreen(0.1f);
 		ShowGameHud(0.1f);
+	}
+
+	public void OnUiMessage(string text)
+	{
+		GoodJobText.text = text;
+		GoodJobText.transform.localScale = Vector3.one * 0.1f;
+		GoodJobText.transform.DOScale(1f, 0.3f).SetEase(Ease.OutElastic);
+	}
+
+	public IEnumerator HideUiMessage(float delay=3f)
+	{
+		yield return new WaitForSeconds(delay);
+		GoodJobText.transform.DOScale(0.1f,0.3f).SetEase(Ease.InElastic).OnComplete(() =>
+		{
+			GoodJobText.text = "";
+			GoodJobText.transform.localScale = Vector3.one;
+		});
 	}
 
 	public void OnResetProgressBar()

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +16,17 @@ public class GameManager : Singleton<GameManager>
 	private PlaneController PlaneController;
 
 	public Vector3 LandingStripPosition = new Vector3(0,4,0);
+
+	private int _score;
+	public int Score
+	{
+		get { return _score; }
+		private set
+		{
+			_score = value;
+			EventManager.Instance.TriggerEvent(Constants.EVENT_UPDATE_SCORE, Score);
+		}
+	}
 
 	public bool IsGameStarted => GameStartTime > 0f;
 	public bool IsRoundStarted => RoundStartTime > 0f;
@@ -64,6 +75,7 @@ public class GameManager : Singleton<GameManager>
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_LOAD, LoadLevel);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_START, StartLevel);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_RESTART, RestartLevel);
+		EventManager.Instance.StartListening(Constants.EVENT_INCREMENT_SCORE, OnIncrementScore);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_START_NEXT, RestartLevel);
 
 		LandingStrip = Instantiate(LandingStripPrefab, LandingStripPosition, Quaternion.identity, this.transform);
@@ -98,17 +110,21 @@ public class GameManager : Singleton<GameManager>
 		Time.timeScale = 1;
 	}
 
+
+
 	private void StartLevel()
 	{
-		StartCoroutine(StartGameCo());
+
+		StartCoroutine(StartLevelCo());
 	}
 
 	private void RestartLevel()
 	{
 		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_LOAD);
+		// StartCoroutine(StartGameCo());
 	}
 
-	private IEnumerator StartGameCo()
+	private IEnumerator StartLevelCo()
 	{
 		yield return new WaitForEndOfFrame();
 		Debug.Log("Starting Game");
@@ -134,6 +150,11 @@ public class GameManager : Singleton<GameManager>
 
 		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_COMPLETED);
 		yield break;
+	}
+
+	void OnIncrementScore(int value)
+	{
+		
 	}
 
 	private bool IsGameEndInformed;

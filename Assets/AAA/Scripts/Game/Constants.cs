@@ -11,10 +11,14 @@ public class Constants
 	public static int NoCollisionLayer = 12;
 	public static int TriggersLayer = 13;
 
+	public static readonly string EVENT_UI_MESSAGE = "ev_uimsg";
+
 	public static readonly string EVENT_UPDATE_SCORE = "ev_usc";
+	public static readonly string EVENT_INCREMENT_SCORE = "ev_incrscr";
 	public static readonly string EVENT_UPDATE_HIGHSCORE = "ev_uhsc";
 	public static readonly string EVENT_SET_PROGRESSBAR = "ev_setpb";
 	public static readonly string EVENT_RESET_PROGRESSBAR = "ev_rstpb";
+
 
 	public static readonly string EVENT_GAME_START = "ev_stgm";
 	public static readonly string EVENT_GAME_OVER = "ev_gov";
@@ -28,7 +32,7 @@ public class Constants
 	public static readonly string EVENT_ENABLE_CONTROLS = "ev_enct";
 	public static readonly string EVENT_PLANE_CRASHED = "ev_plcr";
 
-
+	public static readonly string EVENT_GAIN_FUEL = "ev_gainfuel";
 	public static readonly string EVENT_COLLECT_OBJECT = "ev_collobj";
 	public static readonly string EVENT_JETTISON_OBJECT = "ev_jtsobj";
 
@@ -45,4 +49,11 @@ public class Constants
 	public static readonly string EVENT_ACROBACY_WHEEL_LEAVED_GROUND = "ev_whllvdgnd";
 	public static readonly string EVENT_ACROBACY_REACHED_SPACE = "ev_rchdspc";
 	//HeadsDown,
+
+	public static float FuelPerCrate = 25f;
+	public static float InitialFuel = 200f;
+	public static float FuelCapacity = 500f;
+
+	public static float ScoreBonusPerCrate = 5f;
+	public static float ScoreBonusPerSpin = 10f;
 }

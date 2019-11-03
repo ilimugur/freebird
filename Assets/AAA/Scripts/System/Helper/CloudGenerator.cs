@@ -50,8 +50,6 @@ public class CloudGenerator : MonoBehaviour
         Vector3 worldTopLeft = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, 0f));
         Vector3 worldCenter = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0f));
 
-        // TODO: Check top and bottom distance? (may need to introduce a y-index into ActiveCloud for this)
-
         float width = System.Math.Abs(worldBottomRight.x - worldBottomLeft.x);
         float height = System.Math.Abs(worldTopLeft.y - worldBottomLeft.y);
         width += width;
@@ -62,7 +60,7 @@ public class CloudGenerator : MonoBehaviour
         return result;
     }
 
-    private void EnsureCloudVisible(float xCoord, float yCoord, float yCenter, float radius)
+    private void EnsureCloudVisible(float xCoord, float yCoord)
     {
         // get from the pool
         int rendererIndex = _freeSpriteRenderers.Count - 1;
@@ -165,7 +163,7 @@ public class CloudGenerator : MonoBehaviour
                 if (yCoord <= SkyBound || availableStarSprites.Length > 0)
                 {
                     // TODO: Instead of using a hard-coded variable, look into the actual top bound of the sky strip
-                    EnsureCloudVisible(xCoord, yCoord, currentYCoordinate, height / 2);
+                    EnsureCloudVisible(xCoord, yCoord);
                 }
             }
 
