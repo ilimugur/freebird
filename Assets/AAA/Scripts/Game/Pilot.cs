@@ -12,14 +12,17 @@ public class Pilot : MonoBehaviour
 	public float FlutterWaveAmplitude = 2f;
 
 	public float DiveSpeed = 10f;
+	public float DiveAcceleration = 0.02f;
 
 	private float FlyStartTime;
 	private PlaneController Plane;
+	private Vector2 DiveVelocity;
 
 	public void StartFlying(PlaneController plane, Vector2 velocity, float angularVelocity)
 	{
 		Plane = plane;
 		FlyStartTime = Time.time;
+		DiveVelocity = Vector2.zero;
 
 		foreach (var body in Rigidbodies)
 		{
@@ -49,7 +52,11 @@ public class Pilot : MonoBehaviour
 		else
 		{
 			var diff = Plane.Rigidbody.position - HeadRigidbody.position;
-			HeadRigidbody.velocity = diff.normalized * DiveSpeed;
+			if (diff.y > 0f)
+				diff.y = 0f;
+			var targetVelocity = diff.normalized * DiveSpeed;
+			DiveVelocity += (targetVelocity - DiveVelocity) * DiveAcceleration;
+			HeadRigidbody.velocity = DiveVelocity;
 		}
 	}
 }
