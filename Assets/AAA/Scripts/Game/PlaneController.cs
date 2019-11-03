@@ -117,9 +117,10 @@ public class PlaneController : MonoBehaviour
 
 	private void OnLevelStart()
 	{
-		PlaceToSpawnLocation();
+		// PlaceToSpawnLocation();
 		InitializeCrates();
 		InitializePhysics();
+		enabled = true;
 	}
 
 	private void OnEnableControls()
