@@ -89,7 +89,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8359195145285593892}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: PlaneSpawnPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 3881415463053287685}
   - component: {fileID: 44313751487136023}
   - component: {fileID: 4658135603170544491}
-  m_Layer: 13
+  m_Layer: 16
   m_Name: ControlStartTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -322,7 +322,7 @@ GameObject:
   - component: {fileID: 6360355711425156374}
   - component: {fileID: 1826349887133957907}
   - component: {fileID: 8559259528031015307}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Landing Strip
   m_TagString: Untagged
   m_Icon: {fileID: 0}

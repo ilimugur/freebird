@@ -100,6 +100,7 @@ public class GameManager : Singleton<GameManager>
 		Debug.Log("Starting Game");
 		Analytics.CustomEvent("StartGame");
 
+		IsGameEndInformed = false;
 		GameStartTime = Time.time;
 		GameEndTime = 0f;
 	}
@@ -117,6 +118,8 @@ public class GameManager : Singleton<GameManager>
 		Time.timeScale = 1;
 		RoundEndTime = Time.time;
 		GameEndTime = Time.time;
+
+		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_COMPLETED);
 
 		yield return new WaitForSeconds(0.35f);
 		Save();
@@ -149,6 +152,21 @@ public class GameManager : Singleton<GameManager>
 		//Game.Load();
 	}
 
+	private bool IsGameEndInformed;
+
+	public void InformGameEnd()
+	{
+		if (!IsGameEndInformed)
+		{
+			IsGameEndInformed = true;
+			Invoke(nameof(DelayedGameEnd), 2f);
+		}
+	}
+
+	private void DelayedGameEnd()
+	{
+		RegisterGameOver();
+	}
 }
 
 

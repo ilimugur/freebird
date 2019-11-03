@@ -719,7 +719,6 @@ GameObject:
   - component: {fileID: 6329733927253562087}
   - component: {fileID: 6329733927253562084}
   - component: {fileID: 6329733927253562086}
-  - component: {fileID: 1405980403478785630}
   m_Layer: 14
   m_Name: Body
   m_TagString: Untagged
@@ -951,15 +950,3 @@ FixedJoint2D:
   m_ConnectedAnchor: {x: -0.02, y: -0.502607}
   m_DampingRatio: 0
   m_Frequency: 0
---- !u!114 &1405980403478785630
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6329733927253562095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13f29ec362d2a6048916afa3aa6dcf86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
