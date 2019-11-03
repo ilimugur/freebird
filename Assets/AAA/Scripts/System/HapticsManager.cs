@@ -10,6 +10,7 @@ public class HapticsManager : Singleton<HapticsManager>
 	public HapticDefinition PlaneCrashed;
 	public HapticDefinition UIMessageShown;
 	public HapticDefinition GameStarted;
+    public HapticDefinition OutOfFuel;
 
 	void Awake()
 	{
@@ -26,6 +27,7 @@ public class HapticsManager : Singleton<HapticsManager>
 			EventManager.Instance.StartListening(Constants.EVENT_GAME_START, OnGameStarted);
 			EventManager.Instance.StartListening(Constants.EVENT_UI_MESSAGE, OnUIMessageShown);
 			EventManager.Instance.StartListening(Constants.EVENT_PLANE_CRASHED, OnPlaneCrashed);
+			EventManager.Instance.StartListening(Constants.EVENT_OUT_OF_FUEL, OnOutOfFuel);
 		}
 		else
 		{
@@ -57,6 +59,11 @@ public class HapticsManager : Singleton<HapticsManager>
 	private void OnPlaneCrashed()
 	{
 		Vibrate(PlaneCrashed);
+	}
+
+	private void OnOutOfFuel()
+	{
+		Vibrate(OutOfFuel);
 	}
 
 	public void Vibrate(HapticDefinition def)
