@@ -17,6 +17,9 @@ public class UIManager : Singleton<UIManager>
 	public TMP_Text GameOverScreenScoreText;
 	public TMP_Text GameOverScreenBestScoreText;
 
+	public TMP_Text LevelCompleteScreenScoreText;
+	public TMP_Text LevelCompleteScreenBestScoreText;
+
 	public TMP_Text GameOverScreenRankText;
 	public TMP_Text GameOverScreenNextRankText;
 
@@ -148,6 +151,7 @@ public class UIManager : Singleton<UIManager>
 	public void OnUpdateScore(int score)
 	{
 		ScoreText.text = ""+score;
+		LevelCompleteScreenScoreText.text = "Score: " + score;
 		//ScoreText.transform.localScale = Vector3.one * 0.5f;
 		//ScoreText.transform.DOScale(1f, 0.5f).SetEase(Ease.OutElastic);
 	}
