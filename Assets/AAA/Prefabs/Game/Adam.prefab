@@ -444,6 +444,12 @@ MonoBehaviour:
   - {fileID: 6329733925904285724}
   - {fileID: 6329733925816531984}
   - {fileID: 6329733926892277089}
+  HeadRigidbody: {fileID: 6329733925727705565}
+  BodyRigidbody: {fileID: 6329733927253562094}
+  FlutterDuration: 2
+  FlutterWaveFrequency: 30
+  FlutterWaveAmplitude: 120
+  DiveSpeed: 5
 --- !u!1 &6329733926784908331
 GameObject:
   m_ObjectHideFlags: 0
