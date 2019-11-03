@@ -49,3 +49,4 @@ MonoBehaviour:
   VisibleMeshes: 4
   SegmentPrefab: {fileID: 819396470519318077, guid: 2f6e9fc0883f4674e9ec561ea70dc027,
     type: 3}
+  TerrainMaterial: {fileID: 2100000, guid: cae4cd96c34bf61489ac0a9f5c753d1b, type: 2}
