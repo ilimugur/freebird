@@ -154,7 +154,7 @@ public class GameManager : Singleton<GameManager>
 
 	void OnIncrementScore(int value)
 	{
-		
+		Score += value;
 	}
 
 	private bool IsGameEndInformed;

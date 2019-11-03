@@ -36,8 +36,8 @@ public class UIManager : Singleton<UIManager>
 		GameOverScreen.gameObject.SetActive(true);
 		LevelCompleteScreen.gameObject.SetActive(true);
 
-		ScoreTypeText.gameObject.SetActive(false);
-		GoodJobText.gameObject.SetActive(false);
+		//ScoreTypeText.gameObject.SetActive(false);
+		//GoodJobText.gameObject.SetActive(false);
 		FingerTappingAnimator.gameObject.SetActive(false);
 
 		HideGameHud(0);
@@ -132,6 +132,7 @@ public class UIManager : Singleton<UIManager>
 		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_START);
 		
 		EventManager.Instance.StartListening(Constants.EVENT_UI_MESSAGE, OnUiMessage);
+		EventManager.Instance.StartListening(Constants.EVENT_UPDATE_SCORE, OnUpdateScore);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_COMPLETED, OnLevelComplete);
 		EventManager.Instance.StartListening(Constants.EVENT_SET_PROGRESSBAR, (float value) => OnSetProgressBar(value));
 		EventManager.Instance.StartListening(Constants.EVENT_SET_PROGRESSBAR, (int value) => OnSetProgressBar(value));
@@ -142,21 +143,30 @@ public class UIManager : Singleton<UIManager>
 		ShowGameHud(0.1f);
 	}
 
+	public void OnUpdateScore(string text)
+	{
+		ScoreText.text = text;
+		ScoreText.transform.localScale = Vector3.one * 0.5f;
+		ScoreText.transform.DOScale(1f, 0.5f).SetEase(Ease.OutElastic);
+	}
+
 	public void OnUiMessage(string text)
 	{
 		GoodJobText.text = text;
 		GoodJobText.transform.localScale = Vector3.one * 0.1f;
-		GoodJobText.transform.DOScale(1f, 0.3f).SetEase(Ease.OutElastic);
+		GoodJobText.transform.DOScale(1f, 0.5f).SetEase(Ease.OutElastic);
+		if(UiMessageHidingCoroutine!=null) StopCoroutine(UiMessageHidingCoroutine);
+		UiMessageHidingCoroutine = StartCoroutine(HideUiMessage());
 	}
 
-	public IEnumerator HideUiMessage(float delay=3f)
+	public IEnumerator HideUiMessage(float delay=1f)
 	{
 		yield return new WaitForSeconds(delay);
-		GoodJobText.transform.DOScale(0.1f,0.3f).SetEase(Ease.InElastic).OnComplete(() =>
-		{
-			GoodJobText.text = "";
-			GoodJobText.transform.localScale = Vector3.one;
-		});
+		GoodJobText.transform.DOScale(0.1f, 0.3f).SetEase(Ease.OutElastic).OnComplete(() =>
+		 {
+			 GoodJobText.text = "";
+			 GoodJobText.transform.localScale = Vector3.one;
+		 });
 	}
 
 	public void OnResetProgressBar()
