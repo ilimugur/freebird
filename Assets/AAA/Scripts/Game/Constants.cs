@@ -60,8 +60,8 @@ public class Constants
 	public static float FuelGainPerHorizontalStancePerSecond = 2f;
 	public static float FuelExpenditurePerSecond = -10f;
 
-	public static float ScoreBonusPerCrate = 5f;
-	public static float ScoreBonusPerSecondInVerticalStance = 2f;
-	public static float ScoreBonusPerSecondInHorizontalStance = 1f;
-	public static float ScoreBonusPerLoopCombo = 10f;
+	public static int ScoreBonusPerCrate = 5;
+	public static int ScoreBonusPerSecondInVerticalStance = 2;
+	public static int ScoreBonusPerSecondInHorizontalStance = 1;
+	public static int ScoreBonusPerLoopCombo = 10;
 }
