@@ -80,7 +80,11 @@ public class PlaneController : MonoBehaviour
 			EnableControls();
 		}
 		InitializeEvents();
+<<<<<<< HEAD
 		InitializeAcrobacyParameters();
+=======
+		InitializeExhaust();
+>>>>>>> 8dd943edb193b66015e2d92b5c801795e80d37c4
 	}
 
 	#endregion
@@ -91,9 +95,13 @@ public class PlaneController : MonoBehaviour
 	{
 		CalculateInput();
 		CalculatePhysics();
+<<<<<<< HEAD
 		CalculateAcrobacyEvents();
 		_previousLookAngle = Rigidbody.rotation;
 		_previousVelocity = Rigidbody.velocity;
+=======
+		FixedUpdateExhaust();
+>>>>>>> 8dd943edb193b66015e2d92b5c801795e80d37c4
 	}
 
 	protected void LateUpdate()
@@ -624,6 +632,7 @@ public class PlaneController : MonoBehaviour
 	private void CalculateInput()
 	{
 		var currentlyDown =
+			!IsTurnedOff &&
 			IsControlsEnabled &&
 			Input.GetMouseButton(0) &&
 			(Mode != PlanePhysicsMode.Drop || CurrentCrateCount > 0);
@@ -669,8 +678,23 @@ public class PlaneController : MonoBehaviour
 				IsCrashed = true;
 				EventManager.Instance.TriggerEvent(Constants.EVENT_PLANE_CRASHED);
 
+				TurnOff();
 				GameManager.Instance.InformGameEnd();
 			}
+		}
+	}
+
+	#endregion
+
+	#region Engine
+
+	private bool IsTurnedOff;
+
+	private void TurnOff()
+	{
+		if (!IsTurnedOff)
+		{
+			IsTurnedOff = true;
 		}
 	}
 
@@ -717,12 +741,47 @@ public class PlaneController : MonoBehaviour
 	[Header("Propeller")]
 	public float FullThrottlePropellerSpeed = 1f;
 	public float NoThrottlePropellerSpeed = 0.1f;
+	public float TurnOffStall = 0.02f;
 
 	private void LateUpdatePropeller()
 	{
-		PropellerAnimator.speed = IsPushing
-			? FullThrottlePropellerSpeed
-			: NoThrottlePropellerSpeed;
+		if (IsTurnedOff)
+		{
+			PropellerAnimator.speed = Mathf.Max(PropellerAnimator.speed - TurnOffStall, 0f);
+		}
+		else
+		{
+			PropellerAnimator.speed = IsPushing
+				? FullThrottlePropellerSpeed
+				: NoThrottlePropellerSpeed;
+		}
+	}
+
+	#endregion
+
+	#region Exhaust
+
+	[Header("Exhaust")]
+	public ParticleSystem ExhaustParticleSystem;
+	public float ExhaustRateFactorAtNoThrottle = 0.3f;
+	private ParticleSystem.EmissionModule ExhaustEmission;
+	private float InitialEmissionRate;
+
+	private void InitializeExhaust()
+	{
+		ExhaustEmission = ExhaustParticleSystem.emission;
+		ExhaustEmission.enabled = false;
+		InitialEmissionRate = ExhaustEmission.rateOverTimeMultiplier;
+	}
+
+	private void FixedUpdateExhaust()
+	{
+		var active = !IsTurnedOff && GameManager.Instance.IsGameStarted;
+		ExhaustEmission.enabled = active;
+		if (active)
+		{
+			ExhaustEmission.rateOverTimeMultiplier = (IsPushing ? 1f : ExhaustRateFactorAtNoThrottle) * InitialEmissionRate;
+		}
 	}
 
 	#endregion
