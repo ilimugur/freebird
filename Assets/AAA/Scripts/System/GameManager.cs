@@ -109,6 +109,8 @@ public class GameManager : Singleton<GameManager>
 		GameEndTime = 0f;
 		RoundStartTime = 0f;
 		RoundEndTime = 0f;
+		IsGameFinished = false;
+		IsGameFinishScreenDisplayed = false;
 
 		CameraDirector.Instance.transform.position = PlaneController.SpawnLocation;
 		PlaneController.PlaceToSpawnLocation();
@@ -136,8 +138,6 @@ public class GameManager : Singleton<GameManager>
 		Debug.Log("Starting Game");
 		Analytics.CustomEvent("StartGame");
 
-		IsGameFinished = false;
-		IsGameFinishScreenDisplayed = false;
 		GameStartTime = Time.time;
 		GameEndTime = 0f;
 	}
