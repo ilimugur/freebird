@@ -20,6 +20,7 @@ public class Constants
 	public static readonly string EVENT_GAME_OVER = "ev_gov";
 	public static readonly string EVENT_GAME_COMPLETED = "ev_gcd";
 	public static readonly string EVENT_GAME_CONTINUE_AFTER_GAME_OVER = "ev_gcnt";
+	public static readonly string EVENT_LEVEL_LOAD = "ev_stlo";
 	public static readonly string EVENT_LEVEL_START = "ev_stlv";
 	public static readonly string EVENT_LEVEL_START_NEXT = "ev_stnxlv";
 	public static readonly string EVENT_LEVEL_RESTART = "ev_rstlv";

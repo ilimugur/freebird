@@ -2,6 +2,8 @@
 
 public class CameraDirector : MonoBehaviour
 {
+	public static CameraDirector Instance;
+
 	private PlaneController _Target;
 	public PlaneController Target
 	{
@@ -15,7 +17,11 @@ public class CameraDirector : MonoBehaviour
 		}
 	}
 	public float SmoothingFactor = 0.03f;
-	public float PositionX = -1f;
+
+	private void Awake()
+	{
+		Instance = this;
+	}
 
 	void FixedUpdate()
 	{

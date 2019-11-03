@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MoreMountains.NiceVibrations;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class GameManager : Singleton<GameManager>
@@ -60,27 +61,41 @@ public class GameManager : Singleton<GameManager>
 		QualitySettings.vSyncCount = 0;
 		Application.targetFrameRate = 60;
 
-		UIManager.Instance.ShowStartScreen(0);
+		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_LOAD, LoadLevel);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_START, StartLevel);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_RESTART, RestartLevel);
+		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_START_NEXT, RestartLevel);
 
-		Load();
-
-		LandingStrip = Instantiate(LandingStripPrefab, LandingStripPosition,Quaternion.identity,this.transform);
-		PlaneController = Instantiate(PlaneControllerPrefab, LandingStrip.PlaneSpawnPosition.position, 
-			Quaternion.identity, this.transform);
+		LandingStrip = Instantiate(LandingStripPrefab, LandingStripPosition, Quaternion.identity, this.transform);
+		PlaneController = Instantiate(PlaneControllerPrefab, LandingStrip.PlaneSpawnPosition.position,
+		                              Quaternion.identity, this.transform);
 
 		PlaneController.SpawnLocation = LandingStrip.PlaneSpawnPosition.position;
-	}
 
-	void Start()
-	{
-		
+		RestartLevel();
 	}
 
 	public void RegisterGameOver()
 	{
 		StartCoroutine(TriggerGameOver());
+	}
+
+	private void LoadLevel()
+	{
+		StartCoroutine(LoadLevelCo());
+	}
+
+	private IEnumerator LoadLevelCo()
+	{
+		yield return new WaitUntil(() => !Input.GetMouseButton(0));
+		yield return null;
+		yield return null;
+		yield return null;
+
+		CameraDirector.Instance.transform.position = PlaneController.SpawnLocation;
+		PlaneController.PlaceToSpawnLocation();
+		UIManager.Instance.ShowStartScreen(0);
+		Time.timeScale = 1;
 	}
 
 	private void StartLevel()
@@ -90,8 +105,7 @@ public class GameManager : Singleton<GameManager>
 
 	private void RestartLevel()
 	{
-
-		StartCoroutine(StartGameCo());
+		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_LOAD);
 	}
 
 	private IEnumerator StartGameCo()
@@ -115,41 +129,11 @@ public class GameManager : Singleton<GameManager>
 	private IEnumerator TriggerGameOver()
 	{
 		Debug.Log("Game Over");
-		Time.timeScale = 1;
 		RoundEndTime = Time.time;
 		GameEndTime = Time.time;
 
 		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_COMPLETED);
-
-		yield return new WaitForSeconds(0.35f);
-		Save();
-	}
-
-	void OnApplicationQuit()
-	{
-		Save();
-	}
-
-	void OnApplicationFocus()
-	{
-		
-	}
-
-	private void Save()
-	{
-		//Game.Save();
-	}
-
-	private void Load()
-	{
-		Debug.Log("Loading Game");
-		Time.timeScale = 1;
-		//if (Game == null)
-		//{
-		//	var obj = new GameObject("Game");
-		//	Game = obj.AddComponent<Game>();
-		//}
-		//Game.Load();
+		yield break;
 	}
 
 	private bool IsGameEndInformed;
@@ -168,5 +152,3 @@ public class GameManager : Singleton<GameManager>
 		RegisterGameOver();
 	}
 }
-
-

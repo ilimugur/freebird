@@ -1,6 +1,5 @@
 ﻿using System;
 using DG.Tweening;
-using UnityEditor;
 using UnityEngine;
 
 public enum PlanePhysicsMode
@@ -71,17 +70,10 @@ public class PlaneController : MonoBehaviour
 
 	protected void Awake()
 	{
-		if (DisableControlsAtStart)
-		{
-			DisableControls();
-		}
-		else
-		{
-			EnableControls();
-		}
 		InitializeEvents();
 		InitializeAcrobacyParameters();
 		InitializeExhaust();
+		InitializePhysics();
 	}
 
 	#endregion
@@ -118,6 +110,7 @@ public class PlaneController : MonoBehaviour
 
 	private void InitializeEvents()
 	{
+		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_LOAD, OnLevelLoad);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_START, OnLevelStart);
 		EventManager.Instance.StartListening(Constants.EVENT_ENABLE_CONTROLS, OnEnableControls);
 	}
@@ -126,15 +119,23 @@ public class PlaneController : MonoBehaviour
 	{
 		_previousLookAngle = Rigidbody.rotation;
 		_previousVelocity = Rigidbody.velocity;
+		_startingAngle = Rigidbody.rotation;
+	}
+
+	private void OnLevelLoad()
+	{
+		enabled = false;
+		ResetPhysics();
+		ResetCrates();
+		ResetCrash();
+		ResetExhaust();
+		ResetEngine();
+		DisableControls();
 	}
 
 	private void OnLevelStart()
 	{
-		// PlaceToSpawnLocation();
-		InitializeCrates();
-		InitializePhysics();
 		enabled = true;
-		_startingAngle = Rigidbody.rotation;
 	}
 
 	private void OnEnableControls()
@@ -269,7 +270,10 @@ public class PlaneController : MonoBehaviour
 	private void InitializePhysics()
 	{
 		InitialHeight = Transform.position.y;
+	}
 
+	private void ResetPhysics()
+	{
 		switch (Mode)
 		{
 			case PlanePhysicsMode.Drop:
@@ -691,6 +695,11 @@ public class PlaneController : MonoBehaviour
 
 	private bool IsCrashed;
 
+	private void ResetCrash()
+	{
+		IsCrashed = false;
+	}
+
 	private void OnCollisionEnter2D(Collision2D other)
 	{
 		if (!IsCrashed)
@@ -711,6 +720,11 @@ public class PlaneController : MonoBehaviour
 	#region Engine
 
 	private bool IsTurnedOff;
+
+	private void ResetEngine()
+	{
+		IsTurnedOff = false;
+	}
 
 	private void TurnOff()
 	{
@@ -792,8 +806,12 @@ public class PlaneController : MonoBehaviour
 	private void InitializeExhaust()
 	{
 		ExhaustEmission = ExhaustParticleSystem.emission;
-		ExhaustEmission.enabled = false;
 		InitialEmissionRate = ExhaustEmission.rateOverTimeMultiplier;
+	}
+
+	private void ResetExhaust()
+	{
+		ExhaustEmission.enabled = false;
 	}
 
 	private void FixedUpdateExhaust()
@@ -819,7 +837,7 @@ public class PlaneController : MonoBehaviour
 
 	internal int CurrentCrateCount;
 
-	private void InitializeCrates()
+	private void ResetCrates()
 	{
 		switch (Mode)
 		{
@@ -859,9 +877,8 @@ public class PlaneController : MonoBehaviour
 
 	[Header("Spawning")]
 	public Vector3 SpawnLocation;
-	public bool DisableControlsAtStart = false;
 
-	private void PlaceToSpawnLocation()
+	public void PlaceToSpawnLocation()
 	{
 		Transform.position = SpawnLocation;
 		Transform.rotation = Quaternion.identity;
