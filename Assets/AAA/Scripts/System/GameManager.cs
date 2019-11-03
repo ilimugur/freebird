@@ -87,11 +87,6 @@ public class GameManager : Singleton<GameManager>
 		RestartLevel();
 	}
 
-	public void RegisterGameOver()
-	{
-		StartCoroutine(TriggerGameOver());
-	}
-
 	private void LoadLevel()
 	{
 		StartCoroutine(LoadLevelCo());
@@ -130,7 +125,8 @@ public class GameManager : Singleton<GameManager>
 		Debug.Log("Starting Game");
 		Analytics.CustomEvent("StartGame");
 
-		IsGameEndInformed = false;
+		IsGameFinished = false;
+		IsGameFinishScreenDisplayed = false;
 		GameStartTime = Time.time;
 		GameEndTime = 0f;
 	}
@@ -148,8 +144,11 @@ public class GameManager : Singleton<GameManager>
 		RoundEndTime = Time.time;
 		GameEndTime = Time.time;
 
+		// Wait before end screen.
+		yield return new WaitForSeconds(2f);
+
+		IsGameFinishScreenDisplayed = true;
 		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_COMPLETED);
-		yield break;
 	}
 
 	void OnIncrementScore(int value)
@@ -157,19 +156,15 @@ public class GameManager : Singleton<GameManager>
 		Score += value;
 	}
 
-	private bool IsGameEndInformed;
+	public bool IsGameFinished { get; private set; }
+	public bool IsGameFinishScreenDisplayed { get; private set; }
 
 	public void InformGameEnd()
 	{
-		if (!IsGameEndInformed)
+		if (!IsGameFinished)
 		{
-			IsGameEndInformed = true;
-			Invoke(nameof(DelayedGameEnd), 2f);
+			IsGameFinished = true;
+			StartCoroutine(TriggerGameOver());
 		}
-	}
-
-	private void DelayedGameEnd()
-	{
-		RegisterGameOver();
 	}
 }
