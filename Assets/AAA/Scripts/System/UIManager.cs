@@ -126,14 +126,20 @@ public class UIManager : Singleton<UIManager>
 	{
 		HideStartScreen(0.1f);
 		HideLevelCompleteScreen(0.1f);
-		ShowGameHud(0.1f);
+		//ShowGameHud(0.1f);
 		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_START_NEXT);
 	}
 
 	public void StartLevel()
 	{
-		
-		
+		EventManager.Instance.StopListening(Constants.EVENT_UI_MESSAGE, OnUiMessage);
+		EventManager.Instance.StopListening(Constants.EVENT_UPDATE_SCORE, OnUpdateScore);
+		EventManager.Instance.StopListening(Constants.EVENT_LEVEL_COMPLETED, OnLevelComplete);
+		EventManager.Instance.StopListening(Constants.EVENT_SET_PROGRESSBAR, (float value) => OnSetProgressBar(value));
+		EventManager.Instance.StopListening(Constants.EVENT_SET_PROGRESSBAR, (int value) => OnSetProgressBar(value));
+		EventManager.Instance.StopListening(Constants.EVENT_RESET_PROGRESSBAR, OnResetProgressBar);
+		EventManager.Instance.StopListening(Constants.EVENT_GAME_OVER, OnGameOver);
+
 		EventManager.Instance.StartListening(Constants.EVENT_UI_MESSAGE, OnUiMessage);
 		EventManager.Instance.StartListening(Constants.EVENT_UPDATE_SCORE, OnUpdateScore);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_COMPLETED, OnLevelComplete);

@@ -91,6 +91,7 @@ public class GameManager : Singleton<GameManager>
 	private void OnLevelCompleted()
 	{
 		EventManager.Instance.TriggerEvent(Constants.EVENT_UPDATE_SCORE, _score);
+		_score = 0;
 	}
 
 	private void LoadLevel()
@@ -120,12 +121,13 @@ public class GameManager : Singleton<GameManager>
 
 	private void StartLevel()
 	{
-
+		Score = 0;
 		StartCoroutine(StartLevelCo());
 	}
 
 	private void RestartLevel()
 	{
+		Score = 0;
 		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_LOAD);
 		// StartCoroutine(StartGameCo());
 	}
