@@ -71,11 +71,13 @@ public class HapticsManager : Singleton<HapticsManager>
 	{
 		if (MMVibrationManager.HapticsSupported())
 		{
-			MMVibrationManager.Haptic(def.HapticType);
+			if(def!=null)
+				MMVibrationManager.Haptic(def.HapticType);
 		}
 		else if (MMVibrationManager.Android())
 		{
-			MMVibrationManager.AndroidVibrate((long)def.FailoverVibrationDuration, (int)def.FailoverVibrationStrength);
+			if(def!=null)
+				MMVibrationManager.AndroidVibrate((long)def.FailoverVibrationDuration, (int)def.FailoverVibrationStrength);
 		}
 	}
 
