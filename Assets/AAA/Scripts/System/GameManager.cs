@@ -92,6 +92,7 @@ public class GameManager : Singleton<GameManager>
 	{
 		Debug.Log("Level completed");
 		EventManager.Instance.TriggerEvent(Constants.EVENT_UPDATE_SCORE, _score);
+		_score = 0;
 	}
 
 	private void LoadLevel()
@@ -115,6 +116,7 @@ public class GameManager : Singleton<GameManager>
 		RoundEndTime = 0f;
 		IsGameFinished = false;
 		IsGameFinishScreenDisplayed = false;
+		Score = 0;
 
 		CameraDirector.Instance.transform.position = PlaneController.SpawnLocation;
 		PlaneController.PlaceToSpawnLocation();
