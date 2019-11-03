@@ -106,6 +106,7 @@ public class PlaneController : MonoBehaviour
 	public Transform Transform;
 	public Rigidbody2D Rigidbody;
 	public Animator PropellerAnimator;
+    public GameObject CrashBlast;
 
 	#endregion
 
@@ -705,13 +706,15 @@ public class PlaneController : MonoBehaviour
 	#region Crash
 
 	private bool IsCrashed;
+    private GameObject _blastEffect;
 
-	private void ResetCrash()
-	{
-		IsCrashed = false;
-	}
+    private void ResetCrash()
+    {
+        IsCrashed = false;
+        UnityEngine.Object.Destroy(_blastEffect);
+    }
 
-	private void OnCollisionEnter2D(Collision2D other)
+    private void OnCollisionEnter2D(Collision2D other)
 	{
 		if (!IsCrashed)
 		{
@@ -719,6 +722,9 @@ public class PlaneController : MonoBehaviour
 			{
 				Debug.Log("Crashed");
 				IsCrashed = true;
+                _blastEffect = Instantiate(CrashBlast, this.transform);
+                _blastEffect.transform.localPosition = Vector3.zero;
+
 				EventManager.Instance.TriggerEvent(Constants.EVENT_PLANE_CRASHED);
 
 				TurnOff();

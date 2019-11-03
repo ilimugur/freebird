@@ -43,15 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aab4b394677f19640b728854b09c5650, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShotStarted: {fileID: 11400000, guid: 51fa0f3230aae214ea2075ce357c7e0f, type: 2}
-  RegularScored: {fileID: 11400000, guid: c0f79d0f86285cf45be5cdf7c2bfc6d5, type: 2}
-  LuckyScored: {fileID: 11400000, guid: 095bf5231a183694ba59bde93f4ec47e, type: 2}
-  PerfectScored: {fileID: 11400000, guid: 42c1924eb8e300b4bacaf026f6392968, type: 2}
-  ShotMissed: {fileID: 11400000, guid: 5c447a11d4baa144a9a25aff45c84754, type: 2}
-  BallHitObstacle: {fileID: 11400000, guid: a5026b46cea2d404b9b9f57844425981, type: 2}
-  BallHitHoopPerimeter: {fileID: 11400000, guid: d4ce17203d41b4147907cbc7ab19f058,
-    type: 2}
-  BallHitGround: {fileID: 11400000, guid: 3482b981d42938d4d88f66472e594525, type: 2}
-  LevelCompleted: {fileID: 11400000, guid: 92b6a01bb99f71748b2b03898dcca029, type: 2}
-  GameStarted: {fileID: 11400000, guid: 0ba8d7912908a534886392f107163a0a, type: 2}
-  GameOver: {fileID: 11400000, guid: 27cb573ca0b98fc4d9342001d0cf35fe, type: 2}
+  PlaneCrashed: {fileID: 11400000, guid: dc38b62308acbe6489ae2b6d353adc50, type: 2}
+  UIMessageShown: {fileID: 11400000, guid: b4b6a31c0b684cc468045a4726ce725b, type: 2}
+  GameStarted: {fileID: 11400000, guid: 1fa8c3b438f988a4e988dbaf037e63a5, type: 2}
