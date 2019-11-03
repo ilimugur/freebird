@@ -30,6 +30,10 @@ public class OilGenerator : MonoBehaviour
 
     private List<GameObject> _usedClusters = new List<GameObject>();
 
+    private int _cratesCollected = 0;
+
+    private string[] _uiMessages = { "Collector!", "Fuel beast!", "Get 'em all!" };
+
     void Awake()
     {
         _lastGeneration = new Vector2(0, 0);
@@ -98,6 +102,11 @@ public class OilGenerator : MonoBehaviour
                 EnsureClusterElementNotVisible(i);
                 EventManager.Instance.TriggerEvent(Constants.EVENT_GAIN_FUEL, Constants.FuelPerCrate);
                 EventManager.Instance.TriggerEvent(Constants.EVENT_INCREMENT_SCORE, Constants.ScoreBonusPerCrate);
+                if (++_cratesCollected % 5 == 0)
+                {
+                    int index = _rand.Next(0, _uiMessages.Length);
+                    EventManager.Instance.TriggerEvent(Constants.EVENT_UI_MESSAGE, _uiMessages[index]);
+                }
                 break;
             }
         }

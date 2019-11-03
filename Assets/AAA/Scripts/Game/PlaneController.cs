@@ -128,6 +128,7 @@ public class PlaneController : MonoBehaviour
 		ResetPhysics();
 		ResetCrates();
 		ResetCrash();
+		ResetPilot();
 		ResetExhaust();
 		ResetEngine();
 		DisableControls();
@@ -748,6 +749,18 @@ public class PlaneController : MonoBehaviour
 	public float PilotLaunchAngularSpeed;
 
 	private bool IsPilotReleased;
+	private Pilot ReleasedPilot;
+
+	private void ResetPilot()
+	{
+		IsPilotReleased = false;
+
+		if (ReleasedPilot)
+		{
+			Destroy(ReleasedPilot.gameObject);
+			ReleasedPilot = null;
+		}
+	}
 
 	public void ReleasePilot()
 	{
@@ -756,12 +769,8 @@ public class PlaneController : MonoBehaviour
 			IsPilotReleased = true;
 
 			var go = Instantiate(PilotPrefab, PilotInstantiationLocation.position, Quaternion.identity);
-			var bodies = go.GetComponentsInChildren<Rigidbody2D>();
-			foreach (var body in bodies)
-			{
-				body.velocity = Rigidbody.velocity + PilotAdditionalLaunchVelocity;
-				body.angularVelocity = PilotLaunchAngularSpeed;
-			}
+			ReleasedPilot = go.GetComponent<Pilot>();
+			ReleasedPilot.StartFlying(this, Rigidbody.velocity + PilotAdditionalLaunchVelocity, PilotLaunchAngularSpeed);
 		}
 	}
 
