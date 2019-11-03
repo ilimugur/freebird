@@ -7,17 +7,9 @@ using UnityEngine;
 public class HapticsManager : Singleton<HapticsManager>
 {
 	[Header("Haptics and Failover Vibration Settings")]
-	public HapticDefinition ShotStarted;
-	public HapticDefinition RegularScored;
-	public HapticDefinition LuckyScored;
-	public HapticDefinition PerfectScored;
-	public HapticDefinition ShotMissed;
-	public HapticDefinition BallHitObstacle;
-	public HapticDefinition BallHitHoopPerimeter;
-	public HapticDefinition BallHitGround;
-	public HapticDefinition LevelCompleted;
+	public HapticDefinition PlaneCrashed;
+	public HapticDefinition UIMessageShown;
 	public HapticDefinition GameStarted;
-	public HapticDefinition GameOver;
 
 	void Awake()
 	{
@@ -31,9 +23,9 @@ public class HapticsManager : Singleton<HapticsManager>
 	{
 		if (EventManager.Instance)
 		{
-			EventManager.Instance.StartListening(Constants.EVENT_LEVEL_COMPLETED, OnLevelCompleted);
 			EventManager.Instance.StartListening(Constants.EVENT_GAME_START, OnGameStarted);
-			EventManager.Instance.StartListening(Constants.EVENT_GAME_OVER, OnGameOver);
+			EventManager.Instance.StartListening(Constants.EVENT_UI_MESSAGE, OnUIMessageShown);
+			EventManager.Instance.StartListening(Constants.EVENT_PLANE_CRASHED, OnPlaneCrashed);
 		}
 		else
 		{
@@ -45,9 +37,9 @@ public class HapticsManager : Singleton<HapticsManager>
 	{
 		if (EventManager.Instance)
 		{
-			EventManager.Instance.StopListening(Constants.EVENT_LEVEL_COMPLETED, OnLevelCompleted);
 			EventManager.Instance.StopListening(Constants.EVENT_GAME_START, OnGameStarted);
-			EventManager.Instance.StopListening(Constants.EVENT_GAME_OVER, OnGameOver);
+			EventManager.Instance.StartListening(Constants.EVENT_UI_MESSAGE, OnUIMessageShown);
+			EventManager.Instance.StopListening(Constants.EVENT_PLANE_CRASHED, OnPlaneCrashed);
 		}
 	}
 
@@ -57,14 +49,14 @@ public class HapticsManager : Singleton<HapticsManager>
 		Vibrate(GameStarted);
 	}
 
-	private void OnGameOver()
+	private void OnUIMessageShown()
 	{
-		Vibrate(GameOver);
+		Vibrate(UIMessageShown);
 	}
 
-	private void OnLevelCompleted()
+	private void OnPlaneCrashed()
 	{
-		Vibrate(LevelCompleted);
+		Vibrate(PlaneCrashed);
 	}
 
 	public void Vibrate(HapticDefinition def)
