@@ -10,10 +10,12 @@ public class EventManager : Singleton<EventManager>
 	private Dictionary<string, UnityEventInt> eventDictionaryInt;
 	private Dictionary<string, UnityEventFloat> eventDictionaryFloat;
 	private Dictionary<string, UnityEventString> eventDictionaryString;
+	private Dictionary<string, UnityEventAcrobacyEvent> eventDictionaryAcrobacyEvent;
 
 	public class UnityEventInt : UnityEvent<int> {}
 	public class UnityEventFloat : UnityEvent<float> {}
 	public class UnityEventString : UnityEvent<string> { }
+	public class UnityEventAcrobacyEvent : UnityEvent<AcrobacyEvent> { }
 
 	public bool LogTriggersToConsole = true;
 	public bool LogListenersToConsole = true;
@@ -29,6 +31,7 @@ public class EventManager : Singleton<EventManager>
 		if (eventDictionaryInt == null) eventDictionaryInt = new Dictionary<string, UnityEventInt>();
 		if (eventDictionaryFloat == null) eventDictionaryFloat = new Dictionary<string, UnityEventFloat>();
 		if (eventDictionaryString == null) eventDictionaryString = new Dictionary<string, UnityEventString>();
+		if (eventDictionaryAcrobacyEvent == null) eventDictionaryAcrobacyEvent = new Dictionary<string, UnityEventAcrobacyEvent>();
 	}
 
 	public void StartListening(string eventName, UnityAction listener)
@@ -95,6 +98,22 @@ public class EventManager : Singleton<EventManager>
 		}
 	}
 
+	public void StartListening(string eventName, UnityAction<AcrobacyEvent> listener)
+	{
+		LogListenerRegistered(eventName, listener);
+		UnityEventAcrobacyEvent thisEvent = null;
+		if (eventDictionaryAcrobacyEvent.TryGetValue(eventName, out thisEvent))
+		{
+			thisEvent.AddListener(listener);
+		}
+		else
+		{
+			thisEvent = new UnityEventAcrobacyEvent();
+			thisEvent.AddListener(listener);
+			eventDictionaryAcrobacyEvent.Add(eventName, thisEvent);
+		}
+	}
+
 	public void StopListening(string eventName, UnityAction listener)
 	{
 		LogListenerUnregistered(eventName, listener);
@@ -128,6 +147,15 @@ public class EventManager : Singleton<EventManager>
 		LogListenerUnregistered(eventName, listener);
 		UnityEventString thisEvent = null;
 		if (eventDictionaryString.TryGetValue(eventName, out thisEvent))
+		{
+			thisEvent.RemoveListener(listener);
+		}
+	}
+	public void StopListening(string eventName, UnityAction<AcrobacyEvent> listener)
+	{
+		LogListenerUnregistered(eventName, listener);
+		UnityEventAcrobacyEvent thisEvent = null;
+		if (eventDictionaryAcrobacyEvent.TryGetValue(eventName, out thisEvent))
 		{
 			thisEvent.RemoveListener(listener);
 		}
@@ -168,6 +196,15 @@ public class EventManager : Singleton<EventManager>
 		LogEventTriggered(eventName,value);
 		UnityEventString thisEvent = null;
 		if (eventDictionaryString.TryGetValue(eventName, out thisEvent))
+		{
+			thisEvent.Invoke(value);
+		}
+	}
+	public void TriggerEvent(string eventName, AcrobacyEvent value)
+	{
+		LogEventTriggered(eventName, value);
+		UnityEventAcrobacyEvent thisEvent = null;
+		if (eventDictionaryAcrobacyEvent.TryGetValue(eventName, out thisEvent))
 		{
 			thisEvent.Invoke(value);
 		}

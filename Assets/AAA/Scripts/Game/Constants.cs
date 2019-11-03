@@ -31,4 +31,17 @@ public class Constants
 	public static readonly string EVENT_COLLECT_OBJECT = "ev_collobj";
 	public static readonly string EVENT_JETTISON_OBJECT = "ev_jtsobj";
 
+	public static readonly string EVENT_ACROBACY_START_VERTICAL_STANCE = "ev_stvertstan";
+	public static readonly string EVENT_ACROBACY_END_VERTICAL_STANCE = "ev_endvertstan";
+	public static readonly string EVENT_ACROBACY_START_LEVEL_FLIGHT = "ev_stlvlflg";
+	public static readonly string EVENT_ACROBACY_END_LEVEL_FLIGHT = "ev_endlvlflg";
+	public static readonly string EVENT_ACROBACY_START_FREE_DESCENT = "ev_stfrdsc";
+	public static readonly string EVENT_ACROBACY_END_FREE_DESCENT = "ev_endfrdsc";
+	public static readonly string EVENT_ACROBACY_COMPLETE_LOOP = "ev_cmploop";
+	public static readonly string EVENT_ACROBACY_TAIL_CONTACTED_GROUND = "ev_tailcntgnd";
+	public static readonly string EVENT_ACROBACY_TAIL_LEAVED_GROUND = "ev_taillvdgnd";
+	public static readonly string EVENT_ACROBACY_WHEEL_CONTACTED_GROUND = "ev_whlcntgnd";
+	public static readonly string EVENT_ACROBACY_WHEEL_LEAVED_GROUND = "ev_whllvdgnd";
+	public static readonly string EVENT_ACROBACY_REACHED_SPACE = "ev_rchdspc";
+	//HeadsDown,
 }

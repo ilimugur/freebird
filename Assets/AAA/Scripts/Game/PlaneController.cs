@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using UnityEditor;
 using UnityEngine;
 
 public enum PlanePhysicsMode
@@ -79,6 +80,7 @@ public class PlaneController : MonoBehaviour
 			EnableControls();
 		}
 		InitializeEvents();
+		InitializeAcrobacyParameters();
 	}
 
 	#endregion
@@ -89,6 +91,9 @@ public class PlaneController : MonoBehaviour
 	{
 		CalculateInput();
 		CalculatePhysics();
+		CalculateAcrobacyEvents();
+		_previousLookAngle = Rigidbody.rotation;
+		_previousVelocity = Rigidbody.velocity;
 	}
 
 	protected void LateUpdate()
@@ -115,17 +120,98 @@ public class PlaneController : MonoBehaviour
 		EventManager.Instance.StartListening(Constants.EVENT_ENABLE_CONTROLS, OnEnableControls);
 	}
 
+	private void InitializeAcrobacyParameters()
+	{
+		_previousLookAngle = Rigidbody.rotation;
+		_previousVelocity = Rigidbody.velocity;
+	}
+
 	private void OnLevelStart()
 	{
 		// PlaceToSpawnLocation();
 		InitializeCrates();
 		InitializePhysics();
 		enabled = true;
+		_startingAngle = Rigidbody.rotation;
 	}
 
 	private void OnEnableControls()
 	{
 		EnableControls();
+	}
+
+	private void CalculateAcrobacyEvents()
+	{
+		
+		var verticalStanceMinimumAngle = 80;
+		var verticalStanceMaximumAngle = 100;
+
+		var levelFlightMinimumAngle = -10;
+		var levelFlightMaximumAngle = 10;
+
+		var velocity = Rigidbody.velocity;
+		var angle = Rigidbody.rotation;
+		var angleClipped = angle % 360f;
+		while (angleClipped > 180f)
+		{
+			angleClipped -= 360f;
+		}
+		var angularVelocity = Rigidbody.angularVelocity;
+		var localVelocity = Rigidbody.GetRelativeVector(velocity);
+		var speed = velocity.magnitude;
+
+		_totalAngleCovered += angle - _previousLookAngle;
+		var previousLookAngleClipped = _previousLookAngle % 360f;
+		while (previousLookAngleClipped > 180f)
+		{
+			previousLookAngleClipped -= 360f;
+		}
+
+		//StartVerticalStance, //angle>=80 && angle <= 100
+		if ((_previousLookAngle < verticalStanceMinimumAngle && angleClipped >= verticalStanceMinimumAngle) ||
+		    _previousLookAngle > verticalStanceMaximumAngle && angleClipped <= verticalStanceMaximumAngle)
+		{
+			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_START_VERTICAL_STANCE);
+		}
+		//EndVerticalStance,//angle < 80 || angle <100
+		if ((_previousLookAngle >= verticalStanceMinimumAngle && angleClipped < verticalStanceMinimumAngle) ||
+		    _previousLookAngle <= verticalStanceMaximumAngle && angleClipped > verticalStanceMaximumAngle)
+		{
+			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_END_VERTICAL_STANCE);
+		}
+
+		//StartLevelFlight,//angle<10 && angle>=-10
+		if ((previousLookAngleClipped < levelFlightMinimumAngle && angleClipped >= levelFlightMinimumAngle) ||
+		    previousLookAngleClipped > levelFlightMaximumAngle && angleClipped <= levelFlightMaximumAngle)
+		{
+			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_START_LEVEL_FLIGHT);
+		}
+
+		//EndLevelFlight,//angle>10 || angle <-10
+		if ((previousLookAngleClipped >= levelFlightMinimumAngle && angleClipped < levelFlightMinimumAngle) ||
+		    previousLookAngleClipped <= levelFlightMaximumAngle && angleClipped > levelFlightMaximumAngle)
+		{
+			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_END_LEVEL_FLIGHT);
+		}
+
+		//Loop,
+		if (angle > _startingAngle + (_loopCount+1) * 360f)
+		{
+			_loopCount++;
+			Debug.Log("************** LOOOOOOPPP *****************");
+			EditorApplication.Beep();
+			
+			EventManager.Instance.TriggerEvent(Constants.EVENT_ACROBACY_COMPLETE_LOOP);
+		}
+		
+		//StartFreeDescent,//that 30° downward free flight
+		
+		//HeadsDown,
+		//TailContactsGround,
+		//TailLeavesGround,
+		//WheelTouchesGround,
+		//WheelLeavesGround,
+		//ReachedSpace,
 	}
 
 	#endregion
@@ -143,6 +229,12 @@ public class PlaneController : MonoBehaviour
 	// internal float CurrentVerticalSpeed;
 	internal float CurrentHorizontalSpeed;
 	internal float InitialHeight;
+
+	private Vector2 _previousVelocity;
+	private float _previousLookAngle;
+	private float _totalAngleCovered;
+	private float _startingAngle;
+	private int _loopCount;
 
 	private void InitializePhysics()
 	{
