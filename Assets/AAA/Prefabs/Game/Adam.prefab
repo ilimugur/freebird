@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6329733925727705567}
   - component: {fileID: 6329733925727705564}
   - component: {fileID: 6329733925727705565}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 6329733925816531986}
   - component: {fileID: 6329733925816531987}
   - component: {fileID: 6329733925816531984}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: LeftLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 6329733925904285726}
   - component: {fileID: 6329733925904285727}
   - component: {fileID: 6329733925904285724}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: RightArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -396,7 +396,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6329733926080208669}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: Adam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -412,7 +412,7 @@ Transform:
   m_GameObject: {fileID: 6329733926080208642}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 3.5, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children:
   - {fileID: 6329733925727705566}
   - {fileID: 6329733927253562090}
@@ -435,7 +435,7 @@ GameObject:
   - component: {fileID: 6329733926784908326}
   - component: {fileID: 6329733926784908327}
   - component: {fileID: 6329733926784908324}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: LeftArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -564,7 +564,7 @@ GameObject:
   - component: {fileID: 6329733926892277091}
   - component: {fileID: 6329733926892277088}
   - component: {fileID: 6329733926892277089}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: RightLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -698,7 +698,7 @@ GameObject:
   - component: {fileID: 6329733927253562087}
   - component: {fileID: 6329733927253562084}
   - component: {fileID: 6329733927253562086}
-  m_Layer: 8
+  m_Layer: 14
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -824,7 +824,7 @@ HingeJoint2D:
   m_GameObject: {fileID: 6329733927253562095}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 1
+  m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 6329733925904285724}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -848,13 +848,13 @@ HingeJoint2D:
   m_GameObject: {fileID: 6329733927253562095}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 1
+  m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 6329733926784908324}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 0
+  m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: -0.47640038, y: 0.38045976}
-  m_ConnectedAnchor: {x: 0.4670158, y: -0.14338435}
+  m_ConnectedAnchor: {x: 0.46701607, y: -0.14338407}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -872,7 +872,7 @@ HingeJoint2D:
   m_GameObject: {fileID: 6329733927253562095}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 1
+  m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 6329733925816531984}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -896,7 +896,7 @@ HingeJoint2D:
   m_GameObject: {fileID: 6329733927253562095}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 1
+  m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 6329733926892277089}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -920,7 +920,7 @@ FixedJoint2D:
   m_GameObject: {fileID: 6329733927253562095}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 1
+  m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 6329733925727705565}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
