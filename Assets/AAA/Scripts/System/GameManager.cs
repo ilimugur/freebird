@@ -75,6 +75,7 @@ public class GameManager : Singleton<GameManager>
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_LOAD, LoadLevel);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_START, StartLevel);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_RESTART, RestartLevel);
+		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_COMPLETED, OnLevelCompleted);
 		EventManager.Instance.StartListening(Constants.EVENT_INCREMENT_SCORE, OnIncrementScore);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_START_NEXT, RestartLevel);
 
@@ -85,6 +86,11 @@ public class GameManager : Singleton<GameManager>
 		PlaneController.SpawnLocation = LandingStrip.PlaneSpawnPosition.position;
 
 		RestartLevel();
+	}
+
+	private void OnLevelCompleted()
+	{
+		EventManager.Instance.TriggerEvent(Constants.EVENT_UPDATE_SCORE, _score);
 	}
 
 	private void LoadLevel()
