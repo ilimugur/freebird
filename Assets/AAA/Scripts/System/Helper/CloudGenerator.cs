@@ -12,8 +12,10 @@ public class CloudGenerator : MonoBehaviour
     public float CloudSpeedCoefficient = 0f;
     public float CloudScaleCoefficient = 1f;
     public Color CloudColor;
+    public float SkyBound = -1;
 
     public Sprite[] availableSprites;
+    public Sprite[] availableStarSprites;
 
     private static System.Random _rand = new System.Random();
 
@@ -34,9 +36,6 @@ public class CloudGenerator : MonoBehaviour
         {
             GameObject gameObject = new GameObject();
             SpriteRenderer spriteRenderer = gameObject.AddComponent<SpriteRenderer>() as SpriteRenderer;
-            spriteRenderer.color = CloudColor;
-            int index = i % availableSprites.Length;
-            spriteRenderer.sprite = availableSprites[index];
             spriteRenderer.transform.localScale *= CloudScaleCoefficient;
 
             spriteRenderer.gameObject.SetActive(false);
@@ -70,30 +69,23 @@ public class CloudGenerator : MonoBehaviour
         SpriteRenderer renderer = _freeSpriteRenderers[rendererIndex];
         _freeSpriteRenderers.RemoveAt(rendererIndex);
 
-        // generate
-        //            Mesh mesh = renderer.mesh;
-        //            GenerateSegment(index, ref mesh);
-
-        // position
         RaycastHit2D hit = Physics2D.Raycast(new Vector2(xCoord, yCoord), new Vector2(0, -1));
-    /*
-        float minPossible;
-        float maxPossible = yCenter + radius;
-        if (hit.collider != null)
-        {
-            //minPossible = Mathf.Max(-hit.distance + MinCloudHeightFromGround, -radius);
-            minPossible = yCenter - hit.distance + MinCloudHeightFromGround;
-        }
-        else
-        {
-            minPossible = yCenter - radius;
-        }
-    */
-        //float yCoord = minPossible + (maxPossible + 1f - minPossible) * (float) _rand.NextDouble();
         renderer.transform.position = new Vector3(xCoord, yCoord, Depth);
 
         // make visible
-
+        if (yCoord <= SkyBound)
+        {
+            // TODO: Instead of using a hard-coded variable, look into the actual top bound of the sky strip
+            renderer.color = CloudColor;
+            renderer.sprite = availableSprites[_rand.Next(0, availableSprites.Length)];
+            renderer.transform.localScale = new Vector3(1f, 1f, 1f);
+        }
+        else if (availableStarSprites.Length > 0)
+        {
+            renderer.color = Color.white;
+            renderer.sprite = availableStarSprites[_rand.Next(0, availableStarSprites.Length)];
+            renderer.transform.localScale = new Vector3(0.1f, 0.1f, 1f);
+        }
         renderer.gameObject.SetActive(true);
 
         // register as visible segment
@@ -155,22 +147,26 @@ public class CloudGenerator : MonoBehaviour
                 Vector3 cameraVelocity = Camera.main.velocity;
                 float xFactor = 2f * (float)_rand.NextDouble() - 1f; // (cameraVelocity.magnitude > 0f ? cameraVelocity.x / cameraVelocity.magnitude : 1f);
                 float yFactor = 2f * (float)_rand.NextDouble() - 1f; // (cameraVelocity.magnitude > 0f ? cameraVelocity.y / cameraVelocity.magnitude : 1f);
-                if (Mathf.Abs(xFactor) < 0.5f && Mathf.Abs(yFactor) < 0.5f)
+                if (Mathf.Abs(xFactor) < 0.75f && Mathf.Abs(yFactor) < 0.75f)
                 { 
                     if(_rand.Next(0, 2) == 0)
                     {
-                        xFactor += (xFactor >= 0f ? 0.5f : -0.5f);
+                        xFactor += (xFactor >= 0f ? 0.75f : -0.75f);
                     }
                     else
                     {
-                        yFactor += (yFactor >= 0f ? 0.5f : -0.5f);
+                        yFactor += (yFactor >= 0f ? 0.75f : -0.75f);
                     }
                 }
                 float xCoord = currentXCoordinate + width * xFactor;
                 float yCoord = currentYCoordinate + height * yFactor;
                 Vector2 candidate = new Vector2(xCoord, yCoord);
 
-                EnsureCloudVisible(xCoord, yCoord, currentYCoordinate, height / 2);
+                if (yCoord <= SkyBound || availableStarSprites.Length > 0)
+                {
+                    // TODO: Instead of using a hard-coded variable, look into the actual top bound of the sky strip
+                    EnsureCloudVisible(xCoord, yCoord, currentYCoordinate, height / 2);
+                }
             }
 
             _lastGeneration = currentCoordinate;
