@@ -102,6 +102,7 @@ public class GameManager : Singleton<GameManager>
 
 	private void OnLevelCompleted()
 	{
+		Debug.Log("Level completed");
 		EventManager.Instance.TriggerEvent(Constants.EVENT_UPDATE_SCORE, _score);
 		_score = 0;
 	}
@@ -118,10 +119,13 @@ public class GameManager : Singleton<GameManager>
 
 	private IEnumerator LoadLevelCo()
 	{
+		Debug.Log("Loading level - Step 1");
+		// Wait for the mouse button to be released. Otherwise, start screen will be passed immediately.
 		yield return new WaitUntil(() => !Input.GetMouseButton(0));
 		yield return null;
 		yield return null;
 		yield return null;
+		Debug.Log("Loading level - Step 2");
 
 		GameStartTime = 0f;
 		GameEndTime = 0f;
@@ -129,6 +133,7 @@ public class GameManager : Singleton<GameManager>
 		RoundEndTime = 0f;
 		IsGameFinished = false;
 		IsGameFinishScreenDisplayed = false;
+		Score = 0;
 
 		CameraDirector.Instance.transform.position = PlaneController.SpawnLocation;
 		PlaneController.PlaceToSpawnLocation();
@@ -140,15 +145,23 @@ public class GameManager : Singleton<GameManager>
 
 	private void StartLevel()
 	{
+<<<<<<< HEAD
 		Score = 0;
 		Fuel = Constants.InitialFuel;
+=======
+		Debug.Log("Starting level");
+>>>>>>> 25f815bd485974da0f18a40a8bb2685626c60c12
 		StartCoroutine(StartLevelCo());
 	}
 
 	private void RestartLevel()
 	{
+<<<<<<< HEAD
 		Score = 0;
 		Fuel = Constants.InitialFuel;
+=======
+		Debug.Log("Restarting level");
+>>>>>>> 25f815bd485974da0f18a40a8bb2685626c60c12
 		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_LOAD);
 		// StartCoroutine(StartGameCo());
 	}
@@ -156,7 +169,7 @@ public class GameManager : Singleton<GameManager>
 	private IEnumerator StartLevelCo()
 	{
 		yield return new WaitForEndOfFrame();
-		Debug.Log("Starting Game");
+		Debug.Log("Starting game");
 		Analytics.CustomEvent("StartGame");
 
 		GameStartTime = Time.time;
@@ -165,6 +178,10 @@ public class GameManager : Singleton<GameManager>
 
 	public void StartRound()
 	{
+		if (IsRoundStarted)
+			return;
+
+		Debug.Log("Starting round");
 		EventManager.Instance.TriggerEvent(Constants.EVENT_ENABLE_CONTROLS);
 		RoundStartTime = Time.time;
 		RoundEndTime = 0f;
@@ -172,13 +189,14 @@ public class GameManager : Singleton<GameManager>
 
 	private IEnumerator TriggerGameOver()
 	{
-		Debug.Log("Game Over");
+		Debug.Log("Game over");
 		RoundEndTime = Time.time;
 		GameEndTime = Time.time;
 
 		// Wait before end screen.
 		yield return new WaitForSeconds(2f);
 
+		Debug.Log("Displaying game over screen.");
 		IsGameFinishScreenDisplayed = true;
 		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_COMPLETED);
 	}
