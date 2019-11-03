@@ -581,9 +581,12 @@ public class PlaneController : MonoBehaviour
 			IsPilotReleased = true;
 
 			var go = Instantiate(PilotPrefab, PilotInstantiationLocation.position, Quaternion.identity);
-			var body = go.GetComponent<Rigidbody2D>();
-			body.velocity = Rigidbody.velocity + PilotAdditionalLaunchVelocity;
-			body.angularVelocity = PilotLaunchAngularSpeed;
+			var bodies = go.GetComponentsInChildren<Rigidbody2D>();
+			foreach (var body in bodies)
+			{
+				body.velocity = Rigidbody.velocity + PilotAdditionalLaunchVelocity;
+				body.angularVelocity = PilotLaunchAngularSpeed;
+			}
 		}
 	}
 

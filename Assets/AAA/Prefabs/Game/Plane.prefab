@@ -564,7 +564,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     WingForce: 4000
-  PilotPrefab: {fileID: 3243385628930845661, guid: d0ab7c2312ba6eb4da99be86588a7f52,
+  PilotPrefab: {fileID: 6329733926080208642, guid: eaae96873abad7d488b12ef7179c6871,
     type: 3}
   PilotInstantiationLocation: {fileID: 3403910188507945129}
   PilotAdditionalLaunchVelocity: {x: 0, y: 0}
