@@ -16,6 +16,17 @@ public class GameManager : Singleton<GameManager>
 
 	public Vector3 LandingStripPosition = new Vector3(0,4,0);
 
+	private int _score;
+	public int Score
+	{
+		get { return _score; }
+		private set
+		{
+			_score = value;
+			EventManager.Instance.TriggerEvent(Constants.EVENT_UPDATE_SCORE, Score);
+		}
+	}
+
 	public bool IsGameStarted => GameStartTime > 0f;
 	public bool IsRoundStarted => RoundStartTime > 0f;
 
@@ -63,6 +74,7 @@ public class GameManager : Singleton<GameManager>
 		UIManager.Instance.ShowStartScreen(0);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_START, StartLevel);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_RESTART, RestartLevel);
+		EventManager.Instance.StartListening(Constants.EVENT_INCREMENT_SCORE, OnIncrementScore);
 
 		Load();
 
@@ -83,18 +95,21 @@ public class GameManager : Singleton<GameManager>
 		StartCoroutine(TriggerGameOver());
 	}
 
+
+
 	private void StartLevel()
 	{
-		StartCoroutine(StartGameCo());
+
+		StartCoroutine(StartLevelCo());
 	}
 
 	private void RestartLevel()
 	{
 
-		StartCoroutine(StartGameCo());
+		StartCoroutine(StartLevelCo());
 	}
 
-	private IEnumerator StartGameCo()
+	private IEnumerator StartLevelCo()
 	{
 		yield return new WaitForEndOfFrame();
 		Debug.Log("Starting Game");
@@ -103,6 +118,7 @@ public class GameManager : Singleton<GameManager>
 		IsGameEndInformed = false;
 		GameStartTime = Time.time;
 		GameEndTime = 0f;
+		
 	}
 
 	public void StartRound()
@@ -123,6 +139,11 @@ public class GameManager : Singleton<GameManager>
 
 		yield return new WaitForSeconds(0.35f);
 		Save();
+	}
+
+	void OnIncrementScore(int value)
+	{
+		
 	}
 
 	void OnApplicationQuit()

@@ -373,7 +373,7 @@ MonoBehaviour:
   Transform: {fileID: 8878388082826193515}
   Rigidbody: {fileID: 9055477246974227694}
   PropellerAnimator: {fileID: 7351120453273250707}
-  Mode: 2
+  Mode: 3
   PlaneMass: 25
   DropConfiguration:
     TargetHorizontalSpeed: 6
