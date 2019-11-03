@@ -129,7 +129,7 @@ public class UIManager : Singleton<UIManager>
 
 	public void StartLevel()
 	{
-		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_START);
+		
 		
 		EventManager.Instance.StartListening(Constants.EVENT_UI_MESSAGE, OnUiMessage);
 		EventManager.Instance.StartListening(Constants.EVENT_UPDATE_SCORE, OnUpdateScore);
@@ -138,16 +138,18 @@ public class UIManager : Singleton<UIManager>
 		EventManager.Instance.StartListening(Constants.EVENT_SET_PROGRESSBAR, (int value) => OnSetProgressBar(value));
 		EventManager.Instance.StartListening(Constants.EVENT_RESET_PROGRESSBAR, OnResetProgressBar);
 		EventManager.Instance.StartListening(Constants.EVENT_GAME_OVER, OnGameOver);
-		
+
+		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_START);
+
 		HideStartScreen(0.1f);
 		ShowGameHud(0.1f);
 	}
 
-	public void OnUpdateScore(string text)
+	public void OnUpdateScore(int score)
 	{
-		ScoreText.text = text;
-		ScoreText.transform.localScale = Vector3.one * 0.5f;
-		ScoreText.transform.DOScale(1f, 0.5f).SetEase(Ease.OutElastic);
+		ScoreText.text = ""+score;
+		//ScoreText.transform.localScale = Vector3.one * 0.5f;
+		//ScoreText.transform.DOScale(1f, 0.5f).SetEase(Ease.OutElastic);
 	}
 
 	public void OnUiMessage(string text)
