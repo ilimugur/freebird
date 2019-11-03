@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b05e9d5d403a75b4e8592d14cd7495f5, type: 3}
   m_Name: PlaneCrash
   m_EditorClassIdentifier: 
-  HapticType: 7
-  FailoverVibrationDuration: 0
-  FailoverVibrationStrength: 0
+  HapticType: 3
+  FailoverVibrationDuration: 120
+  FailoverVibrationStrength: 40
