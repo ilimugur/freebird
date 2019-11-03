@@ -79,6 +79,7 @@ public class PlaneController : MonoBehaviour
 			EnableControls();
 		}
 		InitializeEvents();
+		InitializeExhaust();
 	}
 
 	#endregion
@@ -89,6 +90,7 @@ public class PlaneController : MonoBehaviour
 	{
 		CalculateInput();
 		CalculatePhysics();
+		FixedUpdateExhaust();
 	}
 
 	protected void LateUpdate()
@@ -654,6 +656,33 @@ public class PlaneController : MonoBehaviour
 			PropellerAnimator.speed = IsPushing
 				? FullThrottlePropellerSpeed
 				: NoThrottlePropellerSpeed;
+		}
+	}
+
+	#endregion
+
+	#region Exhaust
+
+	[Header("Exhaust")]
+	public ParticleSystem ExhaustParticleSystem;
+	public float ExhaustRateFactorAtNoThrottle = 0.3f;
+	private ParticleSystem.EmissionModule ExhaustEmission;
+	private float InitialEmissionRate;
+
+	private void InitializeExhaust()
+	{
+		ExhaustEmission = ExhaustParticleSystem.emission;
+		ExhaustEmission.enabled = false;
+		InitialEmissionRate = ExhaustEmission.rateOverTimeMultiplier;
+	}
+
+	private void FixedUpdateExhaust()
+	{
+		var active = !IsTurnedOff && GameManager.Instance.IsGameStarted;
+		ExhaustEmission.enabled = active;
+		if (active)
+		{
+			ExhaustEmission.rateOverTimeMultiplier = (IsPushing ? 1f : ExhaustRateFactorAtNoThrottle) * InitialEmissionRate;
 		}
 	}
 
