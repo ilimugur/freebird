@@ -43,6 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f74f34d422b0d84dadc49b6342a019d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LoopEventComboDistance: 5
+  LoopEventComboDistance: 20
   VerticalFlightTimeRequirement: 2
   LevelFlightTimeRequirement: 2
