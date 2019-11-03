@@ -64,4 +64,5 @@ public class Constants
 	public static int ScoreBonusPerSecondInVerticalStance = 2;
 	public static int ScoreBonusPerSecondInHorizontalStance = 1;
 	public static int ScoreBonusPerLoopCombo = 10;
+	public static int ScoreBonusPerPilotCatch = 50;
 }

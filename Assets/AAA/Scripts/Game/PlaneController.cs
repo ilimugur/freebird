@@ -795,6 +795,8 @@ public class PlaneController : MonoBehaviour
 		if (IsPilotReleased && Time.time > PilotReleaseTime + PilotReleaseMinimumDuration)
 		{
 			PilotReleaseTime = 0f;
+			
+			EventManager.Instance.TriggerEvent(Constants.EVENT_INCREMENT_SCORE, Constants.ScoreBonusPerPilotCatch);
 
 			if (ReleasedPilot)
 			{
