@@ -130,7 +130,7 @@ public class GameManager : Singleton<GameManager>
 		Debug.Log("Starting Game");
 		Analytics.CustomEvent("StartGame");
 
-		IsGameEndInformed = false;
+		IsGameFinished = false;
 		GameStartTime = Time.time;
 		GameEndTime = 0f;
 	}
@@ -157,13 +157,13 @@ public class GameManager : Singleton<GameManager>
 		Score += value;
 	}
 
-	private bool IsGameEndInformed;
+	public bool IsGameFinished { get; private set; }
 
 	public void InformGameEnd()
 	{
-		if (!IsGameEndInformed)
+		if (!IsGameFinished)
 		{
-			IsGameEndInformed = true;
+			IsGameFinished = true;
 			Invoke(nameof(DelayedGameEnd), 2f);
 		}
 	}
