@@ -124,7 +124,9 @@ public class PlaneController : MonoBehaviour
 
 	private void OnLevelLoad()
 	{
+		Debug.Log("Resetting plane");
 		enabled = false;
+		PlaceToSpawnLocation();
 		ResetPhysics();
 		ResetCrates();
 		ResetCrash();
@@ -710,6 +712,7 @@ public class PlaneController : MonoBehaviour
 		{
 			if (other.gameObject.layer == 9) // Ground
 			{
+				Debug.Log("Crashed");
 				IsCrashed = true;
 				EventManager.Instance.TriggerEvent(Constants.EVENT_PLANE_CRASHED);
 
@@ -892,6 +895,8 @@ public class PlaneController : MonoBehaviour
 
 	public void PlaceToSpawnLocation()
 	{
+		Debug.Log("Placing plane to spawn location");
+
 		Transform.position = SpawnLocation;
 		Transform.rotation = Quaternion.identity;
 		Rigidbody.velocity = Vector3.zero;

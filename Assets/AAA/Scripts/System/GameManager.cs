@@ -90,6 +90,7 @@ public class GameManager : Singleton<GameManager>
 
 	private void OnLevelCompleted()
 	{
+		Debug.Log("Level completed");
 		EventManager.Instance.TriggerEvent(Constants.EVENT_UPDATE_SCORE, _score);
 	}
 
@@ -100,10 +101,13 @@ public class GameManager : Singleton<GameManager>
 
 	private IEnumerator LoadLevelCo()
 	{
+		Debug.Log("Loading level - Step 1");
+		// Wait for the mouse button to be released. Otherwise, start screen will be passed immediately.
 		yield return new WaitUntil(() => !Input.GetMouseButton(0));
 		yield return null;
 		yield return null;
 		yield return null;
+		Debug.Log("Loading level - Step 2");
 
 		GameStartTime = 0f;
 		GameEndTime = 0f;
@@ -122,12 +126,13 @@ public class GameManager : Singleton<GameManager>
 
 	private void StartLevel()
 	{
-
+		Debug.Log("Starting level");
 		StartCoroutine(StartLevelCo());
 	}
 
 	private void RestartLevel()
 	{
+		Debug.Log("Restarting level");
 		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_LOAD);
 		// StartCoroutine(StartGameCo());
 	}
@@ -135,7 +140,7 @@ public class GameManager : Singleton<GameManager>
 	private IEnumerator StartLevelCo()
 	{
 		yield return new WaitForEndOfFrame();
-		Debug.Log("Starting Game");
+		Debug.Log("Starting game");
 		Analytics.CustomEvent("StartGame");
 
 		GameStartTime = Time.time;
@@ -144,6 +149,10 @@ public class GameManager : Singleton<GameManager>
 
 	public void StartRound()
 	{
+		if (IsRoundStarted)
+			return;
+
+		Debug.Log("Starting round");
 		EventManager.Instance.TriggerEvent(Constants.EVENT_ENABLE_CONTROLS);
 		RoundStartTime = Time.time;
 		RoundEndTime = 0f;
@@ -151,13 +160,14 @@ public class GameManager : Singleton<GameManager>
 
 	private IEnumerator TriggerGameOver()
 	{
-		Debug.Log("Game Over");
+		Debug.Log("Game over");
 		RoundEndTime = Time.time;
 		GameEndTime = Time.time;
 
 		// Wait before end screen.
 		yield return new WaitForSeconds(2f);
 
+		Debug.Log("Displaying game over screen.");
 		IsGameFinishScreenDisplayed = true;
 		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_COMPLETED);
 	}
