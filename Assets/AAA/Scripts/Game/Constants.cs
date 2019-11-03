@@ -52,4 +52,7 @@ public class Constants
 	public static float FuelPerCrate = 25f;
 	public static float InitialFuel = 200f;
 	public static float FuelCapacity = 500f;
+
+	public static float ScoreBonusPerCrate = 5f;
+	public static float ScoreBonusPerSpin = 10f;
 }

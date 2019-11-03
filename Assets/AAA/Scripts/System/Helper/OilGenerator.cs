@@ -97,6 +97,7 @@ public class OilGenerator : MonoBehaviour
             {
                 EnsureClusterElementNotVisible(i);
                 EventManager.Instance.TriggerEvent(Constants.EVENT_GAIN_FUEL, Constants.FuelPerCrate);
+                EventManager.Instance.TriggerEvent(Constants.EVENT_INCREMENT_SCORE, Constants.ScoreBonusPerCrate);
                 break;
             }
         }
