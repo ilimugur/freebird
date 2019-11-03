@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using DG.Tweening;
 using UnityEngine;
 
@@ -750,13 +750,15 @@ public class PlaneController : MonoBehaviour
 	public Transform PilotInstantiationLocation;
 	public Vector2 PilotAdditionalLaunchVelocity;
 	public float PilotLaunchAngularSpeed;
+	public float PilotReleaseMinimumDuration = 2f;
 
-	private bool IsPilotReleased;
+	private bool IsPilotReleased => PilotReleaseTime > 0f;
+	private float PilotReleaseTime;
 	private Pilot ReleasedPilot;
 
 	private void ResetPilot()
 	{
-		IsPilotReleased = false;
+		PilotReleaseTime = 0f;
 
 		if (ReleasedPilot)
 		{
@@ -769,7 +771,7 @@ public class PlaneController : MonoBehaviour
 	{
 		if (!IsPilotReleased)
 		{
-			IsPilotReleased = true;
+			PilotReleaseTime = Time.time;
 
 			var go = Instantiate(PilotPrefab, PilotInstantiationLocation.position, Quaternion.identity);
 			ReleasedPilot = go.GetComponent<Pilot>();
@@ -777,11 +779,28 @@ public class PlaneController : MonoBehaviour
 		}
 	}
 
-	private void OnTriggerEnter2D(Collider2D other)
+	public void GatherPilot()
 	{
-		if (other.gameObject.layer == 14) // Player layer
+		if (IsPilotReleased && Time.time > PilotReleaseTime + PilotReleaseMinimumDuration)
 		{
-			Debug.Log("ONTRIG " + other.gameObject.name);
+			PilotReleaseTime = 0f;
+
+			if (ReleasedPilot)
+			{
+				Destroy(ReleasedPilot.gameObject);
+				ReleasedPilot = null;
+			}
+		}
+	}
+
+	private void OnTriggerStay2D(Collider2D other)
+	{
+		if (IsPilotReleased)
+		{
+			if (other.gameObject.layer == 14) // Crate layer
+			{
+				GatherPilot();
+			}
 		}
 	}
 
