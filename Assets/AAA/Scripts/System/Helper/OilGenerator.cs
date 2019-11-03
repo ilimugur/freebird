@@ -89,7 +89,7 @@ public class OilGenerator : MonoBehaviour
         element.OilGeneratorScript = this;
 
         // make visible
-        spriteRenderer.gameObject.SetActive(true);
+        oilDrumGameObject.SetActive(true);
 
     }
 

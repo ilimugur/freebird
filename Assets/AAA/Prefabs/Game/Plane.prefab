@@ -373,6 +373,8 @@ MonoBehaviour:
   Transform: {fileID: 8878388082826193515}
   Rigidbody: {fileID: 9055477246974227694}
   PropellerAnimator: {fileID: 7351120453273250707}
+  CrashBlast: {fileID: 3023489146634793376, guid: e2b0583c04f9352489095c2f5d3cf36a,
+    type: 3}
   Mode: 3
   PlaneMass: 25
   DropConfiguration:
@@ -639,7 +641,6 @@ MonoBehaviour:
   CrateInitialAngularSpeed: 120
   CrateMass: 100
   SpawnLocation: {x: 0, y: 0, z: 0}
-  DisableControlsAtStart: 1
 --- !u!58 &2777183897655900010
 CircleCollider2D:
   m_ObjectHideFlags: 0
