@@ -48,4 +48,11 @@ public class Constants
 	public static readonly string EVENT_ACROBACY_WHEEL_LEAVED_GROUND = "ev_whllvdgnd";
 	public static readonly string EVENT_ACROBACY_REACHED_SPACE = "ev_rchdspc";
 	//HeadsDown,
+
+	public static float FuelPerCrate = 25f;
+	public static float InitialFuel = 200f;
+	public static float FuelCapacity = 500f;
+
+	public static float ScoreBonusPerCrate = 5f;
+	public static float ScoreBonusPerSpin = 10f;
 }
