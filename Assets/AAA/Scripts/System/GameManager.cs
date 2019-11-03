@@ -28,6 +28,17 @@ public class GameManager : Singleton<GameManager>
 		}
 	}
 
+	private float _fuel;
+	public float Fuel
+	{
+		get { return _fuel; }
+		private set
+		{
+			_fuel = value;
+			EventManager.Instance.TriggerEvent(Constants.EVENT_SET_PROGRESSBAR, _fuel/Constants.FuelCapacity);
+		}
+	}
+
 	public bool IsGameStarted => GameStartTime > 0f;
 	public bool IsRoundStarted => RoundStartTime > 0f;
 
@@ -78,6 +89,7 @@ public class GameManager : Singleton<GameManager>
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_COMPLETED, OnLevelCompleted);
 		EventManager.Instance.StartListening(Constants.EVENT_INCREMENT_SCORE, OnIncrementScore);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_START_NEXT, RestartLevel);
+		EventManager.Instance.StartListening(Constants.EVENT_GAIN_FUEL, (float value) => OnGainFuel(value));
 
 		LandingStrip = Instantiate(LandingStripPrefab, LandingStripPosition, Quaternion.identity, this.transform);
 		PlaneController = Instantiate(PlaneControllerPrefab, LandingStrip.PlaneSpawnPosition.position,
@@ -92,6 +104,11 @@ public class GameManager : Singleton<GameManager>
 	{
 		EventManager.Instance.TriggerEvent(Constants.EVENT_UPDATE_SCORE, _score);
 		_score = 0;
+	}
+
+	public void OnGainFuel(float value)
+	{
+		Fuel += value;
 	}
 
 	private void LoadLevel()
@@ -124,12 +141,14 @@ public class GameManager : Singleton<GameManager>
 	private void StartLevel()
 	{
 		Score = 0;
+		Fuel = Constants.InitialFuel;
 		StartCoroutine(StartLevelCo());
 	}
 
 	private void RestartLevel()
 	{
 		Score = 0;
+		Fuel = Constants.InitialFuel;
 		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_LOAD);
 		// StartCoroutine(StartGameCo());
 	}

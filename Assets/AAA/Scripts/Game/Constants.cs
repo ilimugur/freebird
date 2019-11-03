@@ -50,10 +50,16 @@ public class Constants
 	public static readonly string EVENT_ACROBACY_REACHED_SPACE = "ev_rchdspc";
 	//HeadsDown,
 
-	public static float FuelPerCrate = 25f;
+	public static float FuelPerCrate = 15f;
 	public static float InitialFuel = 200f;
 	public static float FuelCapacity = 500f;
+	public static float FuelGainPerLoopCombo = 10f;
+	public static float FuelGainPerVerticalStancePerSecond = 5f;
+	public static float FuelGainPerHorizontalStancePerSecond = 2f;
+	public static float FuelExpenditurePerSecond = -10f;
 
 	public static float ScoreBonusPerCrate = 5f;
-	public static float ScoreBonusPerSpin = 10f;
+	public static float ScoreBonusPerSecondInVerticalStance = 2f;
+	public static float ScoreBonusPerSecondInHorizontalStance = 1f;
+	public static float ScoreBonusPerLoopCombo = 10f;
 }

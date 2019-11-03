@@ -88,6 +88,7 @@ public class PlaneController : MonoBehaviour
 		_previousLookAngle = Rigidbody.rotation;
 		_previousVelocity = Rigidbody.velocity;
 		FixedUpdateExhaust();
+		ExpendFuel();
 	}
 
 	protected void LateUpdate()
@@ -147,7 +148,7 @@ public class PlaneController : MonoBehaviour
 	private void CalculateAcrobacyEvents()
 	{
 		
-		var verticalStanceMinimumAngle = 80;
+		var verticalStanceMinimumAngle = 65;
 		var verticalStanceMaximumAngle = 100;
 
 		var levelFlightMinimumAngle = -10;
@@ -836,6 +837,14 @@ public class PlaneController : MonoBehaviour
 		}
 	}
 
+	#endregion
+
+	#region Benzin
+
+	private void ExpendFuel()
+	{
+		EventManager.Instance.TriggerEvent(Constants.EVENT_GAIN_FUEL,Constants.FuelExpenditurePerSecond*Time.fixedDeltaTime);
+	}
 	#endregion
 
 	#region Crate
