@@ -99,6 +99,11 @@ public class GameManager : Singleton<GameManager>
 		yield return null;
 		yield return null;
 
+		GameStartTime = 0f;
+		GameEndTime = 0f;
+		RoundStartTime = 0f;
+		RoundEndTime = 0f;
+
 		CameraDirector.Instance.transform.position = PlaneController.SpawnLocation;
 		PlaneController.PlaceToSpawnLocation();
 		UIManager.Instance.ShowStartScreen(0);
