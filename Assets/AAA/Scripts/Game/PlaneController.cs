@@ -410,6 +410,7 @@ public class PlaneController : MonoBehaviour
 		}
 
 		// Propeller force
+		if (!IsTurnedOff)
 		{
 			var currentPower = GameManager.Instance.IsGameStarted
 				? IsPushing ? config.FullThrottlePower : config.HalfThrottlePower
@@ -513,6 +514,7 @@ public class PlaneController : MonoBehaviour
 		}
 
 		// Propeller force
+		if (!IsTurnedOff)
 		{
 			var currentPower = GameManager.Instance.IsGameStarted
 				? IsPushing ? config.FullThrottlePower : config.HalfThrottlePower
