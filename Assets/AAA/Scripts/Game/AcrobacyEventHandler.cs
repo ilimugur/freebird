@@ -31,16 +31,16 @@ public class AcrobacyEventHandler : MonoBehaviour
 			_loopEventComboCount++;
 			_lastLoopEvent = ev;
 			EventManager.Instance.TriggerEvent(Constants.EVENT_UI_MESSAGE, "LOOP! x" + _loopEventComboCount);
-			EventManager.Instance.TriggerEvent(Constants.EVENT_INCREMENT_SCORE, _loopEventComboCount * 2);
-			EventManager.Instance.TriggerEvent(Constants.EVENT_GAIN_FUEL, _loopEventComboCount * 2);
+			EventManager.Instance.TriggerEvent(Constants.EVENT_INCREMENT_SCORE, _loopEventComboCount * Constants.ScoreBonusPerLoopCombo);
+			EventManager.Instance.TriggerEvent(Constants.EVENT_GAIN_FUEL, _loopEventComboCount * Constants.FuelGainPerLoopCombo);
 		}
 		else
 		{
 			_loopEventComboCount = 1;
 			_lastLoopEvent = ev;
 			EventManager.Instance.TriggerEvent(Constants.EVENT_UI_MESSAGE, "LOOP!");
-			EventManager.Instance.TriggerEvent(Constants.EVENT_INCREMENT_SCORE, _loopEventComboCount * 2);
-			EventManager.Instance.TriggerEvent(Constants.EVENT_GAIN_FUEL, _loopEventComboCount * 2);
+			EventManager.Instance.TriggerEvent(Constants.EVENT_INCREMENT_SCORE, _loopEventComboCount * Constants.ScoreBonusPerLoopCombo);
+			EventManager.Instance.TriggerEvent(Constants.EVENT_GAIN_FUEL, _loopEventComboCount * Constants.FuelGainPerLoopCombo);
 		}
 	}
 
@@ -58,8 +58,8 @@ public class AcrobacyEventHandler : MonoBehaviour
 			{
 				var intTime = (int)time;
 				EventManager.Instance.TriggerEvent(Constants.EVENT_UI_MESSAGE, "CLIMB " + intTime + "s");
-				EventManager.Instance.TriggerEvent(Constants.EVENT_INCREMENT_SCORE, 10 + intTime);
-				EventManager.Instance.TriggerEvent(Constants.EVENT_GAIN_FUEL, 10 + intTime);
+				EventManager.Instance.TriggerEvent(Constants.EVENT_INCREMENT_SCORE, Constants.ScoreBonusPerSecondInVerticalStance);
+				EventManager.Instance.TriggerEvent(Constants.EVENT_GAIN_FUEL, Constants.FuelGainPerVerticalStancePerSecond);
 			}
 			_verticalStanceStartEvent = null;
 		}
@@ -79,8 +79,8 @@ public class AcrobacyEventHandler : MonoBehaviour
 			{
 				var intTime = (int)time;
 				EventManager.Instance.TriggerEvent(Constants.EVENT_UI_MESSAGE, "STRAIGHT " + intTime + "s");
-				EventManager.Instance.TriggerEvent(Constants.EVENT_INCREMENT_SCORE, 10 + intTime);
-				EventManager.Instance.TriggerEvent(Constants.EVENT_GAIN_FUEL, 10 + intTime);
+				EventManager.Instance.TriggerEvent(Constants.EVENT_INCREMENT_SCORE, Constants.ScoreBonusPerSecondInHorizontalStance);
+				EventManager.Instance.TriggerEvent(Constants.EVENT_GAIN_FUEL, Constants.FuelGainPerHorizontalStancePerSecond);
 			}
 			_levelFlightStartEvent = null;
 		}

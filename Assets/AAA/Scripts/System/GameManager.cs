@@ -116,7 +116,7 @@ public class GameManager : Singleton<GameManager>
 		RoundEndTime = 0f;
 		IsGameFinished = false;
 		IsGameFinishScreenDisplayed = false;
-		Score = 0;
+		//Score = 0;
 
 		CameraDirector.Instance.transform.position = PlaneController.SpawnLocation;
 		PlaneController.PlaceToSpawnLocation();
@@ -128,12 +128,14 @@ public class GameManager : Singleton<GameManager>
 
 	private void StartLevel()
 	{
+		EventManager.Instance.TriggerEvent(Constants.EVENT_SET_FUEL, Constants.InitialFuel);
 		Debug.Log("Starting level");
 		StartCoroutine(StartLevelCo());
 	}
 
 	private void RestartLevel()
 	{
+		EventManager.Instance.TriggerEvent(Constants.EVENT_SET_FUEL, Constants.InitialFuel);
 		Debug.Log("Restarting level");
 		EventManager.Instance.TriggerEvent(Constants.EVENT_LEVEL_LOAD);
 		// StartCoroutine(StartGameCo());
@@ -155,9 +157,13 @@ public class GameManager : Singleton<GameManager>
 			return;
 
 		Debug.Log("Starting round");
+
+		
 		EventManager.Instance.TriggerEvent(Constants.EVENT_ENABLE_CONTROLS);
+
 		RoundStartTime = Time.time;
 		RoundEndTime = 0f;
+		Score = 0;
 	}
 
 	private IEnumerator TriggerGameOver()

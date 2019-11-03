@@ -66,6 +66,8 @@ public class CartoonModeConfiguration
 
 public class PlaneController : MonoBehaviour
 {
+	private float _fuel;
+
 	#region Initialization
 
 	protected void Awake()
@@ -88,6 +90,7 @@ public class PlaneController : MonoBehaviour
 		_previousLookAngle = Rigidbody.rotation;
 		_previousVelocity = Rigidbody.velocity;
 		FixedUpdateExhaust();
+		ExpendFuel();
 	}
 
 	protected void LateUpdate()
@@ -103,6 +106,7 @@ public class PlaneController : MonoBehaviour
 	public Transform Transform;
 	public Rigidbody2D Rigidbody;
 	public Animator PropellerAnimator;
+    public GameObject CrashBlast;
 
 	#endregion
 
@@ -113,6 +117,8 @@ public class PlaneController : MonoBehaviour
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_LOAD, OnLevelLoad);
 		EventManager.Instance.StartListening(Constants.EVENT_LEVEL_START, OnLevelStart);
 		EventManager.Instance.StartListening(Constants.EVENT_ENABLE_CONTROLS, OnEnableControls);
+		EventManager.Instance.StartListening(Constants.EVENT_GAIN_FUEL, (float value) => OnGainFuel(value));
+		EventManager.Instance.StartListening(Constants.EVENT_SET_FUEL, (float value) => OnSetFuel(value));
 	}
 
 	private void InitializeAcrobacyParameters()
@@ -149,7 +155,7 @@ public class PlaneController : MonoBehaviour
 	private void CalculateAcrobacyEvents()
 	{
 		
-		var verticalStanceMinimumAngle = 80;
+		var verticalStanceMinimumAngle = 65;
 		var verticalStanceMaximumAngle = 100;
 
 		var levelFlightMinimumAngle = -10;
@@ -700,13 +706,15 @@ public class PlaneController : MonoBehaviour
 	#region Crash
 
 	private bool IsCrashed;
+    private GameObject _blastEffect;
 
-	private void ResetCrash()
-	{
-		IsCrashed = false;
-	}
+    private void ResetCrash()
+    {
+        IsCrashed = false;
+        UnityEngine.Object.Destroy(_blastEffect);
+    }
 
-	private void OnCollisionEnter2D(Collision2D other)
+    private void OnCollisionEnter2D(Collision2D other)
 	{
 		if (!IsCrashed)
 		{
@@ -714,6 +722,9 @@ public class PlaneController : MonoBehaviour
 			{
 				Debug.Log("Crashed");
 				IsCrashed = true;
+                _blastEffect = Instantiate(CrashBlast, this.transform);
+                _blastEffect.transform.localPosition = Vector3.zero;
+
 				EventManager.Instance.TriggerEvent(Constants.EVENT_PLANE_CRASHED);
 
 				TurnOff();
@@ -860,6 +871,15 @@ public class PlaneController : MonoBehaviour
 
 	#endregion
 
+	#region Benzin
+
+	private void ExpendFuel()
+	{
+		float deltaFuel = Constants.FuelExpenditurePerSecond * Time.fixedDeltaTime;
+		OnGainFuel(deltaFuel);
+	}
+	#endregion
+
 	#region Crate
 
 	[Header("Crate")]
@@ -923,4 +943,24 @@ public class PlaneController : MonoBehaviour
 	}
 
 	#endregion
+
+
+	public void OnGainFuel(float value)
+	{
+		_fuel += value;
+		if (_fuel > Constants.FuelCapacity) _fuel = Constants.FuelCapacity;
+		if (_fuel < 0)
+		{
+			_fuel = 0;
+			EventManager.Instance.TriggerEvent(Constants.EVENT_OUT_OF_FUEL);
+			TurnOff();
+		}
+		EventManager.Instance.TriggerEvent(Constants.EVENT_SET_PROGRESSBAR, _fuel / Constants.FuelCapacity);
+	}
+
+	public void OnSetFuel(float value)
+	{
+		_fuel = value;
+		EventManager.Instance.TriggerEvent(Constants.EVENT_SET_PROGRESSBAR, _fuel / Constants.FuelCapacity);
+	}
 }

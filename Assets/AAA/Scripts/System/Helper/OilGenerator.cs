@@ -89,7 +89,7 @@ public class OilGenerator : MonoBehaviour
         element.OilGeneratorScript = this;
 
         // make visible
-        spriteRenderer.gameObject.SetActive(true);
+        oilDrumGameObject.SetActive(true);
 
     }
 
@@ -176,8 +176,8 @@ public class OilGenerator : MonoBehaviour
                 {
                     for (int j = 0; j < ClusterWidth; ++j)
                     {
-                        float x = xCoord + k * (_clusterElementWidth + SpaceBetweenClusterElements);
-                        float y = yCoord + j * (_clusterElementHeight + SpaceBetweenClusterElements);
+                        float x = xCoord + j * (_clusterElementWidth + SpaceBetweenClusterElements);
+                        float y = yCoord + k * (_clusterElementHeight + SpaceBetweenClusterElements);
 
                         EnsureClusterElementVisible(x, y);
                     }

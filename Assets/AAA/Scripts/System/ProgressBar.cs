@@ -24,7 +24,7 @@ public class ProgressBar : MonoBehaviour
 		{
 			_progress = Mathf.Clamp01(value);
 			
-			Bar.rectTransform.DOLocalMoveX(EmptyPosition.x + _progress * (FullPosition - EmptyPosition).x,0.5f).SetEase(Ease.InOutCubic);
+			Bar.rectTransform.DOLocalMoveX(EmptyPosition.x + _progress * (FullPosition - EmptyPosition).x,0f).SetEase(Ease.InOutCubic);
 		}
 	}
 
