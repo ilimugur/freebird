@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using MoreMountains.NiceVibrations;
+//using MoreMountains.NiceVibrations;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;

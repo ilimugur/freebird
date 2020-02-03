@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using MoreMountains.NiceVibrations;
+//using MoreMountains.NiceVibrations;
 using UnityEngine;
 
 public class HapticsManager : Singleton<HapticsManager>
@@ -14,8 +14,10 @@ public class HapticsManager : Singleton<HapticsManager>
 
 	void Awake()
 	{
+        /*
 		if (MMVibrationManager.HapticsSupported())
 			MMVibrationManager.iOSInitializeHaptics();
+        */
 
 		SetListeners();
 	}
@@ -68,6 +70,7 @@ public class HapticsManager : Singleton<HapticsManager>
 
 	public void Vibrate(HapticDefinition def)
 	{
+        /*
 		if (MMVibrationManager.HapticsSupported())
 		{
 			if(def!=null)
@@ -78,12 +81,15 @@ public class HapticsManager : Singleton<HapticsManager>
 			if(def!=null)
 				MMVibrationManager.AndroidVibrate((long)def.FailoverVibrationDuration, (int)def.FailoverVibrationStrength);
 		}
+        */
 	}
 
 	void OnDestroy()
 	{
 		Unsetlisteners();
+        /*
 		if (MMVibrationManager.HapticsSupported())
 			MMVibrationManager.iOSReleaseHaptics();
+        */
 	}
 }
